@@ -1,5 +1,5 @@
 /* global kakao */
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
 const KAKAO_MAP_KEY = process.env.REACT_APP_KAKAO_MAP_KEY;
 
@@ -9,11 +9,11 @@ const loadKakaoMapScript = () => {
       resolve();
       return;
     }
-    const script = document.createElement("script");
+    const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&autoload=false`;
     script.async = true;
     script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Kakao Map script load failed"));
+    script.onerror = () => reject(new Error('Kakao Map script load failed'));
     document.head.appendChild(script);
   });
 };
@@ -39,9 +39,7 @@ const Map = () => {
       });
   }, []);
 
-  return (
-    <div ref={mapRef} id="map" style={{ width: "100vw", height: "92vh" }}></div>
-  );
+  return <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }}></div>;
 };
 
 export default Map;

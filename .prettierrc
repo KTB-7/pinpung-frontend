@@ -5,5 +5,5 @@
   "trailingComma": "all",
   "printWidth": 100,
   "quoteProps": "as-needed",
-  "arrowParens": "avoid"
+  "arrowParens": "always"
 }

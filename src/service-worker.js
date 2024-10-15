@@ -21,6 +21,22 @@ clientsClaim();
 // even if you decide not to use precaching. See https://cra.link/PWA
 precacheAndRoute(self.__WB_MANIFEST);
 
+self.addEventListener('activate', (event) => {
+  const cacheWhitelist = ['pwa-cache-v2'];
+
+  event.waitUntil(
+    caches.keys().then((cacheNames) =>
+      Promise.all(
+        cacheNames.map((cacheName) => {
+          if (!cacheWhitelist.includes(cacheName)) {
+            return caches.delete(cacheName);
+          }
+        }),
+      ),
+    ),
+  );
+});
+
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
 // https://developers.google.com/web/fundamentals/architecture/app-shell
@@ -46,6 +62,7 @@ registerRoute(
   createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html'),
 );
 
+// 이미지 요청에 대해 캐시 사용
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
@@ -61,6 +78,7 @@ registerRoute(
   }),
 );
 
+// 메시지 수신 시 skipWaiting 호출
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {

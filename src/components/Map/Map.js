@@ -1,5 +1,5 @@
 /* global kakao */
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getUserLocation } from '../../services/locationService';
 
 const KAKAO_MAP_KEY = process.env.REACT_APP_KAKAO_MAP_KEY;

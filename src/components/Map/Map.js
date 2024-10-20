@@ -55,8 +55,19 @@ const Map = () => {
 
           // 맵 이동(드래그 종료) 시 이벤트 등록
           kakao.maps.event.addListener(map, 'dragend', () => {
-            const bounds = map.getBounds(); //현재 맵의 경계
-            fetchCafes(bounds.getCenter()).then((data) => setCafes(data));
+            const bounds = map.getBounds(); // 현재 맵 경계
+
+            // 남서쪽(SW)와 북동쪽(NE) 좌표 가져오기
+            const sw = bounds.getSouthWest();
+            const ne = bounds.getNorthEast();
+
+            // 중심 좌표 계산
+            const centerLat = (sw.getLat() + ne.getLat()) / 2;
+            const centerLng = (sw.getLng() + ne.getLng()) / 2;
+            const center = new kakao.maps.LatLng(centerLat, centerLng);
+
+            // 중심 좌표로 카페 목록 검색
+            fetchCafes(center).then((data) => setCafes(data));
           });
         });
       })

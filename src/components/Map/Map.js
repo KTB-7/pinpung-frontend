@@ -1,11 +1,11 @@
-/* 사용자 위치를 기반으로 카카오맵을 로드하고, 맵 이동 시 카페목록 갱신 */
+/* 사용자 위치를 기반으로 맵을 로드하고, 맵 이동 시 카페목록 갱신 */
 
 /* global kakao */
 import React, { useState, useEffect, useRef } from 'react';
 import { getUserLocation } from '../../services/locationService';
 import { fetchCafes } from '../../services/kakaoMapService';
 import CafeMarker from '../Markers/CafeMarker';
-
+import { debounce } from 'lodash';
 const KAKAO_MAP_KEY = process.env.REACT_APP_KAKAO_MAP_KEY;
 
 const loadKakaoMapScript = () => {
@@ -15,7 +15,7 @@ const loadKakaoMapScript = () => {
       return;
     }
     const script = document.createElement('script');
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&autoload=false`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&libraries=services&autoload=false`;
     script.async = true;
     script.onload = () => resolve();
     script.onerror = () => reject(new Error('Kakao Map script load failed'));
@@ -26,11 +26,11 @@ const loadKakaoMapScript = () => {
 const Map = () => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null); // Map 객체 관리
-  const [userLocation, setUserLocation] = useState({ latitude: 37.400113, longitude: 127.106766 });
+  const [userLocation, setUserLocation] = useState({ latitude: 37.575877, longitude: 126.976812 });
   const [cafes, setCafes] = useState([]); // 근처 카페 목록 저장
 
+  // 사용자 위치 정보 가져오기
   useEffect(() => {
-    // 사용자 위치 정보 가져오기
     getUserLocation()
       .then((location) => {
         setUserLocation(location);
@@ -40,8 +40,8 @@ const Map = () => {
       });
   }, []);
 
+  // 맵 스크립트 로드 및 초기 API 호출
   useEffect(() => {
-    // 카카오맵 스크립트 로드 및 맵 초기화
     loadKakaoMapScript()
       .then(() => {
         kakao.maps.load(() => {
@@ -53,27 +53,25 @@ const Map = () => {
           const map = new kakao.maps.Map(container, options);
           mapInstance.current = map; // 맵 인스턴스 저장
 
-          // 맵 이동(드래그 종료) 시 이벤트 등록
-          kakao.maps.event.addListener(map, 'dragend', () => {
-            const bounds = map.getBounds(); // 현재 맵 경계
+          // 초기 렌더링 시 카페 목록 API 호출
+          const bounds = map.getBounds();
+          const sw = bounds.getSouthWest();
+          const ne = bounds.getNorthEast();
+          fetchCafes(sw, ne).then((data) => setCafes(data));
 
-            // 남서쪽(SW)와 북동쪽(NE) 좌표 가져오기
+          // 맵 이동 시 debounce 적용
+          const handleDragEnd = debounce(() => {
+            const bounds = map.getBounds();
             const sw = bounds.getSouthWest();
             const ne = bounds.getNorthEast();
+            fetchCafes(sw, ne).then((data) => setCafes(data));
+          }, 200);
 
-            // 중심 좌표 계산
-            const centerLat = (sw.getLat() + ne.getLat()) / 2;
-            const centerLng = (sw.getLng() + ne.getLng()) / 2;
-            const center = new kakao.maps.LatLng(centerLat, centerLng);
-
-            // 중심 좌표로 카페 목록 검색
-            fetchCafes(center).then((data) => setCafes(data));
-          });
+          // 드래그 종료 시 이벤트 등록
+          kakao.maps.event.addListener(map, 'dragend', handleDragEnd);
         });
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => console.error('맵 로드 실패:', error));
   }, [userLocation]);
 
   return (

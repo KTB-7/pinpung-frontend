@@ -6,6 +6,7 @@ import { getUserLocation } from '../../services/locationService';
 import { fetchCafes } from '../../services/kakaoMapService';
 import CafeMarker from '../Markers/CafeMarker';
 import { debounce } from 'lodash';
+
 const KAKAO_MAP_KEY = process.env.REACT_APP_KAKAO_MAP_KEY;
 
 const loadKakaoMapScript = () => {

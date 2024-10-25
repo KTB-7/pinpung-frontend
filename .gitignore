@@ -3,6 +3,10 @@
 # environments
 .env
 
+# pem
+localhost-key.pem
+localhost.pem
+
 # dependencies
 /node_modules
 /.pnp

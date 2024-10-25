@@ -3,13 +3,13 @@
 /* global kakao */
 import React, { useState, useEffect, useRef } from 'react';
 import { getUserLocation } from '../../services/locationService';
-import { fetchCafes } from '../../services/kakaoMapService';
+import { fetchCafes } from '../../services/mapService';
 import CafeMarker from '../Markers/CafeMarker';
 import { debounce } from 'lodash';
 
 const KAKAO_MAP_KEY = process.env.REACT_APP_KAKAO_MAP_KEY;
 
-const loadKakaoMapScript = () => {
+const loadMapScript = () => {
   return new Promise((resolve, reject) => {
     if (window.kakao && window.kakao.maps) {
       resolve();
@@ -43,7 +43,7 @@ const Map = () => {
 
   // 맵 스크립트 로드 및 초기 API 호출
   useEffect(() => {
-    loadKakaoMapScript()
+    loadMapScript()
       .then(() => {
         kakao.maps.load(() => {
           const container = mapRef.current;

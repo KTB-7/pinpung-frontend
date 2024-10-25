@@ -12,6 +12,7 @@ export const fetchCafes = (sw, ne) => {
         } else {
           reject('사용자 주변 카페 데이터를 가져오는 데 실패했습니다.');
         }
+        console.log(data);
       },
       { bounds: new kakao.maps.LatLngBounds(sw, ne) },
     );

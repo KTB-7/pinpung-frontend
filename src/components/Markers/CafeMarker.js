@@ -19,7 +19,7 @@ const CafeMarker = ({ cafes, map }) => {
   }, [cafes, map]);
 
   useEffect(() => {
-    console.log('카페데이터:', cafeData);
+    //console.log('카페데이터:', cafeData);
     if (!map || !cafeData.length === 0) return;
 
     const currentMarkers = markers.current;
@@ -28,9 +28,10 @@ const CafeMarker = ({ cafes, map }) => {
     cafeData.forEach((place) => {
       // 중복 마커 방지하기
       if (!currentMarkers[place.placeId]) {
-        console.log(place);
+        //console.log('place:', place);
         const imageUrl = place.imageUrl || DEFAULT_MARKER_IMAGE;
-        const imageSize = new kakao.maps.Size(24, 35);
+        const imageSize = new kakao.maps.Size(40, 40);
+        console.log(imageSize);
         const markerImage = new kakao.maps.MarkerImage(imageUrl, imageSize);
 
         // 마커 생성
@@ -62,7 +63,7 @@ const CafeMarker = ({ cafes, map }) => {
       Object.values(currentMarkers).forEach((marker) => marker.setMap(null));
       markers.current = {}; // 메모리 초기화
     };
-  }, [cafes, map]);
+  }, [cafes, map, cafeData]);
 
   return null; // UI 요소 없으므로 렌더링할 내용 없음
 };

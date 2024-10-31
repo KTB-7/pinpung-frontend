@@ -1,4 +1,4 @@
-/* 카페 목록을 바탕으로 맵에 마커를 생성하고, 클릭 시 정보 창 표시 */
+/* Map.js에서 전달되는 카페 목록을 바탕으로 맵에 마커를 생성하고, 클릭 시 카페 상세정보 표시 */
 
 /* global kakao */
 import { useEffect, useRef } from 'react';

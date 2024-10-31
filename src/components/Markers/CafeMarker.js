@@ -15,7 +15,7 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
 
     const currentMarkers = markers.current;
 
-    cafeData.forEach((place) => {
+    cafes.forEach((place) => {
       // 중복 마커 방지하기
       if (!currentMarkers[place.placeId]) {
         //console.log('place:', place);

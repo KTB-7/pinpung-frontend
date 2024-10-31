@@ -59,8 +59,13 @@ const Map = () => {
   
   // 초기 맵 로드 및 API 호출
   useEffect(() => {
-    const loadMap = async () => {
-      await kakao.maps.load(() => {
+    // Kakao Maps 스크립트 동적 로드
+    const script = document.createElement('script');
+
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&autoload=false`;
+    
+    script.onload = () => {
+      kakao.maps.load(() => {
         const container = mapRef.current;
         const options = {
           center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
@@ -85,7 +90,7 @@ const Map = () => {
       });
     };
     
-    loadMap();
+    document.head.appendChild(script);
   }, [userLocation]);
 
   // level이 변경될 때마다 fetchNearbyCafes 호출

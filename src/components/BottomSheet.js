@@ -23,11 +23,10 @@ export const BottomSheet = ({ isOpen, placeId, onClose }) => {
   }, [placeId]);
 
   if (!cafeData || !isOpen) return null;
-  console.log(cafeData);
-  
+  //console.log(cafeData);
 
   return (
-    <BottomSheetWrapper $isOpen={isOpen} id='bottomSheet'>
+    <BottomSheetWrapper $isOpen={isOpen} id="bottomSheet">
       <Header onClick={onClose}>{cafeData.placeName || '카페명'}</Header>
       <Content>
         <p>{cafeData.address || '주소 정보 없음'}</p>
@@ -36,12 +35,13 @@ export const BottomSheet = ({ isOpen, placeId, onClose }) => {
           <img src={cafeData.representativePung.imageWithText} alt="대표 사진" width="100%" />
         )}
         <h3>후기</h3>
-        {cafeData.reviews && cafeData.reviews.reviews.map((review) => (
-          <div key={review.reviewId}>
-            <p>{review.text}</p>
-            <small>{new Date(review.createdAt).toLocaleDateString()}</small>
-          </div>
-        ))}
+        {cafeData.reviews &&
+          cafeData.reviews.reviews.map((review) => (
+            <div key={review.reviewId}>
+              <p>{review.text}</p>
+              <small>{new Date(review.createdAt).toLocaleDateString()}</small>
+            </div>
+          ))}
       </Content>
     </BottomSheetWrapper>
   );
@@ -52,21 +52,23 @@ const BottomSheetWrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: ${({$isOpen}) => ($isOpen ? '50%' : '8%')};
+  height: ${({ $isOpen }) => ($isOpen ? '50%' : '8%')};
   background-color: white;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 20px 20px 0 0;
   transition: height 0.3s ease-in-out;
   overflow: hidden;
+  z-index: 10;
 `;
 
 const Content = styled.div`
-  padding: 16px;
+  padding: 20px;
   overflow-y: auto;
 `;
 
 const Header = styled.div`
-  padding: 10px;
+  padding: 30px 20px 20px 20px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
 `;

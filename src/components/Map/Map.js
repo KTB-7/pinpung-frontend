@@ -12,7 +12,7 @@ const Map = () => {
   const mapInstance = useRef(null);
   const [userLocation, setUserLocation] = useState({ latitude: 37.575877, longitude: 126.976812 });
   const [cafes, setCafes] = useState([]); // 근처 카페 목록
-  const [selectedCafe, setSelectedCafe] = useState(null); // 선택된 카페 정보
+  const [selectedPlaceId, setSelectedPlaceId] = useState(null); // 선택된 카페 정보
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [level, setLevel] = useState(3);
 
@@ -22,7 +22,7 @@ const Map = () => {
         return 430;
       case 2:
         return 500;
-      default:
+      default: // level 3 이거나 그 이상
         return 900;
     }
   };
@@ -101,22 +101,28 @@ const Map = () => {
   }, [level, userLocation]);
   
   const handleMarkerClick = (placeId) => {
-    setSelectedCafe(placeId); // 선택된 카페 ID 저장하자
+    setSelectedPlaceId(placeId); // 선택된 카페 ID 저장하자
     setBottomSheetOpen(true);
+    console.log(selectedPlaceId, "openned");
   };
 
   const closeBottomSheet = () => {
     setBottomSheetOpen(false);
+    console.log(selectedPlaceId, "closed");
   };
 
   return (
-    <>
+    <div onClick={(e) => {
+      if (e.target.id !== 'bottomSheet') {
+        closeBottomSheet();
+      }
+    }}>
       <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }} />
       {mapInstance.current && (
         <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
       )}
-      <BottomSheet isOpen={isBottomSheetOpen} placeId={selectedCafe} onClose={closeBottomSheet} />
-    </>
+      <BottomSheet isOpen={isBottomSheetOpen} placeId={selectedPlaceId} onClose={closeBottomSheet} />
+    </div>
   );
 };
 

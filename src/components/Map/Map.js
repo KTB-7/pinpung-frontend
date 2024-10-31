@@ -14,8 +14,38 @@ const Map = () => {
   const [cafes, setCafes] = useState([]); // 근처 카페 목록
   const [selectedCafe, setSelectedCafe] = useState(null); // 선택된 카페 정보
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const [level, setLevel] = useState(3);
 
-  // 사용자 위치 기반으로 카페 목록 요청
+  const getRadiusByLevel = (level) => {
+    switch (level) {
+      case 1:
+        return 430;
+      case 2:
+        return 500;
+      default:
+        return 900;
+    }
+  };
+
+  // 카페 목록 가져오기
+  const fetchNearbyCafes = async () => {
+    const radius = getRadiusByLevel(level);
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/nearby`, {
+        params: {
+          x: userLocation.longitude,
+          y: userLocation.latitude,
+          radius: radius,
+        },
+      });
+      setCafes(response.data.places);
+    } catch (error) {
+      console.error('카페 목록 가져오기 실패:', error);
+    }
+  };
+
+
+  // 사용자 위치 정보 가져오기
   useEffect(() => {
     getUserLocation()
       .then((location) => {
@@ -26,54 +56,44 @@ const Map = () => {
       });
   }, []);
 
+  
+  // 초기 맵 로드 및 API 호출
   useEffect(() => {
-    if (!userLocation) return;
-
-    // 카페 데이터 api로 가져오기
-    const fetchNearbyCafes = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/nearby`, {
-          params: {
-            x: userLocation.longitude,
-            y: userLocation.latitude,
-            radius: 300,
-          },
-        });
-        setCafes(response.data.places);
-      } catch (error) {
-        console.error('카페 목록 가져오기 실패:', error);
-      }
-    };
-
-    fetchNearbyCafes();
-  }, [userLocation]);
-
-    useEffect(() => {
     const loadMap = async () => {
       await kakao.maps.load(() => {
         const container = mapRef.current;
         const options = {
           center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
-          level: 3,
+          level: level,
         };
         const map = new kakao.maps.Map(container, options);
         mapInstance.current = map;
 
-        // 맵 이동 시 debounce 적용하여 카페 목록 갱신
-        const handleDragEnd = debounce(async () => {
-          const bounds = map.getBounds();
-          const sw = bounds.getSouthWest();
-          const ne = bounds.getNorthEast();
-          fetchNearbyCafes(sw, ne);
+        // 맵 이동 및 확대 레벨 변경 시 debounce 적용하여 카페 목록 갱신
+        const handleMapChange = debounce(async () => {
+          const newLevel = map.getLevel();
+          if (newLevel !== level) {
+            setLevel(newLevel); // 확대 레벨 변경
+          } else {
+            // 위치 변경 시에도 호출
+            fetchNearbyCafes();
+          }
         }, 200);
 
-        // 드래그 종료 시 이벤트 등록
-        kakao.maps.event.addListener(map, 'dragend', handleDragEnd);
+        kakao.maps.event.addListener(map, 'dragend', handleMapChange);
+        kakao.maps.event.addListener(map, 'zoom_changed', handleMapChange);
       });
     };
-
+    
     loadMap();
-    }, [userLocation]);
+  }, [userLocation]);
+
+  // level이 변경될 때마다 fetchNearbyCafes 호출
+  useEffect(() => {
+    if (mapInstance.current) {
+      fetchNearbyCafes();
+    }
+  }, [level, userLocation]);
   
   const handleMarkerClick = (placeId) => {
     setSelectedCafe(placeId); // 선택된 카페 ID 저장하자

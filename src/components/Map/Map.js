@@ -39,11 +39,11 @@ const Map = () => {
         },
       });
       setCafes(response.data.places);
+      //console.log(response.data);
     } catch (error) {
       console.error('카페 목록 가져오기 실패:', error);
     }
   };
-
 
   // 사용자 위치 정보 가져오기
   useEffect(() => {
@@ -56,14 +56,13 @@ const Map = () => {
       });
   }, []);
 
-  
   // 초기 맵 로드 및 API 호출
   useEffect(() => {
     // Kakao Maps 스크립트 동적 로드
     const script = document.createElement('script');
 
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&autoload=false`;
-    
+
     script.onload = () => {
       kakao.maps.load(() => {
         const container = mapRef.current;
@@ -89,7 +88,7 @@ const Map = () => {
         kakao.maps.event.addListener(map, 'zoom_changed', handleMapChange);
       });
     };
-    
+
     document.head.appendChild(script);
   }, [userLocation]);
 
@@ -99,29 +98,35 @@ const Map = () => {
       fetchNearbyCafes();
     }
   }, [level, userLocation]);
-  
+
   const handleMarkerClick = (placeId) => {
     setSelectedPlaceId(placeId); // 선택된 카페 ID 저장하자
     setBottomSheetOpen(true);
-    console.log(selectedPlaceId, "openned");
+    console.log(selectedPlaceId, 'openned');
   };
 
   const closeBottomSheet = () => {
     setBottomSheetOpen(false);
-    console.log(selectedPlaceId, "closed");
+    console.log(selectedPlaceId, 'closed');
   };
 
   return (
-    <div onClick={(e) => {
-      if (e.target.id !== 'bottomSheet') {
-        closeBottomSheet();
-      }
-    }}>
+    <div
+      onClick={(e) => {
+        if (e.target.id !== 'bottomSheet') {
+          closeBottomSheet();
+        }
+      }}
+    >
       <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }} />
       {mapInstance.current && (
         <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
       )}
-      <BottomSheet isOpen={isBottomSheetOpen} placeId={selectedPlaceId} onClose={closeBottomSheet} />
+      <BottomSheet
+        isOpen={isBottomSheetOpen}
+        placeId={selectedPlaceId}
+        onClose={closeBottomSheet}
+      />
     </div>
   );
 };

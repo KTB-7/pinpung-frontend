@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getUserLocation } from '../../services/locationService';
 import { fetchCafes } from '../../services/mapService';
 import CafeMarker from '../Markers/CafeMarker';
+import { BottomSheet } from '../BottomSheet';
 import { debounce } from 'lodash';
 
 const KAKAO_MAP_KEY = process.env.REACT_APP_KAKAO_MAP_KEY;
@@ -26,9 +27,11 @@ const loadMapScript = () => {
 
 const Map = () => {
   const mapRef = useRef(null);
-  const mapInstance = useRef(null); // Map 객체 관리
+  const mapInstance = useRef(null);
   const [userLocation, setUserLocation] = useState({ latitude: 37.575877, longitude: 126.976812 });
-  const [cafes, setCafes] = useState([]); // 근처 카페 목록 저장
+  const [cafes, setCafes] = useState([]); // 근처 카페 목록
+  const [selectedCafe, setSelectedCafe] = useState(null); // 선택된 카페 목록
+  const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
 
   // 사용자 위치 정보 가져오기
   useEffect(() => {
@@ -75,11 +78,23 @@ const Map = () => {
       .catch((error) => console.error('맵 로드 실패:', error));
   }, [userLocation]);
 
+  const handleMarkerClick = (cafe) => {
+    setSelectedCafe(cafe); // 선택된 카페 정보 저장
+    setBottomSheetOpen(true);
+  };
+
+  const closeBottomSheet = () => {
+    setBottomSheetOpen(false);
+  };
+
   return (
-    <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }}>
-      {/* mapInstance가 초기화된 경우에만 CafeMarker 렌더링하자 */}
-      {mapInstance.current && <CafeMarker cafes={cafes} map={mapInstance.current} />}
-    </div>
+    <>
+      <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }} />
+      {mapInstance.current && (
+        <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
+      )}
+      <BottomSheet isOpen={isBottomSheetOpen} cafe={selectedCafe} onClose={closeBottomSheet} />
+    </>
   );
 };
 

@@ -7,7 +7,7 @@ import { fetchCafesByIds } from '../../services/placesService';
 const DEFAULT_MARKER_IMAGE =
   'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
-const CafeMarker = ({ cafes, map }) => {
+const CafeMarker = ({ cafes, map, onMarkerClick }) => {
   const markers = useRef({});
   const [cafeData, setCafeData] = useState([]);
 
@@ -30,8 +30,7 @@ const CafeMarker = ({ cafes, map }) => {
       if (!currentMarkers[place.placeId]) {
         //console.log('place:', place);
         const imageUrl = place.imageUrl || DEFAULT_MARKER_IMAGE;
-        const imageSize = new kakao.maps.Size(40, 40);
-        console.log(imageSize);
+        const imageSize = new kakao.maps.Size(25, 40);
         const markerImage = new kakao.maps.MarkerImage(imageUrl, imageSize);
 
         // 마커 생성
@@ -41,16 +40,14 @@ const CafeMarker = ({ cafes, map }) => {
           image: markerImage,
         });
 
-        // 정보 창 생성
-        const infowindow = new kakao.maps.InfoWindow({
-          content: `<div>${place.place_name}</div>`,
-        });
-
-        // const infomodal
+        // // 정보 창 생성
+        // const infowindow = new kakao.maps.InfoWindow({
+        //   content: `<div>${place.place_name}</div>`,
+        // });
 
         // 마커 클릭 이벤트 등록
         kakao.maps.event.addListener(marker, 'click', () => {
-          infowindow.open(map, marker);
+          onMarkerClick(place); // 클릭 시 선택된 카페 전달
         });
 
         // 마커를 객체에 저장 (중복 방지)
@@ -63,7 +60,7 @@ const CafeMarker = ({ cafes, map }) => {
       Object.values(currentMarkers).forEach((marker) => marker.setMap(null));
       markers.current = {}; // 메모리 초기화
     };
-  }, [cafes, map, cafeData]);
+  }, [cafes, map, cafeData, onMarkerClick]);
 
   return null; // UI 요소 없으므로 렌더링할 내용 없음
 };

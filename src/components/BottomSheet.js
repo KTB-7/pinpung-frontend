@@ -22,10 +22,12 @@ export const BottomSheet = ({ isOpen, placeId, onClose }) => {
     fetchCafeDetails();
   }, [placeId]);
 
-  if (!cafeData) return null;
+  if (!cafeData || !isOpen) return null;
+  console.log(cafeData);
+  
 
   return (
-    <BottomSheetWrapper isOpen={isOpen}>
+    <BottomSheetWrapper $isOpen={isOpen} id='bottomSheet'>
       <Header onClick={onClose}>{cafeData.placeName || '카페명'}</Header>
       <Content>
         <p>{cafeData.address || '주소 정보 없음'}</p>
@@ -50,10 +52,10 @@ const BottomSheetWrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: ${(props) => (props.isOpen ? '50%' : '8%')};
+  height: ${({$isOpen}) => ($isOpen ? '50%' : '8%')};
   background-color: white;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px 10px 0 0;
+  border-radius: 20px 20px 0 0;
   transition: height 0.3s ease-in-out;
   overflow: hidden;
 `;

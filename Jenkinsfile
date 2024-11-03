@@ -41,7 +41,7 @@ pipeline {
         stage('Build React App') {
             steps {
                 withEnv(["REACT_APP_KAKAO_MAP_KEY=${env.REACT_APP_KAKAO_MAP_KEY}", "REACT_APP_API_URL=${env.REACT_APP_API_URL}"]) {
-                    sh 'CI=false npm run build'
+                    sh 'npm run build'
                 }
             }
         }

@@ -1,6 +1,7 @@
 /* placeId를 기반으로 장소 상세 정보를 /places/${placeId} api로 받아와서 표시 */
 
 import React, { useEffect, useState } from 'react';
+import { fetchCafeDetails } from '../api/placesApi';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -10,6 +11,7 @@ export const BottomSheet = ({ isOpen, placeId, onClose }) => {
   useEffect(() => {
     if (!placeId) return;
 
+    // TODO: placesApi에서 가져오는걸로 고쳐야함
     const fetchCafeDetails = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/${placeId}`);

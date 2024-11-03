@@ -3,34 +3,32 @@
 import React, { useEffect, useState } from 'react';
 import { fetchCafeDetails } from '../api/placesApi';
 import styled from 'styled-components';
-import axios from 'axios';
 
-export const BottomSheet = ({ isOpen, placeId, onClose }) => {
+export const BottomSheet = () => {
+  const isBottomSheetOpen = useStore((state) => state.isBottomSheetOpen);
+  const selectedPlaceId = useStore((state) => state.selectedPlaceId);
+  const closeBottomSheet = useStore((state) => state.closeBottomSheet);
+
   const [cafeData, setCafeData] = useState(null);
 
   useEffect(() => {
-    if (!placeId) return;
+    if (!selectedPlaceId) return;
 
-    // TODO: placesApi에서 가져오는걸로 고쳐야함
-    const fetchCafeDetails = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/${placeId}`);
-        setCafeData(response.data);
-      } catch (error) {
-        console.error('카페 상세 정보 가져오기 실패:', error);
-      }
+    const fetchDetails = async () => {
+      const data = await fetchCafeDetails(selectedPlaceId);
+      setCafeData(data);
     };
 
-    fetchCafeDetails();
-  }, [placeId]);
+    fetchDetails();
+  }, [selectedPlaceId]);
 
-  if (!cafeData || !isOpen) return null;
+  if (!isBottomSheetOpen || !cafeData) return null;
   //console.log(cafeData);
 
   return (
-    <BottomSheetWrapper $isOpen={isOpen} id="bottomSheet">
-      <Header onClick={onClose}>{cafeData.placeName || '카페명'}</Header>
-      <Content>
+    <BottomSheetWrapper onclick={closeBottomSheet}>
+      <Content onClick={(e) => e.stopPropagation()}>
+        <Header>{cafeData.placeName || '카페명'}</Header>
         <p>{cafeData.address || '주소 정보 없음'}</p>
         <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
         {cafeData.representativePung && (
@@ -47,6 +45,26 @@ export const BottomSheet = ({ isOpen, placeId, onClose }) => {
       </Content>
     </BottomSheetWrapper>
   );
+  // return (
+  //   <BottomSheetWrapper $isOpen={isOpen} id="bottomSheet">
+  //     <Header onClick={onClose}>{cafeData.placeName || '카페명'}</Header>
+  //     <Content>
+  //       <p>{cafeData.address || '주소 정보 없음'}</p>
+  //       <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
+  //       {cafeData.representativePung && (
+  //         <img src={cafeData.representativePung.imageWithText} alt="대표 사진" width="100%" />
+  //       )}
+  //       <h3>후기</h3>
+  //       {cafeData.reviews &&
+  //         cafeData.reviews.reviews.map((review) => (
+  //           <div key={review.reviewId}>
+  //             <p>{review.text}</p>
+  //             <small>{new Date(review.createdAt).toLocaleDateString()}</small>
+  //           </div>
+  //         ))}
+  //     </Content>
+  //   </BottomSheetWrapper>
+  // );
 };
 
 const BottomSheetWrapper = styled.div`

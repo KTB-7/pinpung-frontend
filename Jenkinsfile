@@ -48,15 +48,17 @@ pipeline {
 
         stage('Deploy to S3') {
             steps {
-                sh "aws s3 sync build/ s3://${S3_BUCKET} --delete --region ${REGION}"
+                withEnv(["S3_BUCKET=${S3_BUCKET}", "REGION=${REGION}"]) {
+                    sh 'aws s3 sync build/ s3://$S3_BUCKET --delete --region $REGION'
+                }
             }
         }
 
         stage('Invalidate CloudFront Cache') {
             steps {
-                sh """
-                aws cloudfront create-invalidation --distribution-id ${DISTRIBUTION_ID} --paths "/*" --region ${REGION}
-                """
+                withEnv(["DISTRIBUTION_ID=${DISTRIBUTION_ID}", "REGION=${REGION}"]) {
+                    sh 'aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*" --region $REGION'
+                }
             }
         }
     }

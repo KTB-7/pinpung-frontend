@@ -1,6 +1,6 @@
 /* NavBar와 BottomSheet 상태관리 */
 
-import create from 'zustand';
+import { create } from 'zustand';
 
 const useStore = create((set) => ({
   showNavBar: true,

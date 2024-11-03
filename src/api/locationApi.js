@@ -5,8 +5,9 @@ export const getUserLocation = () => {
     }
 
     navigator.geolocation.getCurrentPosition(
-      (postion) => {
-        const { latitude, longitude } = postion.coords;
+      () => {
+        //(postion) => {
+        //const { latitude, longitude } = postion.coords;
         // 디버깅용으로 강남역 좌표 설정
         resolve({ latitude: 37.497942, longitude: 127.02761 });
       },

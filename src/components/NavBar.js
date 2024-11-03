@@ -1,13 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import HomeIcon from "../assets/icons/home.svg";
-import LocationIcon from "../assets/icons/location.svg";
-import AddIcon from "../assets/icons/add.svg";
-import BookmarkIcon from "../assets/icons/bookmark.svg";
-import ProfileIcon from "../assets/icons/profile.svg";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import useStore from '../store';
+import styled from 'styled-components';
+import HomeIcon from '../assets/icons/home.svg';
+import LocationIcon from '../assets/icons/location.svg';
+import AddIcon from '../assets/icons/add.svg';
+import BookmarkIcon from '../assets/icons/bookmark.svg';
+import ProfileIcon from '../assets/icons/profile.svg';
 
 const NavBar = () => {
+  const showNavBar = useStore((state) => state.showNavBar);
+
+  if (!showNavBar) return null;
+
   return (
     <Nav>
       <Menu>

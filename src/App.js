@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import BottomSheet from './components/BottomSheet';
+import UploadPung from './pages/UploadPung';
 
 function App() {
   const { isBottomSheetOpen, selectedPlaceId, closeBottomSheet } = useStore();
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/places/:placeId" element={<Home />} />
+        <Route path="places/:placeId/upload-pung" element={<UploadPung />} />
       </Routes>
       <BottomSheet
         isOpen={isBottomSheetOpen}

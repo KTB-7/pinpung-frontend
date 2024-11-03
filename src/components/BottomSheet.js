@@ -1,5 +1,6 @@
 // 장소 상세정보 컴포넌트
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchCafeDetails } from '../api/placesApi';
 import useStore from '../store';
 import styled from 'styled-components';
@@ -7,6 +8,9 @@ import styled from 'styled-components';
 const BottomSheet = () => {
   const { isBottomSheetOpen, selectedPlaceId, closeBottomSheet } = useStore();
   const [cafeData, setCafeData] = useState(null);
+  const [sheetHeight, setSheetHeight] = useState(isBottomSheetOpen ? '50%' : '0');
+  const [dragStartY, setDragStartY] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!selectedPlaceId) return;
@@ -23,14 +27,51 @@ const BottomSheet = () => {
     if (isBottomSheetOpen) fetchCafeData();
   }, [selectedPlaceId, isBottomSheetOpen]);
 
+  useEffect(() => {
+    setSheetHeight(isBottomSheetOpen ? '50%' : '0');
+  }, [isBottomSheetOpen]);
+
+  const handleDragStart = (e) => setDragStartY(e.clientY);
+
+  const handleDragMove = (e) => {
+    if (dragStartY !== null) {
+      const delta = dragStartY - e.clientY;
+      const newHeight = Math.max(
+        0,
+        Math.min(50, parseFloat(sheetHeight) - (delta / window.innerHeight) * 100),
+      );
+      setSheetHeight(`${newHeight}%`);
+    }
+  };
+
+  const handleDragEnd = () => {
+    if (parseInt(sheetHeight, 10) < 25) {
+      closeBottomSheet();
+    } else {
+      setSheetHeight('50%');
+    }
+    setDragStartY(null);
+  };
+
   if (!cafeData) return null;
+
+  const handlePungUpload = () => {
+    navigate(`/places/${selectedPlaceId}/upload-pung`);
+  };
 
   //if (!isBottomSheetOpen || !cafeData) return null;
 
   return (
-    <BottomSheetWrapper $isOpen={isBottomSheetOpen} onClick={closeBottomSheet}>
+    <BottomSheetWrapper
+      $isOpen={isBottomSheetOpen}
+      style={{ height: sheetHeight }}
+      onMouseMove={handleDragMove}
+      onMouseUp={handleDragEnd}
+    >
+      <DraggableHandle onMouseDown={handleDragStart} />
       <Content onClick={(e) => e.stopPropagation()}>
         <Header>{cafeData.placeName || '카페명'}</Header>
+        <UploadButton onClick={handlePungUpload}>펑 추가</UploadButton>
         <Details>
           <p>{cafeData.address || '주소 정보 없음'}</p>
           <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
@@ -52,7 +93,6 @@ const BottomSheet = () => {
 
 export default BottomSheet;
 
-// 스타일 컴포넌트 정의
 const BottomSheetWrapper = styled.div`
   position: fixed;
   bottom: 0;
@@ -67,6 +107,15 @@ const BottomSheetWrapper = styled.div`
   z-index: 10;
 `;
 
+const DraggableHandle = styled.div`
+  width: 40px;
+  height: 6px;
+  background-color: #ccc;
+  border-radius: 3px;
+  margin: 10px auto;
+  cursor: grab;
+`;
+
 const Content = styled.div`
   padding: 20px;
   overflow-y: auto;
@@ -76,6 +125,15 @@ const Header = styled.div`
   padding: 10px;
   font-size: 20px;
   font-weight: bold;
+`;
+
+const UploadButton = styled.button`
+  background-color: #ffde59;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 10px;
   cursor: pointer;
 `;
 

@@ -1,15 +1,37 @@
 import './App.css';
 import './styles/responsive.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import useStore from './store';
+import { useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
+import BottomSheet from './components/BottomSheet';
 
 function App() {
+  const { isBottomSheetOpen, selectedPlaceId, closeBottomSheet } = useStore();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (isBottomSheetOpen && selectedPlaceId) {
+      navigate(`/places/${selectedPlaceId}`);
+    } else if (!isBottomSheetOpen && location.pathname.startsWith('/places')) {
+      // 바텀시트 닫혔다면 홈으로 리디렉트. 이거 로직 맞는지 더 제대로 디버깅 필요
+      navigate('/');
+    }
+  }, [isBottomSheetOpen, selectedPlaceId, location.pathname, navigate]);
+
   return (
-    <Router>
+    <>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/places/:placeId" element={<Home />} />
       </Routes>
-    </Router>
+      <BottomSheet
+        isOpen={isBottomSheetOpen}
+        placeId={selectedPlaceId}
+        onClose={closeBottomSheet}
+      />
+    </>
   );
 }
 

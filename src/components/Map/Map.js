@@ -7,13 +7,14 @@ import { fetchNearbyCafes } from '../../api/placesApi';
 import CafeMarker from './CafeMarker';
 import useStore from '../../store';
 import { debounce } from 'lodash';
+import styled from 'styled-components';
 
 const Map = () => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const [userLocation, setUserLocation] = useState({ latitude: 37.575877, longitude: 126.976812 });
   const [cafes, setCafes] = useState([]);
-  const { openBottomSheet } = useStore();
+  const { openBottomSheet, isBottomSheetOpen, closeBottomSheet } = useStore();
   const [level, setLevel] = useState(3);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const Map = () => {
           .catch((error) => console.error('카페 목록 가져오기 실패:', error));
       }
     }, 200),
-    [userLocation],
+    [userLocation, level],
   );
 
   // 초기 맵 로드 및 API 호출
@@ -76,7 +77,14 @@ const Map = () => {
     };
 
     document.head.appendChild(script);
-  }, [userLocation, handleMapChange]);
+    return () => {
+      document.head.removeChild(script);
+      if (mapInstance.current) {
+        kakao.maps.event.removeListener(mapInstance.current, 'dragend', handleMapChange);
+        kakao.maps.event.removeListener(mapInstance.current, 'zoom_changed', handleMapChange);
+      }
+    };
+  }, [userLocation, level, handleMapChange]);
 
   const handleMarkerClick = (placeId) => {
     openBottomSheet(placeId);
@@ -84,6 +92,7 @@ const Map = () => {
 
   return (
     <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }}>
+      {isBottomSheetOpen && <Overlay onClick={closeBottomSheet} />}
       {mapInstance.current && (
         <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
       )}
@@ -92,3 +101,13 @@ const Map = () => {
 };
 
 export default Map;
+
+const Overlay = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: transparent;
+  z-index: 9; // 맵보다는 높고 BottomSheet보다는 낮은 z-index 설정
+`;

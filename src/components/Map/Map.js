@@ -2,7 +2,7 @@
 /* global kakao */
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { getUserLocation } from '../../services/locationService';
+import { getUserLocation } from '../../api/locationApi';
 import CafeMarker from '../Markers/CafeMarker';
 import { BottomSheet } from '../BottomSheet';
 import { debounce } from 'lodash';

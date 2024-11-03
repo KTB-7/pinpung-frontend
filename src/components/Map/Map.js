@@ -1,22 +1,21 @@
 /* 사용자 위치를 기반으로 맵을 로드하고, 맵 이동 시 카페목록 갱신 */
 /* global kakao */
-import React, { useState, useEffect, useRef } from 'react';
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { getUserLocation } from '../../api/locationApi';
 import { fetchNearbyCafes } from '../../api/placesApi';
 import CafeMarker from './CafeMarker';
-import { BottomSheet } from '../BottomSheet';
+import useStore from '../../store';
 import { debounce } from 'lodash';
 
 const Map = () => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const [userLocation, setUserLocation] = useState({ latitude: 37.575877, longitude: 126.976812 });
-  const [cafes, setCafes] = useState([]); // 근처 카페 목록
-  const [selectedPlaceId, setSelectedPlaceId] = useState(null); // 선택된 카페 정보
-  const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const [cafes, setCafes] = useState([]);
+  const { openBottomSheet } = useStore();
   const [level, setLevel] = useState(3);
 
-  // 사용자 위치 정보 가져오기
   useEffect(() => {
     getUserLocation()
       .then((location) => {
@@ -39,16 +38,19 @@ const Map = () => {
   };
 
   // 맵 이동 및 확대 레벨 변경 시 debounce 적용하여 카페 목록 갱신
-  const handleMapChange = debounce(async () => {
-    const newLevel = mapInstance.current.getLevel();
-    setLevel(newLevel);
-
-    const radius = getRadiusByLevel(newLevel);
-
-    fetchNearbyCafes(userLocation.longitude, userLocation.latitude, radius)
-      .then(setCafes)
-      .catch((error) => console.error('카페 목록 가져오기 실패:', error));
-  }, 200);
+  const handleMapChange = useCallback(
+    debounce(async () => {
+      if (mapInstance.current) {
+        const newLevel = mapInstance.current.getLevel();
+        setLevel(newLevel);
+        const radius = getRadiusByLevel(newLevel);
+        fetchNearbyCafes(userLocation.longitude, userLocation.latitude, radius)
+          .then(setCafes)
+          .catch((error) => console.error('카페 목록 가져오기 실패:', error));
+      }
+    }, 200),
+    [userLocation],
+  );
 
   // 초기 맵 로드 및 API 호출
   useEffect(() => {
@@ -74,50 +76,19 @@ const Map = () => {
     };
 
     document.head.appendChild(script);
-  }, [userLocation]);
+  }, [userLocation, handleMapChange]);
 
   const handleMarkerClick = (placeId) => {
-    setSelectedPlaceId(placeId); // 선택된 카페 ID 저장하자
-    setBottomSheetOpen(true);
-    console.log(selectedPlaceId, 'openned');
-  };
-
-  const closeBottomSheet = () => {
-    setBottomSheetOpen(false);
-    console.log(selectedPlaceId, 'closed');
+    openBottomSheet(placeId);
   };
 
   return (
-    <div
-      onClick={(e) => {
-        if (e.target.id !== 'bottomSheet') {
-          closeBottomSheet();
-        }
-      }}
-    >
-      <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }} />
+    <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }}>
       {mapInstance.current && (
         <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
       )}
-      <BottomSheet
-        isOpen={isBottomSheetOpen}
-        placeId={selectedPlaceId}
-        onClose={closeBottomSheet}
-      />
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }} />
-  //     <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
-  //     <BottomSheet
-  //       isOpen={isBottomSheetOpen}
-  //       placeId={selectedPlaceId}
-  //       onClose={closeBottomSheet}
-  //     />
-  //   </div>
-  // );
 };
 
 export default Map;

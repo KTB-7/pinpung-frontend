@@ -1,72 +1,58 @@
-/* placeId를 기반으로 장소 상세 정보를 /places/${placeId} api로 받아와서 표시 */
-
+// 장소 상세정보 컴포넌트
 import React, { useEffect, useState } from 'react';
 import { fetchCafeDetails } from '../api/placesApi';
+import useStore from '../store';
 import styled from 'styled-components';
 
-export const BottomSheet = () => {
-  const isBottomSheetOpen = useStore((state) => state.isBottomSheetOpen);
-  const selectedPlaceId = useStore((state) => state.selectedPlaceId);
-  const closeBottomSheet = useStore((state) => state.closeBottomSheet);
-
+const BottomSheet = () => {
+  const { isBottomSheetOpen, selectedPlaceId, closeBottomSheet } = useStore();
   const [cafeData, setCafeData] = useState(null);
 
   useEffect(() => {
     if (!selectedPlaceId) return;
 
-    const fetchDetails = async () => {
-      const data = await fetchCafeDetails(selectedPlaceId);
-      setCafeData(data);
+    const fetchCafeData = async () => {
+      try {
+        const data = await fetchCafeDetails(selectedPlaceId);
+        setCafeData(data);
+      } catch (error) {
+        console.error('카페 상세 정보 가져오기 실패:', error);
+      }
     };
 
-    fetchDetails();
-  }, [selectedPlaceId]);
+    if (isBottomSheetOpen) fetchCafeData();
+  }, [selectedPlaceId, isBottomSheetOpen]);
 
-  if (!isBottomSheetOpen || !cafeData) return null;
-  //console.log(cafeData);
+  if (!cafeData) return null;
+
+  //if (!isBottomSheetOpen || !cafeData) return null;
 
   return (
-    <BottomSheetWrapper onclick={closeBottomSheet}>
+    <BottomSheetWrapper $isOpen={isBottomSheetOpen} onClick={closeBottomSheet}>
       <Content onClick={(e) => e.stopPropagation()}>
         <Header>{cafeData.placeName || '카페명'}</Header>
-        <p>{cafeData.address || '주소 정보 없음'}</p>
-        <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
-        {cafeData.representativePung && (
-          <img src={cafeData.representativePung.imageWithText} alt="대표 사진" width="100%" />
-        )}
-        <h3>후기</h3>
-        {cafeData.reviews &&
-          cafeData.reviews.reviews.map((review) => (
+        <Details>
+          <p>{cafeData.address || '주소 정보 없음'}</p>
+          <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
+          {cafeData.representativePung && (
+            <img src={cafeData.representativePung.imageWithText} alt="대표 사진" width="100%" />
+          )}
+          <h3>후기</h3>
+          {cafeData.reviews?.reviews.map((review) => (
             <div key={review.reviewId}>
               <p>{review.text}</p>
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
             </div>
           ))}
+        </Details>
       </Content>
     </BottomSheetWrapper>
   );
-  // return (
-  //   <BottomSheetWrapper $isOpen={isOpen} id="bottomSheet">
-  //     <Header onClick={onClose}>{cafeData.placeName || '카페명'}</Header>
-  //     <Content>
-  //       <p>{cafeData.address || '주소 정보 없음'}</p>
-  //       <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
-  //       {cafeData.representativePung && (
-  //         <img src={cafeData.representativePung.imageWithText} alt="대표 사진" width="100%" />
-  //       )}
-  //       <h3>후기</h3>
-  //       {cafeData.reviews &&
-  //         cafeData.reviews.reviews.map((review) => (
-  //           <div key={review.reviewId}>
-  //             <p>{review.text}</p>
-  //             <small>{new Date(review.createdAt).toLocaleDateString()}</small>
-  //           </div>
-  //         ))}
-  //     </Content>
-  //   </BottomSheetWrapper>
-  // );
 };
 
+export default BottomSheet;
+
+// 스타일 컴포넌트 정의
 const BottomSheetWrapper = styled.div`
   position: fixed;
   bottom: 0;
@@ -87,10 +73,12 @@ const Content = styled.div`
 `;
 
 const Header = styled.div`
-  padding: 30px 20px 20px 20px;
+  padding: 10px;
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
 `;
 
-export default BottomSheet;
+const Details = styled.div`
+  padding: 10px;
+`;

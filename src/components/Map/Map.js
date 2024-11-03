@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getUserLocation } from '../../api/locationApi';
 import { fetchNearbyCafes } from '../../api/placesApi';
-import CafeMarker from '../Markers/CafeMarker';
+import CafeMarker from './CafeMarker';
 import { BottomSheet } from '../BottomSheet';
 import { debounce } from 'lodash';
 

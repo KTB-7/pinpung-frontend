@@ -20,11 +20,11 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
       if (!currentMarkers[place.placeId]) {
         //console.log('place:', place);
         const imageUrl = (() => {
-            if (place.hasPung) {
-                return place.imageWithText;
-            } else {
-                return DEFAULT_MARKER_IMAGE;
-            }
+          if (place.hasPung) {
+            return place.imageWithText;
+          } else {
+            return DEFAULT_MARKER_IMAGE;
+          }
         })();
         const markerImage = new kakao.maps.MarkerImage(imageUrl, new kakao.maps.Size(25, 40));
 

@@ -30,11 +30,11 @@ const Map = () => {
   const getRadiusByLevel = (level) => {
     switch (level) {
       case 1:
-        return 430;
+        return 140;
       case 2:
-        return 500;
+        return 280;
       default: // level 3 이거나 그 이상
-        return 900;
+        return 550;
     }
   };
 

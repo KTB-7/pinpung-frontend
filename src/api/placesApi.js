@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export const fetchNearbyCafes = async (longitude, latitude, radius) => {
-  const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/nearby`, {
+  const response = await axios.get(`${API_URL}/places/nearby`, {
     params: {
       x: longitude,
       y: latitude,
@@ -12,6 +14,7 @@ export const fetchNearbyCafes = async (longitude, latitude, radius) => {
 };
 
 export const fetchCafeDetails = async (placeId) => {
-  const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/${placeId}`);
+  const response = await axios.get(`${API_URL}/places/${placeId}`);
+
   return response.data;
 };

@@ -1,8 +1,15 @@
-import { rest } from 'msw';
+/* intercept할 API들의 요청과 응답을 작성 */
 
+import { rest } from 'msw';
+//import { setupWorker } from 'msw/browser';
+
+const API_URL = process.env.REACT_APP_API_URL;
+
+// request를 인터셉트하고 response를 핸들링함.
 export const handlers = [
-  rest.get(`${process.env.REACT_APP_API_URL}/places/nearby/:x/:y/:radius`, (req, res, ctx) => {
-    const { x, y, radius } = req.params;
+  rest.get(`${API_URL}/api/places/nearby/:x/:y/:radius`, (req, res, ctx) => {
+    //const { x, y, radius } = req.params;
+    console.log('Captured a "GET /api/places/nearby/:x/:y/:radius" request');
 
     return res(
       ctx.status(200),
@@ -118,9 +125,12 @@ export const handlers = [
       }),
     );
   }),
-  rest.get(`${process.env.REACT_APP_API_URL}/places/:placeId`, (req, res, ctx) => {
+
+  rest.get(`${API_URL}/api/places/:placeId`, (req, res, ctx) => {
     // req.params.placeId로 URL의 placeId 가져옴
     const { placeId } = req.params;
+
+    console.log('Captured a "GET /api/places/:placeId" request');
 
     return res(
       ctx.status(200),

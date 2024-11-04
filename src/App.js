@@ -8,7 +8,8 @@ import BottomSheet from './components/BottomSheet';
 import UploadPung from './pages/UploadPung';
 
 function App() {
-  const { isBottomSheetOpen, selectedPlaceId, closeBottomSheet } = useStore();
+  const { isBottomSheetOpen = false, selectedPlaceId = null, closeBottomSheet = true } = useStore();
+
   const navigate = useNavigate();
   const location = useLocation();
 

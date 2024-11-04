@@ -10,6 +10,7 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
   const markers = useRef({});
 
   // 데이터 가져오기
+  console.log(cafes);
   useEffect(() => {
     if (!map || cafes.length === 0) return;
 

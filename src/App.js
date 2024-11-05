@@ -13,11 +13,20 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // useEffect(() => {
+  //   if (isBottomSheetOpen && selectedPlaceId) {
+  //     navigate(`/places/${selectedPlaceId}`);
+  //   } else if (!isBottomSheetOpen && location.pathname.startsWith('/places')) {
+  //     // 바텀시트 닫혔다면 홈으로 리디렉트. 이거 로직 맞는지 더 제대로 디버깅 필요
+  //     navigate('/');
+  //   }
+  // }, [isBottomSheetOpen, selectedPlaceId, location.pathname, navigate]);
+
   useEffect(() => {
+    // 로직이 괴상하고 뭔가 억지스럽다고 생각함.. 수정 필요
     if (isBottomSheetOpen && selectedPlaceId) {
       navigate(`/places/${selectedPlaceId}`);
-    } else if (!isBottomSheetOpen && location.pathname.startsWith('/places')) {
-      // 바텀시트 닫혔다면 홈으로 리디렉트. 이거 로직 맞는지 더 제대로 디버깅 필요
+    } else if (!isBottomSheetOpen && location.pathname === `/places/${selectedPlaceId}`) {
       navigate('/');
     }
   }, [isBottomSheetOpen, selectedPlaceId, location.pathname, navigate]);

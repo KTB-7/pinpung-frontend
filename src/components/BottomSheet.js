@@ -56,6 +56,7 @@ const BottomSheet = () => {
   if (!cafeData) return null;
 
   const handlePungUpload = () => {
+    closeBottomSheet();
     navigate(`/places/${selectedPlaceId}/upload-pung`);
   };
 

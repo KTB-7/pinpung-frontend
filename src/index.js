@@ -5,12 +5,6 @@ import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-import { worker } from './mocks/browser';
-
-// 브라우저 환경에서 MSW 시작
-if (process.env.NODE_ENV === 'development') {
-  worker.start();
-}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

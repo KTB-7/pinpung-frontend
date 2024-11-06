@@ -9,13 +9,21 @@ const API_URL = process.env.REACT_APP_API_URL;
 // request를 인터셉트하고 response를 핸들링함.
 console.log('API_URL:', API_URL); // handlers.js에 추가하여 확인
 export const handlers = [
-  rest.get(`${API_URL}/api/places/nearby/:x/:y/:radius`, (req, res, ctx) => {
-    const { x, y, radius } = req.params;
-    console.log(`Captured a "GET /api/places/nearby/${x}/${y}/${radius}" request`);
+  // 주변 카페 api 핸들러
+  rest.get(`${API_URL}/api/places/nearby`, (req, res, ctx) => {
+    //const { x, y, radius } = req.params;
 
-    return res(ctx.status(200), ctx.json(placesNearbyData));
+    // placesApi와 형태 맞춰서, 쿼리 파라미터로 x,y,radius를 전달해야 함.
+    const x = req.url.searchParams.get('x');
+    const y = req.url.searchParams.get('y');
+    const radius = req.url.searchParams.get('radius');
+
+    console.log(`Captured a "GET /api/places/nearby" request`);
+
+    return res(ctx.status(200), ctx.json(placesNearbyData({ x, y, radius })));
   }),
 
+  // 특정 카페 정보 api 핸들러
   rest.get(`${API_URL}/api/places/:placeId`, (req, res, ctx) => {
     // req.params.placeId로 URL의 placeId 가져옴
     const { placeId } = req.params;

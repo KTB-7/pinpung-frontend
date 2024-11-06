@@ -45,8 +45,9 @@ const Map = () => {
         const newLevel = mapInstance.current.getLevel();
         setLevel(newLevel);
         const radius = getRadiusByLevel(newLevel);
+
         fetchNearbyCafes(userLocation.longitude, userLocation.latitude, radius)
-          .then(setCafes) // .then((cafes) => setCafes(cafes))와 같은 의미임
+          .then((data) => setCafes(data.places))
           .catch((error) => console.error('카페 목록 가져오기 실패:', error));
       }
     }, 200);
@@ -93,8 +94,9 @@ const Map = () => {
             const newLevel = mapInstance.current.getLevel();
             setLevel(newLevel);
             const radius = getRadiusByLevel(newLevel);
+
             fetchNearbyCafes(userLocation.longitude, userLocation.latitude, radius)
-              .then(setCafes)
+              .then((data) => setCafes(data.places))
               .catch((error) => console.error('카페 목록 가져오기 실패:', error));
           }
         }, 200);

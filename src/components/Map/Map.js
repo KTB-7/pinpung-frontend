@@ -46,7 +46,7 @@ const Map = () => {
         setLevel(newLevel);
         const radius = getRadiusByLevel(newLevel);
         fetchNearbyCafes(userLocation.longitude, userLocation.latitude, radius)
-          .then(setCafes)
+          .then(setCafes) // .then((cafes) => setCafes(cafes))와 같은 의미임
           .catch((error) => console.error('카페 목록 가져오기 실패:', error));
       }
     }, 200);
@@ -87,7 +87,7 @@ const Map = () => {
         const map = new kakao.maps.Map(container, options);
         mapInstance.current = map;
 
-        // `debounce` 처리된 함수 생성 및 이벤트 리스너 등록
+        // `debounce` 처리된 함수 생성 및 이벤트 리스너 등록 (이거 위 함수랑 같은거임. 확인후 삭제)
         const handleMapChangeDebounced = debounce(async () => {
           if (mapInstance.current) {
             const newLevel = mapInstance.current.getLevel();

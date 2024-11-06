@@ -7,12 +7,12 @@ import Home from './pages/Home';
 import BottomSheet from './components/BottomSheet';
 import UploadPung from './pages/UploadPung';
 
-if (process.env.NODE_ENV === 'development') {
-  // 개발 환경에서만 import
-  import('./mocks/browser').then(({ worker }) => {
-    worker.start({ onUnhandledRequest: 'bypass', quiet: false });
-  });
-}
+// if (process.env.NODE_ENV === 'development') {
+//   // 개발 환경에서만 import
+//   import('./mocks/browser').then(({ worker }) => {
+//     worker.start({ onUnhandledRequest: 'bypass', quiet: false });
+//   });
+// }
 
 function App() {
   const { isBottomSheetOpen = false, selectedPlaceId = null, closeBottomSheet = true } = useStore();

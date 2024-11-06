@@ -1,5 +1,4 @@
-export const placesNearbyData = {
-  count: 13,
+export const placesNearbyData = ({ x, y, radius }) => ({
   places: [
     {
       placeId: 36,
@@ -93,4 +92,4 @@ export const placesNearbyData = {
       y: '37.50144282174391',
     },
   ],
-};
+});

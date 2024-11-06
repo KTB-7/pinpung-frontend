@@ -7,12 +7,10 @@ import { placesData } from './data/placesData';
 const API_URL = process.env.REACT_APP_API_URL;
 
 // request를 인터셉트하고 response를 핸들링함.
-console.log('API_URL:', API_URL); // handlers.js에 추가하여 확인
+
 export const handlers = [
   // 주변 카페 api 핸들러
   rest.get(`${API_URL}/api/places/nearby`, (req, res, ctx) => {
-    //const { x, y, radius } = req.params;
-
     // placesApi와 형태 맞춰서, 쿼리 파라미터로 x,y,radius를 전달해야 함.
     const x = req.url.searchParams.get('x');
     const y = req.url.searchParams.get('y');

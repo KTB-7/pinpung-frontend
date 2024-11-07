@@ -10,7 +10,6 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
   const markers = useRef({});
 
   // 데이터 가져오기
-  console.log(cafes);
   useEffect(() => {
     if (!map || cafes.length === 0) return;
 
@@ -35,11 +34,6 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
           position: new kakao.maps.LatLng(place.y, place.x),
           image: markerImage,
         });
-
-        // // 정보 창 생성
-        // const infowindow = new kakao.maps.InfoWindow({
-        //   content: `<div>${place.place_name}</div>`,
-        // });
 
         // 마커 클릭 이벤트 등록
         kakao.maps.event.addListener(marker, 'click', () => {

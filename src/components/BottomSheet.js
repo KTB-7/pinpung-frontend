@@ -10,6 +10,7 @@ const BottomSheet = () => {
   const [cafeData, setCafeData] = useState(null);
   const [sheetHeight, setSheetHeight] = useState(isBottomSheetOpen ? '50%' : '0');
   const [dragStartY, setDragStartY] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -21,21 +21,21 @@ clientsClaim();
 // even if you decide not to use precaching. See https://cra.link/PWA
 precacheAndRoute(self.__WB_MANIFEST);
 
-self.addEventListener('activate', (event) => {
-  const cacheWhitelist = ['pwa-cache-v2'];
+// self.addEventListener('activate', (event) => {
+//   const cacheWhitelist = ['pwa-cache-v2'];
 
-  event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames.forEach((cacheName) => {
-          if (!cacheWhitelist.includes(cacheName)) {
-            return caches.delete(cacheName);
-          }
-        }),
-      ),
-    ),
-  );
-});
+//   event.waitUntil(
+//     caches.keys().then((cacheNames) =>
+//       Promise.all(
+//         cacheNames.forEach((cacheName) => {
+//           if (!cacheWhitelist.includes(cacheName)) {
+//             return caches.delete(cacheName);
+//           }
+//         }),
+//       ),
+//     ),
+//   );
+// });
 
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
@@ -81,10 +81,10 @@ registerRoute(
 // 메시지 수신 시 skipWaiting 호출
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
+// self.addEventListener('message', (event) => {
+//   if (event.data && event.data.type === 'SKIP_WAITING') {
+//     self.skipWaiting();
+//   }
+// });
 
 // Any other custom service worker logic can go here.

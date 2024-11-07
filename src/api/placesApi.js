@@ -11,9 +11,6 @@ export const fetchNearbyCafes = async (longitude, latitude, radius) => {
       y: latitude,
       radius,
     },
-    headers: {
-      Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-    },
   });
 
   return response.data;

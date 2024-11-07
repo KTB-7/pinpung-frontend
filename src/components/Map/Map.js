@@ -21,7 +21,7 @@ const Map = () => {
   useEffect(() => {
     // API 요청을 통해 연결 확인
     axios
-      .get('https://pinpung.net/api/test')
+      .get(`${process.env.REACT_APP_API_URL}/api/test`)
       .then((response) => {
         console.log(response.data); // "API 통신이 성공적으로 이루어졌습니다!" 출력
       })

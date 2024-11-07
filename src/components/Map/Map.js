@@ -8,6 +8,7 @@ import CafeMarker from './CafeMarker';
 import useStore from '../../store';
 import { debounce } from 'lodash';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const Map = () => {
   const mapRef = useRef(null);
@@ -18,6 +19,16 @@ const Map = () => {
   const [level, setLevel] = useState(3);
 
   useEffect(() => {
+    // API 요청을 통해 연결 확인
+    axios
+      .get('https://pinpung.net/api/test')
+      .then((response) => {
+        console.log(response.data); // "API 통신이 성공적으로 이루어졌습니다!" 출력
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
     getUserLocation()
       .then((location) => {
         setUserLocation(location);
@@ -75,7 +86,6 @@ const Map = () => {
   // 초기 맵 로드 및 API 호출
   useEffect(() => {
     const script = document.createElement('script');
-
     // 다음에 이것도 api폴더로 빼보자..
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&autoload=false`;
     script.onload = () => {

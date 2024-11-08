@@ -8,10 +8,10 @@ import AddIcon from '../assets/icons/add.svg';
 import BookmarkIcon from '../assets/icons/bookmark.svg';
 import ProfileIcon from '../assets/icons/profile.svg';
 
-const NavBar = () => {
-  const showNavBar = useStore((state) => state.showNavBar);
+const Navbar = () => {
+  const showNavbar = useStore((state) => state.showNavbar);
 
-  if (!showNavBar) return null;
+  if (!showNavbar) return null;
 
   return (
     <Nav>
@@ -74,4 +74,4 @@ const IconLink = styled(Link)`
   }
 `;
 
-export default NavBar;
+export default Navbar;

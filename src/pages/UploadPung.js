@@ -27,7 +27,7 @@ const UploadPung = () => {
         const finalImage = await compressAndPadImage(image);
         // TODO: 사진과 텍스트 업로드하기. 그냥 이미지(pureImage)랑 이미지 상단에 텍스트를 오버레이시킨 이미지(imageWithText)가 둘다 필요함. 그리고 두 이미지 모두 1MB이하로 압축시키고, 16:9로 패딩넣어야함.
         //addPung(userId, placeId, imageWithText, pureImage, text); // 원래 이게 맞음
-        addPung(77, placeId, finalImage, image, text);
+        addPung(18, placeId, finalImage, image, text);
         console.log('Image:', image, 'Text:', text, 'Place ID:', placeId);
 
         // 업로드 완료 후 이전 페이지로 이동

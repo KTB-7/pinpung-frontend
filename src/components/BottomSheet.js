@@ -6,7 +6,7 @@ import useStore from '../store';
 import styled from 'styled-components';
 
 const BottomSheet = () => {
-  const { isBottomSheetOpen, selectedPlaceId, selectedPlaceName, closeBottomSheet } = useStore();
+  const { isBottomSheetOpen, selectedPlaceId, setSelectedPlaceName, closeBottomSheet } = useStore();
   const [cafeData, setCafeData] = useState(null);
   const [sheetHeight, setSheetHeight] = useState(isBottomSheetOpen ? '50%' : '0');
   const [dragStartY, setDragStartY] = useState(null);
@@ -20,6 +20,7 @@ const BottomSheet = () => {
       try {
         const data = await fetchCafeDetails(selectedPlaceId);
         setCafeData(data);
+        setSelectedPlaceName(data.placeName);
       } catch (error) {
         console.error('카페 상세 정보 가져오기 실패:', error);
       }

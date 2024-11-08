@@ -153,5 +153,5 @@ const Overlay = styled.div`
   top: 0;
   left: 0;
   background: transparent;
-  z-index: 9; // 맵보다는 높고 BottomSheet보다는 낮은 z-index 설정
+  z-index: 2; // 맵보다는 높고 BottomSheet보다는 낮은 z-index 설정
 `;

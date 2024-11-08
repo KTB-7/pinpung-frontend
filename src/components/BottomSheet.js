@@ -27,7 +27,7 @@ const BottomSheet = () => {
     };
 
     if (isBottomSheetOpen) fetchCafeData();
-  }, [selectedPlaceId, isBottomSheetOpen]);
+  }, [selectedPlaceId, setSelectedPlaceName, isBottomSheetOpen]);
 
   useEffect(() => {
     setSheetHeight(isBottomSheetOpen ? '50%' : '0');

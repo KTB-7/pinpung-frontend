@@ -6,6 +6,7 @@ const useStore = create((set) => ({
   showNavBar: true,
   isBottomSheetOpen: false,
   selectedPlaceId: null,
+  selectedPlaceName: '',
 
   setShowNavBar: (show) => set({ showNavBar: show }),
   openBottomSheet: (placeId) => set({ isBottomSheetOpen: true, selectedPlaceId: placeId }),

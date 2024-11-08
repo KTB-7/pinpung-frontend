@@ -6,7 +6,7 @@ import useStore from '../store';
 import styled from 'styled-components';
 
 const BottomSheet = () => {
-  const { isBottomSheetOpen, selectedPlaceId, closeBottomSheet } = useStore();
+  const { isBottomSheetOpen, selectedPlaceId, selectedPlaceName, closeBottomSheet } = useStore();
   const [cafeData, setCafeData] = useState(null);
   const [sheetHeight, setSheetHeight] = useState(isBottomSheetOpen ? '50%' : '0');
   const [dragStartY, setDragStartY] = useState(null);

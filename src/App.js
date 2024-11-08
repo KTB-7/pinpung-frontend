@@ -4,6 +4,7 @@ import useStore from './store';
 import { useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
+import Navbar from './components/Navbar';
 import BottomSheet from './components/BottomSheet';
 import UploadPung from './pages/UploadPung';
 
@@ -15,8 +16,8 @@ import UploadPung from './pages/UploadPung';
 // }
 
 function App() {
-  const { isBottomSheetOpen = false, selectedPlaceId = null, closeBottomSheet = true } = useStore();
-
+  // const { isBottomSheetOpen = false, selectedPlaceId = null, closeBottomSheet = true} = useStore();
+  const { isBottomSheetOpen, selectedPlaceId, closeBottomSheet } = useStore();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -50,6 +51,8 @@ function App() {
         placeId={selectedPlaceId}
         onClose={closeBottomSheet}
       />
+      {/* showNavBar가 true일 때만 NavBar를 렌더링 */}
+      <Navbar />
     </>
   );
 }

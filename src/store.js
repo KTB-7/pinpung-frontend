@@ -11,6 +11,7 @@ const useStore = create((set) => ({
   setShowNavBar: (show) => set({ showNavBar: show }),
   openBottomSheet: (placeId) => set({ isBottomSheetOpen: true, selectedPlaceId: placeId }),
   closeBottomSheet: () => set({ isBottomSheetOpen: false, selectedPlaceId: null }),
+  setSelectedPlaceName: (placeName) => set({ selectedPlaceName: placeName }),
 }));
 
 export default useStore;

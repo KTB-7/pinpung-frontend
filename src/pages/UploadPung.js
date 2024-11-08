@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import useStore from '../store';
+import { addPung } from '../api/pungApi';
 import styled from 'styled-components';
 
 const UploadPung = () => {
@@ -7,6 +9,8 @@ const UploadPung = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [text, setText] = useState('');
+
+  const selectedPlaceName = useStore((state) => state.selectedPlaceName);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -17,16 +21,19 @@ const UploadPung = () => {
   };
 
   const handleUpload = () => {
-    // TODO: 사진과 텍스트 업로드하기
-    console.log('Image:', image);
-    console.log('Text:', text);
-    console.log('Place ID:', placeId);
+    // TODO: 사진과 텍스트 업로드하기. 그냥 이미지(pureImage)랑 이미지 상단에 텍스트를 오버레이시킨 이미지(imageWithText)가 둘다 필요함. 그리고 두 이미지 모두 1MB이하로 압축시키고, 16:9로 패딩넣어야함.
+    //addPung(userId, placeId, imageWithText, pureImage, text); // 원래 이게 맞음
+    addPung(77, placeId, imageWithText, pureImage, text); // 테스트용 임시
+
+    console.log('Image:', image, 'Text:', text, 'Place ID:', placeId);
+
     // 업로드 완료 후 이전 페이지로 이동
     navigate(-1);
   };
 
   return (
     <Wrapper>
+      <PlaceArea>{selectedPlaceName}</PlaceArea>
       <CenteredArea>
         <h2>
           자유롭게 표현해 보세요
@@ -53,6 +60,14 @@ const Wrapper = styled.div`
   padding: 20px;
   background-color: #434343;
   box-sizing: border-box; /* 패딩 포함 전체 크기 조정 */
+`;
+
+const PlaceArea = styled.div`
+  width: 100%;
+  text-align: center;
+  color: #ffde59;
+  font-size: 1.5em; /* 적절히 강조하기 위해 폰트 크기 조정 */
+  margin-bottom: 20px;
 `;
 
 const CenteredArea = styled.div`

@@ -1,14 +1,14 @@
-/* NavBar와 BottomSheet 상태관리 */
+/* Navbar와 BottomSheet 상태관리 */
 
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
-  showNavBar: true,
+  showNavbar: true,
   isBottomSheetOpen: false,
   selectedPlaceId: null,
   selectedPlaceName: '',
 
-  setShowNavBar: (show) => set({ showNavBar: show }),
+  setShowNavbar: (show) => set({ showNavbar: show }),
   openBottomSheet: (placeId) => set({ isBottomSheetOpen: true, selectedPlaceId: placeId }),
   closeBottomSheet: () => set({ isBottomSheetOpen: false, selectedPlaceId: null }),
   setSelectedPlaceName: (placeName) => set({ selectedPlaceName: placeName }),

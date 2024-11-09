@@ -79,7 +79,11 @@ const BottomSheet = () => {
           <p>{cafeData.address || '주소 정보 없음'}</p>
           <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
           {cafeData.representativePung && (
-            <img src={cafeData.representativePung.imageWithText} alt="대표 사진" width="100%" />
+            <img
+              src={`data:image/webp;base64,${cafeData.imageBase64}`}
+              alt="대표 사진"
+              width="100%"
+            />
           )}
           <h3>후기</h3>
           {cafeData.reviews?.reviews.map((review) => (

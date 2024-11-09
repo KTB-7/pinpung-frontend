@@ -55,7 +55,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint-config-prettier": "^9.1.0",
-    "schema-utils": "^4.2.0"
+    "schema-utils": "^4.2.0",
+    "webpack": "^5.96.1"
   },
   "homepage": "/",
   "msw": {

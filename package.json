@@ -14,7 +14,10 @@
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.13",
+    "terser-webpack-plugin": "^5.3.10",
     "web-vitals": "^2.1.4",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4",
     "workbox-core": "^7.1.0",
     "workbox-expiration": "^7.1.0",
     "workbox-precaching": "^7.1.0",
@@ -52,9 +55,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint-config-prettier": "^9.1.0",
-    "schema-utils": "^4.2.0",
-    "terser-webpack-plugin": "^5.3.10",
-    "webpack-cli": "^5.1.4"
+    "schema-utils": "^4.2.0"
   },
   "homepage": "/",
   "msw": {

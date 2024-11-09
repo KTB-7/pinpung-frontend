@@ -47,7 +47,7 @@ const UploadPung = () => {
     if (image) {
       try {
         const finalImage = await compressAndPadImage(image);
-        handleDownload(finalImage); // 후처리된 이미지 파일 테스트용
+        // handleDownload(finalImage); // 후처리된 이미지 파일 테스트용
 
         //addPung(userId, placeId, imageWithText, pureImage, text); // 원래 이게 맞음
         addPung(18, placeId, finalImage, finalImage, text);

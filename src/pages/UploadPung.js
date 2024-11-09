@@ -21,33 +21,10 @@ const UploadPung = () => {
     setText(e.target.value);
   };
 
-  const handleDownload = async (image) => {
-    try {
-      // Blob으로 이미지 데이터 변환 (webp 타입으로 설정)
-      const blob = new Blob([image], { type: 'image/webp' });
-
-      const url = URL.createObjectURL(blob);
-
-      // 다운로드 링크 생성
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'compressed_image.webp'; // 저장할 때의 파일 이름과 확장자 설정
-      document.body.appendChild(link);
-      link.click();
-
-      // 사용이 끝난 URL 객체는 메모리에서 해제
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('이미지 다운로드 중 오류 발생:', error);
-    }
-  };
-
   const handleUpload = async () => {
     if (image) {
       try {
         const finalImage = await compressAndPadImage(image);
-        // handleDownload(finalImage); // 후처리된 이미지 파일 테스트용
 
         //addPung(userId, placeId, imageWithText, pureImage, text); // 원래 이게 맞음
         addPung(18, placeId, finalImage, finalImage, text);

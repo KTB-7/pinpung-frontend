@@ -13,7 +13,12 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/KTB-7/pinpung-frontend.git'
             }
         }
-
+        stage('Clean npm cache and node_modules') {
+            steps {
+                sh 'npm cache clean --force'
+                sh 'rm -rf node_modules'
+            }
+        }
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'

@@ -21,11 +21,12 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
         //console.log('place:', place);
         const imageUrl = (() => {
           if (place.hasPung) {
-            return place.imageWithText;
+            return `data:image/webp;base64,${place.imageWithText}`; // Base64 인코딩된 이미지 일단 사용
           } else {
             return DEFAULT_MARKER_IMAGE;
           }
         })();
+
         const markerImage = new kakao.maps.MarkerImage(imageUrl, new kakao.maps.Size(25, 40));
 
         // 마커 생성

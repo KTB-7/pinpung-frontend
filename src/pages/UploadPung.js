@@ -27,7 +27,7 @@ const UploadPung = () => {
         const finalImage = await compressAndPadImage(image);
 
         //addPung(userId, placeId, imageWithText, pureImage, text); // 원래 이게 맞음
-        addPung(18, placeId, finalImage, finalImage, text);
+        addPung(6, placeId, finalImage, finalImage, text);
 
         console.log('Image:', image, 'Text:', text, 'Place ID:', placeId);
 

@@ -79,7 +79,7 @@ const BottomSheet = () => {
           <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
           {cafeData.representativePung && (
             <img
-              src={`data:image/webp;base64,${cafeData.imageBase64}`}
+              src={`${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${cafeData.representativePung.imageId}`}
               alt="대표 사진"
               width="100%"
             />

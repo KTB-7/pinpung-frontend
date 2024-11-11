@@ -18,10 +18,10 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
     cafes.forEach((place) => {
       // 중복 마커 방지하기
       if (!currentMarkers[place.placeId]) {
-        //console.log('place:', place);
+        console.log('place:', place);
         const imageUrl = (() => {
           if (place.hasPung) {
-            return `data:image/webp;base64,${place.imageWithText}`; // Base64 인코딩된 이미지 일단 사용
+            return `${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${place.imageId}`;
           } else {
             return DEFAULT_MARKER_IMAGE;
           }

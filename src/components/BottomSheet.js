@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchCafeDetails } from '../api/placesApi';
+import useStore from '../store';
 import styled from 'styled-components';
 
 const BottomSheet = ({ placeId }) => {
+  const { setSelectedPlaceName } = useStore();
   const [cafeData, setCafeData] = useState(null);
   const [sheetHeight, setSheetHeight] = useState('50%');
   const [dragStartY, setDragStartY] = useState(null);
@@ -17,13 +19,14 @@ const BottomSheet = ({ placeId }) => {
       try {
         const data = await fetchCafeDetails(placeId);
         setCafeData(data);
+        setSelectedPlaceName(data.placeName);
       } catch (error) {
         console.error('카페 상세 정보 가져오기 실패:', error);
       }
     };
 
     fetchCafeData();
-  }, [placeId]);
+  }, [placeId, setSelectedPlaceName]);
 
   const handleDragStart = (e) => setDragStartY(e.clientY);
 

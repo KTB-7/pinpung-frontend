@@ -12,7 +12,7 @@ import axios from 'axios';
 const Map = () => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
-  const [userLocation, setUserLocation] = useState({ latitude: 37.575877, longitude: 126.976812 });
+  const [userLocation, setUserLocation] = useState({ latitude: 37.400113, longitude: 127.106766 });
   const [cafes, setCafes] = useState([]);
   const [level, setLevel] = useState(3);
   const navigate = useNavigate();

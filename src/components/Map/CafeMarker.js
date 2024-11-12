@@ -2,9 +2,9 @@
 
 /* global kakao */
 import { useEffect, useRef } from 'react';
+import CafeMarkerIcon from '../../assets/icons/cafe-marker.svg';
 
-const DEFAULT_MARKER_IMAGE =
-  'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+const DEFAULT_MARKER_IMAGE = CafeMarkerIcon; //'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
 const CafeMarker = ({ cafes, map, onMarkerClick }) => {
   const markers = useRef({});

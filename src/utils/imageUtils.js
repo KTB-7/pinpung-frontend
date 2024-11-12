@@ -1,4 +1,39 @@
 import imageCompression from 'browser-image-compression';
+
+export const cropImage = async (file) => {
+  //이미지의 가로 길이에 맞게 세로 길이까지 자르되, 가운데 부분으로 자르기
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const size = Math.min(img.width, img.height);
+      canvas.width = size;
+      canvas.height = size;
+
+      const ctx = canvas.getContext('2d');
+      const offsetX = (img.width - size) / 2;
+      const offsetY = (img.height - size) / 2;
+
+      // Draw the centered square crop
+      ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, size, size);
+
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(new File([blob], file.name, { type: 'image/webp' }));
+        } else {
+          reject(new Error('이미지 크롭 중 블롭 변환 실패'));
+        }
+      }, 'image/webp');
+    };
+
+    img.onerror = (error) => {
+      reject(new Error('이미지 로드 오류:', error));
+    };
+  });
+};
+
 export const compressAndPadImage = async (file) => {
   try {
     const compressedFile = await compressImage(file);

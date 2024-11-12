@@ -2,12 +2,11 @@
 /* global kakao */
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUserLocation } from '../../api/locationApi';
 import { fetchNearbyCafes } from '../../api/placesApi';
 import CafeMarker from './CafeMarker';
-import useStore from '../../store';
 import { debounce } from 'lodash';
-import styled from 'styled-components';
 import axios from 'axios';
 
 const Map = () => {
@@ -15,8 +14,8 @@ const Map = () => {
   const mapInstance = useRef(null);
   const [userLocation, setUserLocation] = useState({ latitude: 37.575877, longitude: 126.976812 });
   const [cafes, setCafes] = useState([]);
-  const { openBottomSheet, isBottomSheetOpen, closeBottomSheet } = useStore();
   const [level, setLevel] = useState(3);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // API 요청을 통해 연결 확인
@@ -131,12 +130,11 @@ const Map = () => {
   }, [userLocation, level]);
 
   const handleMarkerClick = (placeId) => {
-    openBottomSheet(placeId);
+    navigate(`/places/${placeId}`);
   };
 
   return (
     <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }}>
-      {isBottomSheetOpen && <Overlay onClick={closeBottomSheet} />}
       {mapInstance.current && (
         <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
       )}
@@ -145,13 +143,3 @@ const Map = () => {
 };
 
 export default Map;
-
-const Overlay = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: transparent;
-  z-index: 2; // 맵보다는 높고 BottomSheet보다는 낮은 z-index 설정
-`;

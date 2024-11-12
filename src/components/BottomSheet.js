@@ -5,20 +5,19 @@ import { fetchCafeDetails } from '../api/placesApi';
 import useStore from '../store';
 import styled from 'styled-components';
 
-const BottomSheet = () => {
-  const { isBottomSheetOpen, selectedPlaceId, setSelectedPlaceName, closeBottomSheet } = useStore();
+const BottomSheet = ({ placeId }) => {
+  const { setSelectedPlaceName } = useStore();
   const [cafeData, setCafeData] = useState(null);
-  const [sheetHeight, setSheetHeight] = useState(isBottomSheetOpen ? '50%' : '0');
+  const [sheetHeight, setSheetHeight] = useState('50%');
   const [dragStartY, setDragStartY] = useState(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!selectedPlaceId) return;
+    if (!placeId) return;
 
     const fetchCafeData = async () => {
       try {
-        const data = await fetchCafeDetails(selectedPlaceId);
+        const data = await fetchCafeDetails(placeId);
         setCafeData(data);
         setSelectedPlaceName(data.placeName);
       } catch (error) {
@@ -26,12 +25,8 @@ const BottomSheet = () => {
       }
     };
 
-    if (isBottomSheetOpen) fetchCafeData();
-  }, [selectedPlaceId, setSelectedPlaceName, isBottomSheetOpen]);
-
-  useEffect(() => {
-    setSheetHeight(isBottomSheetOpen ? '50%' : '0');
-  }, [isBottomSheetOpen]);
+    fetchCafeData();
+  }, [placeId, setSelectedPlaceName]);
 
   const handleDragStart = (e) => setDragStartY(e.clientY);
 
@@ -48,7 +43,7 @@ const BottomSheet = () => {
 
   const handleDragEnd = () => {
     if (parseInt(sheetHeight, 10) < 25) {
-      closeBottomSheet();
+      setSheetHeight('0');
     } else {
       setSheetHeight('50%');
     }
@@ -58,14 +53,11 @@ const BottomSheet = () => {
   if (!cafeData) return null;
 
   const handlePungUpload = () => {
-    navigate(`/places/${selectedPlaceId}/upload-pung`);
+    navigate(`/places/${placeId}/upload-pung`);
   };
-
-  //if (!isBottomSheetOpen || !cafeData) return null;
 
   return (
     <BottomSheetWrapper
-      $isOpen={isBottomSheetOpen}
       style={{ height: sheetHeight }}
       onMouseMove={handleDragMove}
       onMouseUp={handleDragEnd}
@@ -76,7 +68,7 @@ const BottomSheet = () => {
         <UploadButton onClick={handlePungUpload}>펑 추가</UploadButton>
         <Details>
           <p>{cafeData.address || '주소 정보 없음'}</p>
-          <p>태그: {cafeData.tags ? cafeData.tags.join(', ') : '태그 정보 없음'}</p>
+          <p>태그: {cafeData.tags ? cafeData.tags.join(' ') : '태그 정보 없음'}</p>
           {cafeData.representativePung && (
             <img
               src={`${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${cafeData.representativePung.imageId}`}

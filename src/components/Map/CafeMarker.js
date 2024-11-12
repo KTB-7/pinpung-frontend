@@ -2,9 +2,9 @@
 
 /* global kakao */
 import { useEffect, useRef } from 'react';
+import CafeMarkerIcon from '../../assets/icons/cafe-marker.svg';
 
-const DEFAULT_MARKER_IMAGE =
-  'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+const DEFAULT_MARKER_IMAGE = CafeMarkerIcon; //'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
 
 const CafeMarker = ({ cafes, map, onMarkerClick }) => {
   const markers = useRef({});
@@ -18,7 +18,6 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
     cafes.forEach((place) => {
       // 중복 마커 방지하기
       if (!currentMarkers[place.placeId]) {
-        console.log('place:', place);
         const imageUrl = (() => {
           if (place.hasPung) {
             return `${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${place.imageId}`;

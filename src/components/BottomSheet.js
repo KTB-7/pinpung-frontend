@@ -68,7 +68,9 @@ const BottomSheet = ({ placeId }) => {
         <UploadButton onClick={handlePungUpload}>펑 추가</UploadButton>
         <Details>
           <p>{cafeData.address || '주소 정보 없음'}</p>
-          <p>태그: {cafeData.tags ? cafeData.tags.join(' ') : '태그 정보 없음'}</p>
+          <p>
+            {cafeData.tags ? cafeData.tags.map((tag) => `#${tag}`).join(' ') : '태그 정보 없음'}
+          </p>
           {cafeData.representativePung && (
             <img
               src={`${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${cafeData.representativePung.imageId}`}
@@ -103,6 +105,14 @@ const BottomSheetWrapper = styled.div`
   transition: height 0.3s ease-in-out;
   overflow: hidden;
   z-index: 10;
+  display: flex; /* 하위 요소의 비율 설정을 위해 사용 */
+  flex-direction: column;
+`;
+
+const Content = styled.div`
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1; /* 부모 요소의 나머지 공간을 차지하도록 설정 */
 `;
 
 const DraggableHandle = styled.div`
@@ -112,11 +122,6 @@ const DraggableHandle = styled.div`
   border-radius: 3px;
   margin: 10px auto;
   cursor: grab;
-`;
-
-const Content = styled.div`
-  padding: 20px;
-  overflow-y: auto;
 `;
 
 const Header = styled.div`

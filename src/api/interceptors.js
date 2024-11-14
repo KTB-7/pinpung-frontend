@@ -16,6 +16,8 @@ export const setupRequestInterceptor = () => {
 
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        console.warn('AccessToken이 없습니다.');
       }
       return config;
     },

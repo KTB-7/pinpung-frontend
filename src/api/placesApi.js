@@ -4,6 +4,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 // 사용자 주변 카페들 불러오기
 export const fetchNearbyCafes = async (longitude, latitude, radius) => {
+  console.log(API_URL);
   try {
     const response = await axios.get(`${API_URL}/api/places/nearby`, {
       params: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import useStore from '../store';
+import useStore from '../store/store';
 import styled from 'styled-components';
 import HomeIcon from '../assets/icons/home.svg';
 import LocationIcon from '../assets/icons/location.svg';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useStore from '../store';
+import useStore from '../store/store';
 import { addPung } from '../api/pungApi';
 import { compressAndPadImage } from '../utils/imageUtils';
 import styled from 'styled-components';

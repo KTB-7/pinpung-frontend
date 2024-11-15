@@ -16,6 +16,7 @@ import Login from './pages/Login';
 // }
 
 function App() {
+  const { showMap, showNavbar } = useStore();
   return (
     <>
       <Routes>
@@ -25,8 +26,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/login/oauth2/code/kakao" element={<OAuthCallback />} />
       </Routes>
-      <Map />
-      <Navbar />
+      {showMap && <Map />}
+      {showNavbar && <Navbar />}
     </>
   );
 }

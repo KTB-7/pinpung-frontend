@@ -7,6 +7,7 @@ import { getUserLocation } from '../../api/locationApi';
 import { fetchNearbyCafes } from '../../api/placesApi';
 import CafeMarker from './CafeMarker';
 import { debounce } from 'lodash';
+import axios from 'axios';
 
 const Map = () => {
   const mapRef = useRef(null);
@@ -15,6 +16,15 @@ const Map = () => {
   const [cafes, setCafes] = useState([]);
   const [level, setLevel] = useState(3);
   const navigate = useNavigate();
+
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/api/test`)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 
   useEffect(() => {
     getUserLocation()

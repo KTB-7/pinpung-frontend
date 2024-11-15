@@ -3,10 +3,12 @@
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
+  showMap: true,
   showNavbar: true,
   selectedPlaceId: null,
   selectedPlaceName: '',
 
+  setShowMap: (show) => set({ showMap: show }),
   setShowNavbar: (show) => set({ showNavbar: show }),
   setSelectedPlaceName: (placeName) => set({ selectedPlaceName: placeName }),
 }));

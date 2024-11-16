@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchCafeDetails } from '../api/placesApi';
 import useStore from '../store/store';
 import styled from 'styled-components';
+import Draggable from 'react-draggable';
 
 const BottomSheet = ({ placeId }) => {
   const { setSelectedPlaceName } = useStore();
@@ -64,13 +65,16 @@ const BottomSheet = ({ placeId }) => {
     >
       <DraggableHandle onMouseDown={handleDragStart} />
       <Content onClick={(e) => e.stopPropagation()}>
-        <Header>{cafeData.placeName || '카페명'}</Header>
-        <UploadButton onClick={handlePungUpload}>펑 추가</UploadButton>
-        <Details>
-          <p>{cafeData.address || '주소 정보 없음'}</p>
-          <p>
+        {/* HeaderWrapper 사용 */}
+        <LineWrapper>
+          <Header>{cafeData.placeName || '카페명'}</Header>
+          <UploadButton onClick={handlePungUpload}>펑 추가</UploadButton>
+        </LineWrapper>
+        <div>
+          <>{cafeData.address || '주소 정보 없음'}</>
+          <LineWrapper>
             {cafeData.tags ? cafeData.tags.map((tag) => `#${tag}`).join(' ') : '태그 정보 없음'}
-          </p>
+          </LineWrapper>
           {cafeData.representativePung && (
             <img
               src={`${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${cafeData.representativePung.imageId}`}
@@ -78,14 +82,17 @@ const BottomSheet = ({ placeId }) => {
               width="100%"
             />
           )}
-          <h3>후기</h3>
+          <LineWrapper>
+            <Header>후기</Header>
+            <UploadButton>후기 남기기</UploadButton>
+          </LineWrapper>
           {cafeData.reviews?.reviews.map((review) => (
             <div key={review.reviewId}>
               <p>{review.text}</p>
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
             </div>
           ))}
-        </Details>
+        </div>
       </Content>
     </BottomSheetWrapper>
   );
@@ -105,14 +112,21 @@ const BottomSheetWrapper = styled.div`
   transition: height 0.3s ease-in-out;
   overflow: hidden;
   z-index: 10;
-  display: flex; /* 하위 요소의 비율 설정을 위해 사용 */
+  display: flex;
   flex-direction: column;
+`;
+
+const LineWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 `;
 
 const Content = styled.div`
   padding: 20px;
   overflow-y: auto;
-  flex: 1; /* 부모 요소의 나머지 공간을 차지하도록 설정 */
+  flex: 1;
 `;
 
 const DraggableHandle = styled.div`
@@ -125,7 +139,6 @@ const DraggableHandle = styled.div`
 `;
 
 const Header = styled.div`
-  padding: 10px;
   font-size: 20px;
   font-weight: bold;
 `;
@@ -136,7 +149,6 @@ const UploadButton = styled.button`
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
-  margin: 10px;
   cursor: pointer;
 `;
 

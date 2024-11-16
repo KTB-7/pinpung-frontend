@@ -1,20 +1,27 @@
 import { useEffect } from 'react';
 import useStore from '../store/store';
+import useAuthStore from '../store/auth';
 
 const Profile = () => {
+  const { isAuthenticated, clearAuth } = useAuthStore();
   const { setShowMap } = useStore();
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      window.location.href = '/oauth2/authorization/kakao';
+      return;
+    }
+
     setShowMap(false);
 
     return () => {
       setShowMap(true);
     };
-  }, [setShowMap]);
+  }, [isAuthenticated, setShowMap]);
 
   const handleLogout = () => {
     clearAuth();
-    Navigate('/login');
+    window.location.href = '/oauth2/authorization/kakao';
   };
 
   return (

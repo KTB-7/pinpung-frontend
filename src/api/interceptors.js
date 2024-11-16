@@ -6,6 +6,7 @@ export const setupRequestInterceptor = () => {
   instance.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem('accessToken');
+      console.log('at interceptor: 로컬스토리지에서 accessToken 가져옴');
 
       config.headers['Cache-Control'] = 'no-cache';
       config.headers['Pragma'] = 'no-cache';

@@ -30,7 +30,6 @@ export const addPung = async (userId, placeId, imageWithText, pureImage, text) =
     const response = await axios.post(`${API_URL}/api/pungs/upload`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${process.env.REACT_APP_ACCESS_TOKEN}`,
       },
     });
 

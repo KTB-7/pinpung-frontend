@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchCafeDetails } from '../api/placesApi';
-import useStore from '../store';
+import useStore from '../store/store';
 import styled from 'styled-components';
 
 const BottomSheet = ({ placeId }) => {

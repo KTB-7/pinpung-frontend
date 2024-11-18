@@ -1,59 +1,59 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/auth';
-import axios from 'axios';
+import styled from 'styled-components';
 
 const OAuthCallback = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // 현재 URL 정보 가져오기
   const { setAccessToken, setUserInfo } = useAuthStore();
 
   useEffect(() => {
-    // URL에서 query parameter 추출 (code 파라미터 추출)
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code'); // 백엔드에서 리다이렉트된 code 추출
-
-    // 인증 코드가 있는 경우, 백엔드로 API 요청하여 사용자 정보 가져와야함
-    const fetchUserInfo = async () => {
+    const processRedirectData = () => {
       try {
-        // 백엔드에 인증 코드를 보내어 액세스 토큰과 사용자 정보 요청
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/login/oauth2/code/kakao`,
-          {
-            params: { code }, // 카카오 인증 후 받은 인증 코드 전달
-          },
-        );
+        // 현재 URL에서 쿼리 파라미터 추출
+        const params = new URLSearchParams(location.search);
+        const status = params.get('status');
+        const token = params.get('token');
+        const userId = params.get('userId');
+        const userName = params.get('userName');
+        const userEmail = params.get('userEmail');
 
-        // JSON 데이터에서 필요한 정보 추출
-        const { accessToken, userId, userName, userEmail } = response.data;
+        if (status === 'success' && token && userId && userName && userEmail) {
+          setAccessToken(token);
+          setUserInfo({
+            userId,
+            userName,
+            userEmail,
+          });
 
-        if (accessToken && userId && userName && userEmail) {
-          // Zustand로 토큰과 사용자 정보 저장
-          setAccessToken(accessToken);
-          setUserInfo({ userId, userName, userEmail });
-
-          // Profile 페이지로 이동
-          navigate('/profile');
+          alert('로그인 성공! 홈으로 이동합니다.');
+          navigate('/');
         } else {
-          console.error('인증에 실패했습니다. 필요한 정보가 누락되었습니다.');
-          // 만약 정보가 누락되었다면 홈으로 리다이렉트
+          alert('로그인 실패. 다시 시도해주세요.');
           navigate('/');
         }
       } catch (error) {
-        console.error('유저 정보 가져오기 실패:', error);
+        console.error('리다이렉트 데이터 처리 실패:', error.message);
+        alert('로그인 처리 중 문제가 발생했습니다.');
         navigate('/');
       }
     };
 
-    // 인증 코드가 있는 경우에만 함수 호출
-    if (code) {
-      fetchUserInfo();
-    } else {
-      console.error('인증 코드가 누락되었습니다.');
-      navigate('/');
-    }
-  }, [navigate, setAccessToken, setUserInfo]);
+    processRedirectData();
+  }, [location.search, navigate, setAccessToken, setUserInfo]);
 
-  return <div>로그인 처리 중입니다...</div>;
+  return <Wrapper>로그인 중입니다...</Wrapper>;
 };
 
 export default OAuthCallback;
+
+const Wrapper = styled.div`
+  display: flex;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { fetchCafeDetails } from '../api/placesApi';
 import useStore from '../store/store';
 import styled from 'styled-components';
-//import Draggable from 'react-draggable';
 
 const BottomSheet = ({ placeId }) => {
   const { setSelectedPlaceName } = useStore();
@@ -29,6 +28,8 @@ const BottomSheet = ({ placeId }) => {
     fetchCafeData();
   }, [placeId, setSelectedPlaceName]);
 
+  if (!cafeData) return null;
+
   const handleDragStart = (e) => setDragStartY(e.clientY);
 
   const handleDragMove = (e) => {
@@ -50,8 +51,6 @@ const BottomSheet = ({ placeId }) => {
     }
     setDragStartY(null);
   };
-
-  if (!cafeData) return null;
 
   const handlePungUpload = () => {
     navigate(`/places/${placeId}/upload-pung`);

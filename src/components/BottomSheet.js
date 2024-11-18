@@ -57,6 +57,10 @@ const BottomSheet = ({ placeId }) => {
     navigate(`/places/${placeId}/upload-pung`);
   };
 
+  const handleReviewUpload = () => {
+    navigate(`/places/${placeId}/upload-review`);
+  };
+
   return (
     <BottomSheetWrapper
       style={{ height: sheetHeight }}
@@ -84,7 +88,7 @@ const BottomSheet = ({ placeId }) => {
           )}
           <LineWrapper>
             <Header>후기</Header>
-            <UploadButton>후기 남기기</UploadButton>
+            <UploadButton onClick={handleReviewUpload}>후기 남기기</UploadButton>
           </LineWrapper>
           {cafeData.reviews?.reviews.map((review) => (
             <div key={review.reviewId}>

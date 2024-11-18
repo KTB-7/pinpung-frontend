@@ -53,29 +53,29 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const LineWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-`;
+// const LineWrapper = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin-bottom: 10px;
+// `;
 
-const Content = styled.div`
-  padding: 20px;
-  overflow-y: auto;
-  flex: 1;
-`;
+// const Content = styled.div`
+//   padding: 20px;
+//   overflow-y: auto;
+//   flex: 1;
+// `;
 
-const DraggableHandle = styled.div`
-  width: 40px;
-  height: 6px;
-  background-color: #ccc;
-  border-radius: 3px;
-  margin: 10px auto;
-  cursor: grab;
-`;
+// const DraggableHandle = styled.div`
+//   width: 40px;
+//   height: 6px;
+//   background-color: #ccc;
+//   border-radius: 3px;
+//   margin: 10px auto;
+//   cursor: grab;
+// `;
 
-const Header = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-`;
+// const Header = styled.div`
+//   font-size: 20px;
+//   font-weight: bold;
+// `;

@@ -46,7 +46,7 @@ export const compressAndPadImage = async (file) => {
 };
 
 // 이미지 압축 함수
-const compressImage = async (file) => {
+export const compressImage = async (file) => {
   const options = {
     maxSizeMB: 1,
     maxWidthOrHEight: 1920,
@@ -56,7 +56,7 @@ const compressImage = async (file) => {
 };
 
 // 패딩 추가 함수
-const addPadding = async (file) => {
+export const addPadding = async (file) => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.src = URL.createObjectURL(file);

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchCafeDetails } from '../api/placesApi';
 import useStore from '../store/store';
 import styled from 'styled-components';
-import Draggable from 'react-draggable';
+//import Draggable from 'react-draggable';
 
 const BottomSheet = ({ placeId }) => {
   const { setSelectedPlaceName } = useStore();
@@ -57,12 +57,12 @@ const BottomSheet = ({ placeId }) => {
     navigate(`/places/${placeId}/upload-pung`);
   };
 
+  const handleReviewUpload = () => {
+    navigate(`/places/${placeId}/upload-review`);
+  };
+
   return (
-    <BottomSheetWrapper
-      style={{ height: sheetHeight }}
-      onMouseMove={handleDragMove}
-      onMouseUp={handleDragEnd}
-    >
+    <Wrapper style={{ height: sheetHeight }} onMouseMove={handleDragMove} onMouseUp={handleDragEnd}>
       <DraggableHandle onMouseDown={handleDragStart} />
       <Content onClick={(e) => e.stopPropagation()}>
         {/* HeaderWrapper 사용 */}
@@ -84,7 +84,7 @@ const BottomSheet = ({ placeId }) => {
           )}
           <LineWrapper>
             <Header>후기</Header>
-            <UploadButton>후기 남기기</UploadButton>
+            <UploadButton onClick={handleReviewUpload}>후기 남기기</UploadButton>
           </LineWrapper>
           {cafeData.reviews?.reviews.map((review) => (
             <div key={review.reviewId}>
@@ -94,25 +94,24 @@ const BottomSheet = ({ placeId }) => {
           ))}
         </div>
       </Content>
-    </BottomSheetWrapper>
+    </Wrapper>
   );
 };
 
 export default BottomSheet;
 
-const BottomSheetWrapper = styled.div`
+const Wrapper = styled.div`
+  display: flex;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: ${({ $isOpen }) => ($isOpen ? '50%' : '8%')};
   background-color: white;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 20px 20px 0 0;
   transition: height 0.3s ease-in-out;
   overflow: hidden;
   z-index: 10;
-  display: flex;
   flex-direction: column;
 `;
 
@@ -150,8 +149,4 @@ const UploadButton = styled.button`
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
-`;
-
-const Details = styled.div`
-  padding: 10px;
 `;

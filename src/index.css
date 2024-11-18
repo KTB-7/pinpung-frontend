@@ -1,10 +1,9 @@
-/* @font-face {
-  font-family: 'MyCustomFont';
-  src: url('./assets/fonts/MyCustomFont.woff2') format('woff2'),
-       url('./assets/fonts/MyCustomFont.woff') format('woff');
-  font-weight: 400;
+@font-face {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  src: url('./assets/fonts/NEXONLv1GothicRegular.ttf') format('truetype');
+  font-weight: normal;
   font-style: normal;
-} */
+}
 
 body {
   margin: 0;

@@ -10,6 +10,7 @@ const useStore = create((set) => ({
 
   setShowMap: (show) => set({ showMap: show }),
   setShowNavbar: (show) => set({ showNavbar: show }),
+  setSelectedPlaceId: (placeId) => set({ selectedPlaceId: placeId }),
   setSelectedPlaceName: (placeName) => set({ selectedPlaceName: placeName }),
 }));
 

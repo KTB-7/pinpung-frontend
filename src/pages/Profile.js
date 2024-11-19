@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const API_URL = `${process.env.REACT_APP_API_URL}`;
 
 const Profile = () => {
-  const { isAuthenticated, clearAuth } = useAuthStore();
+  const { accessToken, clearAuth } = useAuthStore();
   const { setShowMap } = useStore();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const Profile = () => {
     setShowMap(false);
 
     // 인증되지 않은 경우 로그인 리다이렉트
-    if (!isAuthenticated) {
+    if (!accessToken) {
       window.location.href = `${API_URL}/oauth2/authorization/kakao`;
       return;
     }
@@ -23,7 +23,7 @@ const Profile = () => {
     return () => {
       setShowMap(true);
     };
-  }, [isAuthenticated, setShowMap]);
+  }, [accessToken, setShowMap]);
 
   const handleLogout = () => {
     //window.location.href = `${API_URL}/logout`;

@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import kakaoLoginImage from '../assets/images/kakao_login_medium_narrow.png';
 
 const Login = () => {
+  const { setShowMap } = useStore();
+
+  //console.log('accessToken', accessToken);
   const handleLogin = () => {
     // 백엔드 OAuth2 인증 엔드포인트로 리다이렉트
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
-
-  const { setShowMap } = useStore();
 
   useEffect(() => {
     // 페이지 로드 시 맵 숨기기
@@ -24,7 +25,7 @@ const Login = () => {
   return (
     <Wrapper>
       <h2>로그인이 필요합니다.</h2>
-      <img src={kakaoLoginImage} onClick={handleLogin} />
+      <img src={kakaoLoginImage} alt="카카오 로그인" onClick={handleLogin} />
     </Wrapper>
   );
 };

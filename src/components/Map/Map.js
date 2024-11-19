@@ -91,7 +91,6 @@ const Map = () => {
 
   // bounds 변경 시 카페 목록 다시 가져오기
   useEffect(() => {
-    console.log('bounds changed');
     if (bounds) {
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();

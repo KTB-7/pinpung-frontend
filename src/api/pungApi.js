@@ -14,10 +14,6 @@ export const fetchPungs = async (placeId, page) => {
 };
 
 export const addPung = async (userId, placeId, imageWithText, pureImage, text) => {
-  // 액세스토큰 로컬스토리지에 임시 저장
-  // const accessToken = ;
-  // localStorage.setItem('accessToken', accessToken);
-
   const data = new FormData();
 
   data.append('userId', userId);

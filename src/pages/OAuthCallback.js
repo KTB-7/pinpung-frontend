@@ -19,8 +19,9 @@ const OAuthCallback = () => {
         const userName = params.get('userName');
         const userEmail = params.get('userEmail');
 
-        if (status === 'success' && token && userId && userName && userEmail) {
+        if (status === 'success' && token) {
           setAccessToken(token);
+          localStorage.setItem('accessToken', token);
           setUserInfo({
             userId,
             userName,

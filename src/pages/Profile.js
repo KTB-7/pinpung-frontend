@@ -7,7 +7,7 @@ const API_URL = `${process.env.REACT_APP_API_URL}`;
 
 const Profile = () => {
   const { accessToken, clearAuth } = useAuthStore();
-  const { setShowMap } = useStore();
+  const setShowMap = useStore((state) => state.setShowMap);
 
   useEffect(() => {
     // 페이지 로드 시 맵 숨기기

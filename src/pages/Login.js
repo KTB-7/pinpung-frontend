@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import kakaoLoginImage from '../assets/images/kakao_login_medium_narrow.png';
 
 const Login = () => {
-  const { setShowMap } = useStore();
+  const setShowMap = useStore((state) => state.setShowMap);
 
   //console.log('accessToken', accessToken);
   const handleLogin = () => {

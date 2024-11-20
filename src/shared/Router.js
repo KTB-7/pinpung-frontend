@@ -12,7 +12,9 @@ import PrivateRoute from './PrivateRoute';
 import useStore from '../store/store';
 
 const Router = () => {
-  const { showMap, showNavbar } = useStore();
+  const showMap = useStore((state) => state.showMap);
+  const showNavbar = useStore((state) => state.showNavbar);
+
   return (
     <BrowserRouter>
       <Routes>

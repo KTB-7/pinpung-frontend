@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import useStore from '../store/store';
 import styled from 'styled-components';
 import HomeIcon from '../assets/icons/home.svg';
-import LocationIcon from '../assets/icons/location.svg';
 import AddIcon from '../assets/icons/add.svg';
-import BookmarkIcon from '../assets/icons/bookmark.svg';
 import ProfileIcon from '../assets/icons/profile.svg';
 
 const Navbar = () => {
@@ -22,21 +20,15 @@ const Navbar = () => {
           </IconLink>
         </li>
         <li>
-          <IconLink to="/location">
-            <img src={LocationIcon} alt="Location" />
-          </IconLink>
-        </li>
-        <li>
           <IconLink to="/add-pung">
             <img src={AddIcon} alt="Add" />
           </IconLink>
         </li>
-        <IconLink to="/bookmark">
-          <img src={BookmarkIcon} alt="Bookmark" />
-        </IconLink>
-        <IconLink to="/profile">
-          <img src={ProfileIcon} alt="profile" />
-        </IconLink>
+        <li>
+          <IconLink to="/profile">
+            <img src={ProfileIcon} alt="profile" />
+          </IconLink>
+        </li>
       </Menu>
     </Nav>
   );

@@ -5,10 +5,7 @@
 
 # environments
 .env
-
-# pem
-localhost-key.pem
-localhost.pem
+launch.json
 
 # dependencies
 /node_modules

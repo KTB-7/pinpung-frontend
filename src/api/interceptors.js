@@ -1,12 +1,13 @@
 /* 인터셉터 설정 파일 */
 
-import instance from '../api/axiosInstance';
+import { securedInstance } from '../api/axiosInstance';
+import useAuthStore from '../store/useAuthStore';
 
 export const setupRequestInterceptor = () => {
-  instance.interceptors.request.use(
+  securedInstance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('accessToken');
-      console.log('at interceptor: 로컬스토리지에서 accessToken 가져옴');
+      const token = useAuthStore.getState().accessToken;
+      console.log('at interceptor: zustand에서 accessToken 가져옴');
 
       config.headers['Cache-Control'] = 'no-cache';
       config.headers['Pragma'] = 'no-cache';

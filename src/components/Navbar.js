@@ -44,6 +44,7 @@ const Nav = styled.nav`
   justify-content: center;
   align-items: center;
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 `;
 
 const Menu = styled.ul`

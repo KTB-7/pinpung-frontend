@@ -8,8 +8,6 @@ import styled from 'styled-components';
 const BottomSheet = ({ placeId }) => {
   const setSelectedPlaceName = useStore((state) => state.setSelectedPlaceName);
   const [cafeData, setCafeData] = useState(null);
-  const [sheetHeight, setSheetHeight] = useState('50%');
-  const [dragStartY, setDragStartY] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,28 +28,6 @@ const BottomSheet = ({ placeId }) => {
 
   if (!cafeData) return null;
 
-  const handleDragStart = (e) => setDragStartY(e.clientY);
-
-  const handleDragMove = (e) => {
-    if (dragStartY !== null) {
-      const delta = dragStartY - e.clientY;
-      const newHeight = Math.max(
-        0,
-        Math.min(50, parseFloat(sheetHeight) - (delta / window.innerHeight) * 100),
-      );
-      setSheetHeight(`${newHeight}%`);
-    }
-  };
-
-  const handleDragEnd = () => {
-    if (parseInt(sheetHeight, 10) < 25) {
-      setSheetHeight('0');
-    } else {
-      setSheetHeight('50%');
-    }
-    setDragStartY(null);
-  };
-
   const handlePungUpload = () => {
     navigate(`/places/${placeId}/upload-pung`);
   };
@@ -59,18 +35,20 @@ const BottomSheet = ({ placeId }) => {
   const handleReviewUpload = () => {
     navigate(`/places/${placeId}/upload-review`);
   };
+  console.log(cafeData.tags.map((tag) => `#${tag}`).join(' '));
 
   return (
-    <Wrapper style={{ height: sheetHeight }} onMouseMove={handleDragMove} onMouseUp={handleDragEnd}>
-      <DraggableHandle onMouseDown={handleDragStart} />
-      <Content onClick={(e) => e.stopPropagation()}>
+    <Wrapper>
+      <Handle />
+      <Content>
         {/* HeaderWrapper 사용 */}
         <LineWrapper>
           <Header>{cafeData.placeName || '카페명'}</Header>
           <UploadButton onClick={handlePungUpload}>펑 추가</UploadButton>
         </LineWrapper>
         <div>
-          <>{cafeData.address || '주소 정보 없음'}</>
+          <>{cafeData.address || ' '}</>
+          <div style={{ marginBottom: '20px' }}></div>
           <LineWrapper>
             {cafeData.tags ? cafeData.tags.map((tag) => `#${tag}`).join(' ') : '태그 정보 없음'}
           </LineWrapper>
@@ -81,6 +59,7 @@ const BottomSheet = ({ placeId }) => {
               width="100%"
             />
           )}
+          <div style={{ marginBottom: '20px' }}></div>
           <LineWrapper>
             <Header>후기</Header>
             <UploadButton onClick={handleReviewUpload}>후기 남기기</UploadButton>
@@ -102,7 +81,8 @@ export default BottomSheet;
 const Wrapper = styled.div`
   display: flex;
   position: fixed;
-  bottom: 0;
+  bottom: 8%;
+  height: 50%;
   left: 0;
   width: 100%;
   background-color: white;
@@ -127,7 +107,7 @@ const Content = styled.div`
   flex: 1;
 `;
 
-const DraggableHandle = styled.div`
+const Handle = styled.div`
   width: 40px;
   height: 6px;
   background-color: #ccc;

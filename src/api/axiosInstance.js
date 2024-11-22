@@ -2,10 +2,15 @@
 
 import axios from 'axios';
 
-const instance = axios.create({
+const securedInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true,
   timeout: 60000,
 });
 
-export default instance;
+const publicInstance = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+  timeout: 60000,
+});
+
+export { securedInstance, publicInstance };

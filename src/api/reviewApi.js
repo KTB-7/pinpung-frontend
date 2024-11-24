@@ -52,3 +52,24 @@ export const modifyReview = async (userId, placeId, reviewId, text, image) => {
     throw new Error('리뷰 수정에 실패했습니다.');
   }
 };
+
+export const deleteReview = async (userId, placeId, reviewId) => {
+  const data = new FormData();
+
+  data.append('userId', userId);
+  data.append('placeId', placeId);
+  data.append('reviewId', reviewId);
+
+  try {
+    const response = await securedInstance.delete(`${API_URL}/api/reviews/delete`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('리뷰 삭제 실패:', error);
+    throw new Error('리뷰 삭제에 실패했습니다.');
+  }
+};

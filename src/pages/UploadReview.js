@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
+import useAuthStore from '../store/auth';
 import { addReview } from '../api/reviewApi';
 import { compressImage } from '../utils/imageUtils';
 import styled from 'styled-components';
@@ -13,6 +14,7 @@ const UploadReview = () => {
   const [text, setText] = useState('');
 
   const selectedPlaceName = useStore((state) => state.selectedPlaceName);
+  const userInfo = useAuthStore((state) => state.userInfo);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -26,8 +28,10 @@ const UploadReview = () => {
     if (image) {
       try {
         const finalImage = await compressImage(image);
-        addReview(5, placeId, text, finalImage);
-        console.log('Image:', finalImage, 'Text:', text, 'Place ID:', placeId);
+
+        addReview(userInfo.userId, placeId, text, finalImage);
+        console.log('userInfo:', userInfo);
+
         navigate(-1);
       } catch (error) {
         console.log('리뷰 업로드 중 오류 발생:', error);

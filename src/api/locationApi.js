@@ -1,7 +1,7 @@
 export const getUserLocation = () => {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error('Geolocation 미제공 브라우저'));
+      return reject(new Error('Geolocation 미제공 브라우저'));
     }
 
     navigator.geolocation.getCurrentPosition(

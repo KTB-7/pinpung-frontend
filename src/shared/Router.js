@@ -5,6 +5,9 @@ import OAuthCallback from '../pages/OAuthCallback';
 import Login from '../pages/Login';
 import Map from '../components/Map/Map';
 import Navbar from '../components/Navbar';
+import SearchBar from '../components/Map/SearchBar';
+import AIButton from '../components/Map/AIButton';
+import LocationButton from '../components/Map/LocationButton';
 import PlaceOverview from '../pages/PlaceOverview';
 import UploadPung from '../pages/UploadPung';
 import UploadReview from '../pages/UploadReview';
@@ -14,6 +17,14 @@ import useStore from '../store/store';
 const Router = () => {
   const showMap = useStore((state) => state.showMap);
   const showNavbar = useStore((state) => state.showNavbar);
+
+  const handleSearchBarClick = () => {
+    // 모바일 환경에서 키보드가 열리도록 포커스 설정
+    const searchBarInput = document.querySelector('#home-search-input');
+    if (searchBarInput) {
+      searchBarInput.focus();
+    }
+  };
 
   return (
     <BrowserRouter>
@@ -33,6 +44,9 @@ const Router = () => {
           }
         />
       </Routes>
+      <SearchBar onSearchBarClick={handleSearchBarClick} />
+      <AIButton />
+      <LocationButton />
       {showMap && <Map />}
       {showNavbar && <Navbar />}
     </BrowserRouter>

@@ -25,16 +25,6 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
     cafes.forEach(async (place) => {
       // 중복 마커 방지하기
       if (!currentMarkers[place.placeId]) {
-        // const imageUrl = (() => {
-        //   if (place.hasPung) {
-        //     const imageUrl = `${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${place.imageId}`;
-        //     const croppedImage = cropImage(imageUrl);
-        //     console.log('imageUrl:', imageUrl, 'croppedImage:', croppedImage);
-        //     return croppedImage;
-        //   } else {
-        //     return DEFAULT_MARKER_IMAGE;
-        //   }
-        // })();
         const imageUrl = place.hasPung
           ? `${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${place.imageId}`
           : DEFAULT_MARKER_IMAGE;

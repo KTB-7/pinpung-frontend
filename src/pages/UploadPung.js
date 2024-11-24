@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
+import useAuthStore from '../store/auth';
 import { addPung } from '../api/pungApi';
 import { compressAndPadImage } from '../utils/imageUtils';
 import styled from 'styled-components';
@@ -12,6 +13,7 @@ const UploadPung = () => {
   const [text, setText] = useState('');
 
   const selectedPlaceName = useStore((state) => state.selectedPlaceName);
+  const userInfo = useAuthStore((state) => state.userInfo);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -26,10 +28,8 @@ const UploadPung = () => {
       try {
         const finalImage = await compressAndPadImage(image);
 
-        //addPung(userId, placeId, imageWithText, pureImage, text); // 원래 이게 맞음
-        addPung(7, placeId, finalImage, finalImage, text);
+        addPung(userInfo.userId, placeId, finalImage, finalImage, text);
 
-        // 업로드 완료 후 이전 페이지로 이동
         navigate(-1);
       } catch (error) {
         console.log('펑 업로드 중 오류 발생:', error);

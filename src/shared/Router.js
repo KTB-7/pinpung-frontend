@@ -26,10 +26,6 @@ const Router = () => {
     }
   };
 
-  const handleAIButtonClick = () => {};
-
-  const handleLocationButtonClick = () => {};
-
   return (
     <BrowserRouter>
       <Routes>
@@ -49,8 +45,8 @@ const Router = () => {
         />
       </Routes>
       <SearchBar onSearchBarClick={handleSearchBarClick} />
-      <AIButton onClick={handleAIButtonClick} />
-      <LocationButton onClick={handleLocationButtonClick} />
+      <AIButton />
+      <LocationButton />
       {showMap && <Map />}
       {showNavbar && <Navbar />}
     </BrowserRouter>

@@ -29,8 +29,6 @@ const UploadPung = () => {
         //addPung(userId, placeId, imageWithText, pureImage, text); // 원래 이게 맞음
         addPung(7, placeId, finalImage, finalImage, text);
 
-        console.log('Image:', finalImage, 'Text:', text, 'Place ID:', placeId);
-
         // 업로드 완료 후 이전 페이지로 이동
         navigate(-1);
       } catch (error) {

@@ -35,7 +35,7 @@ const BottomSheet = ({ placeId }) => {
   const handleReviewUpload = () => {
     navigate(`/places/${placeId}/upload-review`);
   };
-  console.log(cafeData.tags.map((tag) => `#${tag}`).join(' '));
+  console.log('태그:', cafeData.tags.map((tag) => `#${tag}`).join(' '));
 
   return (
     <Wrapper>

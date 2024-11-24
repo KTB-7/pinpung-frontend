@@ -21,7 +21,7 @@ export const addReview = async (userId, placeId, text, image) => {
 
     return response.data;
   } catch (error) {
-    console.error('펑 업로드 실패:', error);
-    throw new Error('펑 업로드에 실패했습니다.');
+    console.error('리뷰 업로드 실패:', error);
+    throw new Error('리뷰 업로드에 실패했습니다.');
   }
 };

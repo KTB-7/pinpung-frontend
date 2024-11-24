@@ -30,7 +30,6 @@ const UploadReview = () => {
         const finalImage = await compressImage(image);
 
         addReview(userInfo.userId, placeId, text, finalImage);
-        console.log('userInfo:', userInfo);
 
         navigate(-1);
       } catch (error) {

@@ -28,11 +28,8 @@ const UploadPung = () => {
       try {
         const finalImage = await compressAndPadImage(image);
 
-        //addPung(userId, placeId, imageWithText, pureImage, text); // 원래 이게 맞음
         addPung(userInfo.userId, placeId, finalImage, finalImage, text);
-        console.log('userInfo:', userInfo);
 
-        // 업로드 완료 후 이전 페이지로 이동
         navigate(-1);
       } catch (error) {
         console.log('펑 업로드 중 오류 발생:', error);

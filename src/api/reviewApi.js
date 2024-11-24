@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { securedInstance, publicInstance } from './axiosInstance';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -13,7 +13,7 @@ export const addReview = async (userId, placeId, text, image) => {
     data.append('image', image);
   }
   try {
-    const response = await axios.post(`${API_URL}/api/pungs/upload`, data, {
+    const response = await securedInstance.post(`${API_URL}/api/pungs/upload`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

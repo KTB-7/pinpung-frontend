@@ -13,13 +13,13 @@ export default LocationButton;
 const Wrapper = styled.div`
   position: fixed;
   bottom: 10%;
-  right: 1%;
+  right: 8px;
   height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin: 3%;
+  margin: 2%;
   z-index: 2;
   img {
     width: 100%;

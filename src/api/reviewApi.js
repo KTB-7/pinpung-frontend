@@ -1,4 +1,4 @@
-import { securedInstance, publicInstance } from './axiosInstance';
+import { securedInstance } from './axiosInstance';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -12,6 +12,7 @@ export const addReview = async (userId, placeId, text, image) => {
   if (image) {
     data.append('image', image);
   }
+
   try {
     const response = await securedInstance.post(`${API_URL}/api/reviews/upload`, data, {
       headers: {
@@ -23,5 +24,31 @@ export const addReview = async (userId, placeId, text, image) => {
   } catch (error) {
     console.error('리뷰 업로드 실패:', error);
     throw new Error('리뷰 업로드에 실패했습니다.');
+  }
+};
+
+export const modifyReview = async (userId, placeId, reviewId, text, image) => {
+  const data = new FormData();
+
+  data.append('userId', userId);
+  data.append('placeId', placeId);
+  data.append('text', text);
+  data.append('reviewId', reviewId);
+
+  if (image) {
+    data.append('image', image);
+  }
+
+  try {
+    const response = await securedInstance.patch(`${API_URL}/api/reviews/modify`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('리뷰 수정 실패:', error);
+    throw new Error('리뷰 수정에 실패했습니다.');
   }
 };

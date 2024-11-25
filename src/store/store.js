@@ -7,11 +7,13 @@ const useStore = create((set) => ({
   showNavbar: true,
   selectedPlaceId: null,
   selectedPlaceName: '',
+  selectedNavbar: 'home',
 
   setShowMap: (show) => set({ showMap: show }),
   setShowNavbar: (show) => set({ showNavbar: show }),
   setSelectedPlaceId: (placeId) => set({ selectedPlaceId: placeId }),
   setSelectedPlaceName: (placeName) => set({ selectedPlaceName: placeName }),
+  setSelectedNavbar: (icon) => set({ selectedNavbar: icon }),
 }));
 
 export default useStore;

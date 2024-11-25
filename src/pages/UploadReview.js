@@ -5,7 +5,7 @@ import useAuthStore from '../store/auth';
 import { addReview } from '../api/reviewApi';
 import { compressImage } from '../utils/imageUtils';
 import styled from 'styled-components';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS import
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const UploadReview = () => {
   const { placeId } = useParams();
@@ -46,12 +46,12 @@ const UploadReview = () => {
     <Wrapper>
       <Header className="container-fluid">
         <PlaceName> {selectedPlaceName} </PlaceName>
-        <Button
+        <CloseButton
           onClick={handleClose}
           type="button"
           className="btn-close"
           aria-label="Close"
-        ></Button>
+        ></CloseButton>
       </Header>
       <Form className="container-fluid">
         <CenteredArea className="row w-100">
@@ -114,13 +114,13 @@ const PlaceName = styled.div`
   left: 50%;
   transform: translate(-50%);
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
 `;
 
-const Button = styled.button`
+const CloseButton = styled.button`
   position: absolute;
   right: 20px;
-  top: 5px;
+  top: 2px;
 `;
 
 const Form = styled.div`
@@ -141,9 +141,12 @@ const CenteredArea = styled.div`
 `;
 
 const UploadButton = styled.button`
-  padding: 10px 20px;
+  background-color: #6398f2;
+  color: white;
+  font-weight: bold;
   border: none;
   border-radius: 5px;
+  padding: 10px 30px;
   cursor: pointer;
 `;
 

@@ -25,7 +25,7 @@ export default LocationButton;
 
 const Wrapper = styled.div`
   position: fixed;
-  bottom: 10%;
+  bottom: 11%;
   right: 8px;
   height: auto;
   display: flex;

@@ -35,13 +35,13 @@ const BottomSheet = ({ placeId }) => {
   const handleReviewUpload = () => {
     navigate(`/places/${placeId}/upload-review`);
   };
-  console.log('태그:', cafeData.tags.map((tag) => `#${tag}`).join(' '));
+
+  console.log('cafeData:', cafeData);
 
   return (
     <Wrapper>
       <Handle />
       <Content>
-        {/* HeaderWrapper 사용 */}
         <LineWrapper>
           <Header>{cafeData.placeName || '카페명'}</Header>
           <UploadButton onClick={handlePungUpload}>펑 추가</UploadButton>
@@ -50,14 +50,13 @@ const BottomSheet = ({ placeId }) => {
           <>{cafeData.address || ' '}</>
           <div style={{ marginBottom: '20px' }}></div>
           <LineWrapper>
-            태그{' '}
             {cafeData.tags ? cafeData.tags.map((tag) => `#${tag}`).join(' ') : '태그 정보 없음'}
           </LineWrapper>
           {cafeData.representativePung && (
             <img
               src={`${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${cafeData.representativePung.imageId}`}
               alt="대표 사진"
-              width="100%"
+              width="40%"
             />
           )}
           <div style={{ marginBottom: '20px' }}></div>
@@ -66,9 +65,11 @@ const BottomSheet = ({ placeId }) => {
             <UploadButton onClick={handleReviewUpload}>후기 남기기</UploadButton>
           </LineWrapper>
           {cafeData.reviews?.reviews.map((review) => (
-            <div key={review.reviewId}>
-              <p>{review.text}</p>
+            <div key={review.reviewId} style={{ marginBottom: '10px' }}>
+              <h6>{review.userId}</h6>
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
+              <br />
+              <p>{review.text}</p>
             </div>
           ))}
         </div>
@@ -82,8 +83,8 @@ export default BottomSheet;
 const Wrapper = styled.div`
   display: flex;
   position: fixed;
-  bottom: 8%;
-  height: 50%;
+  bottom: 10%;
+  top: 50%;
   left: 0;
   width: 100%;
   background-color: white;
@@ -123,8 +124,9 @@ const Header = styled.div`
 `;
 
 const UploadButton = styled.button`
-  background-color: #ffde59;
-  color: #333;
+  background-color: #6398f2;
+  color: white;
+  font-weight: bold;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;

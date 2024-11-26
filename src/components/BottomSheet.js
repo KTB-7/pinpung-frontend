@@ -52,21 +52,25 @@ const BottomSheet = ({ placeId }) => {
           <LineWrapper>
             {cafeData.tags ? cafeData.tags.map((tag) => `#${tag}`).join(' ') : '태그 정보 없음'}
           </LineWrapper>
-          {cafeData.representativePung && (
+          {/* {cafeData.representativePung && (
             <img
               src={`${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${cafeData.representativePung.imageId}`}
               alt="대표 사진"
               width="40%"
             />
-          )}
+          )} */}
           <div style={{ marginBottom: '20px' }}></div>
           <LineWrapper>
             <Header>후기</Header>
             <UploadButton onClick={handleReviewUpload}>후기 남기기</UploadButton>
           </LineWrapper>
           {cafeData.reviews?.reviews.map((review) => (
-            <div key={review.reviewId} style={{ marginBottom: '10px' }}>
-              <h6>{review.userId}</h6>
+            <div
+              key={review.reviewId}
+              style={{ borderTop: '1px solid lightgray', marginBottom: '10px' }}
+            >
+              <br />
+              <h6>{review.userName}</h6>
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
               <br />
               <p>{review.text}</p>

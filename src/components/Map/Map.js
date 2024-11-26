@@ -118,7 +118,12 @@ const Map = () => {
   };
 
   return (
-    <div ref={mapRef} id="map" style={{ width: '100vw', height: '92vh' }} onClick={handleMapClick}>
+    <div
+      ref={mapRef}
+      id="map"
+      style={{ position: 'absolute', width: '100vw', height: '92vh', 'z-index': 1 }}
+      onClick={handleMapClick}
+    >
       {mapInstance.current && (
         <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
       )}

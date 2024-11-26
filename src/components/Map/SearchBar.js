@@ -1,32 +1,30 @@
-import styled from 'styled-components';
+import React from 'react';
+import { Form } from 'react-bootstrap';
 
 const SearchBar = ({ onSearchBarClick }) => {
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      onSearchBarClick(event.target.value);
+    }
+  };
+
   return (
-    <SearchBarWrapper onClick={onSearchBarClick}>
-      <Input type="text" placeholder="검색..." />
-    </SearchBarWrapper>
+    <div
+      style={{ position: 'absolute', top: '0', left: '0', right: '0', margin: '0.5rem', zIndex: 2 }}
+    >
+      <Form className="d-flex" onClick={onSearchBarClick}>
+        <Form.Control
+          type="search"
+          placeholder="검색..."
+          className="me-2"
+          aria-label="Search"
+          style={{ height: '45px', flex: 1 }}
+          onKeyDown={handleKeyDown}
+        />
+      </Form>
+    </div>
   );
 };
 
 export default SearchBar;
-
-const SearchBarWrapper = styled.div`
-  width: 94%;
-  margin: 3% auto;
-  position: relative;
-  top: 0;
-  height: 8%;
-  display: flex;
-  align-items: center;
-  z-index: 2;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 100%;
-  padding: 0.5em;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-sizing: border-box;
-  font-size: 1rem;
-`;

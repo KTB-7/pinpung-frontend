@@ -121,7 +121,7 @@ const Map = () => {
     <div
       ref={mapRef}
       id="map"
-      style={{ position: 'absolute', width: '100vw', height: '92vh', 'z-index': 1 }}
+      style={{ position: 'absolute', width: '100vw', height: '90vh', 'z-index': 1 }}
       onClick={handleMapClick}
     >
       {mapInstance.current && (

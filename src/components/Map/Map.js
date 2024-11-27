@@ -6,12 +6,14 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserLocation } from '../../api/locationApi';
 import { fetchNearbyCafes } from '../../api/placesApi';
+import useStore from '../../store/store';
 import CafeMarker from './CafeMarker';
 import { debounce } from 'lodash';
 
 const Map = () => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
+  const userInfo = useStore((state) => state.userInfo);
   const [userLocation, setUserLocation] = useState({ latitude: 37.400113, longitude: 127.106766 });
   const [cafes, setCafes] = useState([]);
   const [level, setLevel] = useState(3);
@@ -95,7 +97,7 @@ const Map = () => {
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
 
-      fetchNearbyCafes(sw.getLng(), sw.getLat(), ne.getLng(), ne.getLat())
+      fetchNearbyCafes(19, sw.getLng(), sw.getLat(), ne.getLng(), ne.getLat())
         .then((data) => setCafes(data.places))
         .catch((error) => console.error('카페 목록 가져오기 실패:', error));
     }
@@ -121,7 +123,7 @@ const Map = () => {
     <div
       ref={mapRef}
       id="map"
-      style={{ position: 'absolute', width: '100vw', height: '90vh', 'z-index': 1 }}
+      style={{ position: 'absolute', width: '100vw', height: '90vh', zIndex: 1 }}
       onClick={handleMapClick}
     >
       {mapInstance.current && (

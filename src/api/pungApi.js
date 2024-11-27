@@ -18,8 +18,8 @@ export const addPung = async (userId, placeId, imageWithText, pureImage, text) =
 
   data.append('userId', userId);
   data.append('placeId', placeId);
-  data.append('imageWithText', imageWithText); // 이미지 파일 객체
-  data.append('pureImage', pureImage); // 순수 이미지 파일 객체
+  data.append('imageWithText', imageWithText);
+  data.append('pureImage', pureImage);
   data.append('text', text);
 
   try {

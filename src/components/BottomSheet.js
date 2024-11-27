@@ -5,6 +5,8 @@ import { fetchCafeDetails } from '../api/placesApi';
 import useStore from '../store/store';
 import styled from 'styled-components';
 
+const S3_URL = process.env.REACT_APP_S3_BASE_URL;
+
 const BottomSheet = ({ placeId }) => {
   const setSelectedPlaceName = useStore((state) => state.setSelectedPlaceName);
   const [cafeData, setCafeData] = useState(null);
@@ -54,7 +56,7 @@ const BottomSheet = ({ placeId }) => {
           </LineWrapper>
           {/* {cafeData.representativePung && (
             <img
-              src={`${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${cafeData.representativePung.imageId}`}
+              src={`${S3_URL}/uploaded-images/${cafeData.representativePung.imageId}`}
               alt="대표 사진"
               width="40%"
             />
@@ -74,6 +76,14 @@ const BottomSheet = ({ placeId }) => {
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
               <br />
               <p>{review.text}</p>
+              <p>
+                {' '}
+                <img
+                  src={`${S3_URL}/uploaded-images/${review.imageId}`}
+                  alt="리뷰 사진"
+                  style={{ height: '20vh' }}
+                />
+              </p>
             </div>
           ))}
         </div>

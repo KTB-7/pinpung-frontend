@@ -1,0 +1,24 @@
+.marker-wrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+}
+
+.marker-wrapper.hasPung:not(.byFriend) {
+  border: 5px solid #6bb3ff;
+  border-radius: 50%;
+}
+
+.marker-wrapper.byFriend {
+  border: 5px solid #a790f8; /* 보라색 테두리 */
+  border-radius: 50%;
+}
+
+.marker-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}

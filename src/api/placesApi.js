@@ -1,11 +1,11 @@
-import { publicInstance } from './axiosInstance';
+import { securedInstance } from './axiosInstance';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 // 사용자 주변 카페들 불러오기
 export const fetchNearbyCafes = async (userId, swLng, swLat, neLng, neLat) => {
   try {
-    const response = await publicInstance.get(`${API_URL}/api/places/nearby`, {
+    const response = await securedInstance.get(`${API_URL}/api/places/nearby`, {
       params: {
         userId,
         swLng,
@@ -23,7 +23,7 @@ export const fetchNearbyCafes = async (userId, swLng, swLat, neLng, neLat) => {
 // 카페 세부정보 불러오기
 export const fetchCafeDetails = async (placeId) => {
   try {
-    const response = await publicInstance.get(`${API_URL}/api/places/${placeId}`);
+    const response = await securedInstance.get(`${API_URL}/api/places/${placeId}`);
 
     return response.data;
   } catch (error) {

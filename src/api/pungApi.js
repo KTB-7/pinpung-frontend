@@ -1,10 +1,10 @@
-import { securedInstance, publicInstance } from './axiosInstance';
+import { securedInstance } from './axiosInstance';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export const fetchPungs = async (placeId, page) => {
   try {
-    const response = await publicInstance.get(`${API_URL}/api/pungs/${placeId}`, page);
+    const response = await securedInstance.get(`${API_URL}/api/pungs/${placeId}`, page);
 
     return response.data;
   } catch (error) {

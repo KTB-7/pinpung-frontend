@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import useStore from '../store/store';
 import styled from 'styled-components';
 import kakaoLoginImage from '../assets/images/kakao_login_medium_narrow.png';
 

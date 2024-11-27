@@ -14,7 +14,7 @@ export const addReview = async (userId, placeId, text, image) => {
   }
 
   try {
-    const response = await securedInstance.post(`${API_URL}/api/reviews/upload`, data, {
+    const response = await securedInstance.post(`${API_URL}/api/reviews`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -40,7 +40,7 @@ export const modifyReview = async (userId, placeId, reviewId, text, image) => {
   }
 
   try {
-    const response = await securedInstance.patch(`${API_URL}/api/reviews/modify`, data, {
+    const response = await securedInstance.patch(`${API_URL}/api/reviews`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -61,7 +61,7 @@ export const deleteReview = async (userId, placeId, reviewId) => {
   data.append('reviewId', reviewId);
 
   try {
-    const response = await securedInstance.delete(`${API_URL}/api/reviews/delete`, data, {
+    const response = await securedInstance.delete(`${API_URL}/api/reviews`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

@@ -10,7 +10,7 @@ export const addReview = async (userId, placeId, text, image) => {
   data.append('text', text);
 
   if (image) {
-    data.append('image', image);
+    data.append('reviewImage', image);
   }
 
   try {

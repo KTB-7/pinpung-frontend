@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
-import useStore from '../store/store';
 import useAuthStore from '../store/auth';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const API_URL = `${process.env.REACT_APP_API_URL}`;
 
 const Profile = () => {
   const { accessToken, clearAuth } = useAuthStore();
-  const setShowMap = useStore((state) => state.setShowMap);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 페이지 로드 시 맵 숨기기
-    setShowMap(false);
+    //setShowMap(false);
 
     // 인증되지 않은 경우 로그인 리다이렉트
     if (!accessToken) {
@@ -20,15 +20,20 @@ const Profile = () => {
     }
 
     // 페이지 떠날 때 맵 보이도록 설정
-    return () => {
-      setShowMap(true);
-    };
-  }, [accessToken, setShowMap]);
+    // return () => {
+    //   setShowMap(true);
+    // };
+  }, [accessToken]);
 
   const handleLogout = () => {
-    //window.location.href = `${API_URL}/logout`;
-    window.location.href = '/';
-    clearAuth();
+    try {
+      window.location.href = `${API_URL}/logout`;
+
+      clearAuth();
+      navigate('/logout-success');
+    } catch (error) {
+      console.log('로그아웃에 실패했습니다.');
+    }
   };
 
   return (
@@ -47,10 +52,12 @@ const Wrapper = styled.div`
   display: flex;
   position: fixed;
   width: 100%;
+  height: 100%;
   background-color: white;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 `;
 
 // const LineWrapper = styled.div`

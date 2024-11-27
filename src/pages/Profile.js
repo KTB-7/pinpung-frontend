@@ -1,28 +1,24 @@
 import { useEffect } from 'react';
 import useAuthStore from '../store/auth';
+import useStore from '../store/store';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const API_URL = `${process.env.REACT_APP_API_URL}`;
 
 const Profile = () => {
-  const { accessToken, clearAuth } = useAuthStore();
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const userInfo = useStore((state) => state.userInfo);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 페이지 로드 시 맵 숨기기
-    //setShowMap(false);
-
     // 인증되지 않은 경우 로그인 리다이렉트
     if (!accessToken) {
       window.location.href = `${API_URL}/oauth2/authorization/kakao`;
       return;
     }
-
-    // 페이지 떠날 때 맵 보이도록 설정
-    // return () => {
-    //   setShowMap(true);
-    // };
   }, [accessToken]);
 
   const handleLogout = () => {
@@ -38,10 +34,12 @@ const Profile = () => {
 
   return (
     <Wrapper>
-      <h1>User Info</h1>
-      <button onClick={handleLogout} type="button" className="btn btn-primary">
-        로그아웃
-      </button>
+      <Content>
+        <LineWrapper>
+          <Header>{userInfo.userName || ' '}</Header>
+          <UploadButton onClick={handleLogout}>로그아웃</UploadButton>
+        </LineWrapper>
+      </Content>
     </Wrapper>
   );
 };
@@ -60,29 +58,30 @@ const Wrapper = styled.div`
   z-index: 2;
 `;
 
-// const LineWrapper = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-bottom: 10px;
-// `;
+const LineWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+`;
 
-// const Content = styled.div`
-//   padding: 20px;
-//   overflow-y: auto;
-//   flex: 1;
-// `;
+const Content = styled.div`
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+`;
 
-// const DraggableHandle = styled.div`
-//   width: 40px;
-//   height: 6px;
-//   background-color: #ccc;
-//   border-radius: 3px;
-//   margin: 10px auto;
-//   cursor: grab;
-// `;
+const Header = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+`;
 
-// const Header = styled.div`
-//   font-size: 20px;
-//   font-weight: bold;
-// `;
+const UploadButton = styled.button`
+  background-color: #6398f2;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+`;

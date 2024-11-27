@@ -23,7 +23,7 @@ export const addPung = async (userId, placeId, imageWithText, pureImage, text) =
   data.append('text', text);
 
   try {
-    const response = await securedInstance.post(`${API_URL}/api/pungs/upload`, data, {
+    const response = await securedInstance.post(`${API_URL}/api/pungs`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

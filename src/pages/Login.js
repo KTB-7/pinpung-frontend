@@ -4,23 +4,10 @@ import styled from 'styled-components';
 import kakaoLoginImage from '../assets/images/kakao_login_medium_narrow.png';
 
 const Login = () => {
-  const setShowMap = useStore((state) => state.setShowMap);
-
-  //console.log('accessToken', accessToken);
   const handleLogin = () => {
     // 백엔드 OAuth2 인증 엔드포인트로 리다이렉트
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
-
-  useEffect(() => {
-    // 페이지 로드 시 맵 숨기기
-    setShowMap(false);
-
-    // 페이지 떠날 때 맵 보이도록 설정
-    return () => {
-      setShowMap(true);
-    };
-  }, [setShowMap]);
 
   return (
     <Wrapper>
@@ -37,7 +24,9 @@ const Wrapper = styled.div`
   position: fixed;
   width: 100vw;
   height: 100vh;
+  background-color: white;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 `;

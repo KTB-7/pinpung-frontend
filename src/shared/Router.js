@@ -18,7 +18,15 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
         <Route path="/places/:placeId" element={<PlaceOverview />} />
         <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />
         <Route path="/places/:placeId/upload-review" element={<UploadReview />} />

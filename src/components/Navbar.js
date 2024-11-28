@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import useStore from '../store/store';
 import styled from 'styled-components';
 import HomeIcon from '../assets/icons/home.svg';
-import AddIcon from '../assets/icons/add.svg';
+import AddIcon from '../assets/icons/add-pung.png';
 import ProfileIcon from '../assets/icons/profile.svg';
 
 const Navbar = () => {
@@ -16,17 +16,17 @@ const Navbar = () => {
       <Menu>
         <li>
           <IconLink to="/">
-            <img src={HomeIcon} alt="Home" />
+            <img src={HomeIcon} alt="Home" style={{ marginTop: '17px', width: '30px' }} />
           </IconLink>
         </li>
         <li>
           <IconLink to="/add-pung">
-            <img src={AddIcon} alt="Add" />
+            <img src={AddIcon} alt="Add" style={{ position: 'relative', bottom: '20px' }} />
           </IconLink>
         </li>
         <li>
           <IconLink to="/profile">
-            <img src={ProfileIcon} alt="profile" />
+            <img src={ProfileIcon} alt="profile" style={{ marginTop: '19px', width: '32px' }} />
           </IconLink>
         </li>
       </Menu>
@@ -52,13 +52,11 @@ const Menu = styled.ul`
   display: flex;
   justify-content: space-around;
   width: 100%;
-  max-width: 500px;
   padding: 0;
-  margin: 0;
+  margin: 0 25px;
 `;
 
 const IconLink = styled(Link)`
-  font-size: 24px;
   text-decoration: none;
   color: #333;
 

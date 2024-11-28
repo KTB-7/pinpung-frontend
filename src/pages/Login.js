@@ -9,7 +9,7 @@ const Login = () => {
 
   return (
     <Wrapper>
-      <h2>로그인이 필요합니다.</h2>
+      <h2>로그인하고 핑펑에서 카페 추천을 받아보세요.</h2>
       <img src={kakaoLoginImage} alt="카카오 로그인" onClick={handleLogin} />
     </Wrapper>
   );

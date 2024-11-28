@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import useAuthStore from '../store/auth';
-import useStore from '../store/store';
 import { useNavigate } from 'react-router-dom';
+import { fetchMyProfilePungs, fetchMyProfileReviews } from '../api/profileApi';
 import styled from 'styled-components';
 
 const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -9,7 +9,10 @@ const API_URL = `${process.env.REACT_APP_API_URL}`;
 const Profile = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
   const clearAuth = useAuthStore((state) => state.clearAuth);
-  const userInfo = useStore((state) => state.userInfo);
+  const userInfo = useAuthStore((state) => state.userInfo);
+  const [activeTab, setActiveTab] = useState('pungs'); // 'pungs' 또는 'reviews'
+  const [profileData, setProfileData] = useState(null);
+  const [contentData, setContentData] = useState([]);
 
   const navigate = useNavigate();
 
@@ -20,6 +23,24 @@ const Profile = () => {
       return;
     }
   }, [accessToken]);
+
+  useEffect(() => {
+    if (activeTab === 'pungs') {
+      fetchMyProfilePungs()
+        .then((data) => {
+          setProfileData(data.defaultProfile);
+          setContentData(data.pungs);
+        })
+        .catch((error) => console.error('펑 데이터를 불러오는 데 실패했습니다:', error));
+    } else if (activeTab === 'reviews') {
+      fetchMyProfileReviews()
+        .then((data) => {
+          setProfileData(data.defaultProfile);
+          setContentData(data.reviews);
+        })
+        .catch((error) => console.error('리뷰 데이터를 불러오는 데 실패했습니다:', error));
+    }
+  }, [activeTab]);
 
   const handleLogout = () => {
     try {
@@ -34,11 +55,33 @@ const Profile = () => {
 
   return (
     <Wrapper>
+      <HeaderWrapper>
+        <Header>{userInfo?.userName || ' '}</Header>
+        <UploadButton onClick={handleLogout}>로그아웃</UploadButton>
+      </HeaderWrapper>
+      <TabWrapper>
+        g
+        <TabButton isActive={activeTab === 'pungs'} onClick={() => setActiveTab('pungs')}>
+          펑
+        </TabButton>
+        <TabButton isActive={activeTab === 'reviews'} onClick={() => setActiveTab('reviews')}>
+          리뷰
+        </TabButton>
+      </TabWrapper>
       <Content>
-        <LineWrapper>
-          <Header>{userInfo.userName || ' '}</Header>
-          <UploadButton onClick={handleLogout}>로그아웃</UploadButton>
-        </LineWrapper>
+        {profileData && (
+          <ProfileInfo>
+            <p>팔로워 수: {profileData.followerCount}</p>
+            <p>팔로잉 수: {profileData.followingCount}</p>
+          </ProfileInfo>
+        )}
+        <ItemList>
+          {contentData.map((item, index) => (
+            <Item key={index}>
+              {activeTab === 'pungs' ? <p>펑 ID: {item.pungId}</p> : <p>리뷰: {item.reviewText}</p>}
+            </Item>
+          ))}
+        </ItemList>
       </Content>
     </Wrapper>
   );
@@ -47,28 +90,20 @@ const Profile = () => {
 export default Profile;
 
 const Wrapper = styled.div`
-  display: flex;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
+  padding-top: 18%;
 `;
 
-const LineWrapper = styled.div`
+const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-`;
-
-const Content = styled.div`
   padding: 20px;
-  overflow-y: auto;
-  flex: 1;
+  background-color: white;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  height: 18%;
+  z-index: 2;
 `;
 
 const Header = styled.div`
@@ -85,3 +120,86 @@ const UploadButton = styled.button`
   padding: 5px 10px;
   cursor: pointer;
 `;
+
+const TabWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 18%;
+  background-color: #f5f5f5;
+  padding: 10px 0;
+`;
+
+const TabButton = styled.button`
+  background-color: ${(props) => (props.isActive ? '#6398f2' : 'transparent')};
+  color: ${(props) => (props.isActive ? 'white' : 'black')};
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    background-color: #6398f2;
+    color: white;
+  }
+`;
+
+const Content = styled.div`
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+`;
+
+const ProfileInfo = styled.div`
+  margin-bottom: 20px;
+`;
+
+const ItemList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Item = styled.div`
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+`;
+
+// const Wrapper = styled.div`
+//   display: flex;
+//   position: fixed;
+//   width: 100%;
+//   height: 18%;
+//   background-color: white;
+//   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+//   flex-direction: column;
+//   z-index: 2;
+// `;
+
+// const LineWrapper = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin-bottom: 10px;
+// `;
+
+// const Content = styled.div`
+//   padding: 20px;
+//   overflow-y: auto;
+//   flex: 1;
+// `;
+
+// const Header = styled.div`
+//   font-size: 20px;
+//   font-weight: bold;
+// `;
+
+// const UploadButton = styled.button`
+//   background-color: #6398f2;
+//   color: white;
+//   font-weight: bold;
+//   border: none;
+//   border-radius: 5px;
+//   padding: 5px 10px;
+//   cursor: pointer;
+// `;

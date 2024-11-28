@@ -106,7 +106,7 @@ const Wrapper = styled.div`
   border-radius: 20px 20px 0 0;
   transition: height 0.3s ease-in-out;
   overflow: hidden;
-  z-index: 10;
+  z-index: 3;
   flex-direction: column;
 `;
 

@@ -5,6 +5,7 @@ import { fetchMyProfilePungs, fetchMyProfileReviews } from '../api/profileApi';
 import styled from 'styled-components';
 
 const API_URL = `${process.env.REACT_APP_API_URL}`;
+const S3_URL = `${process.env.REACT_APP_S3_BASE_URL}`;
 
 const Profile = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -26,19 +27,23 @@ const Profile = () => {
 
   useEffect(() => {
     if (activeTab === 'pungs') {
-      fetchMyProfilePungs()
+      fetchMyProfilePungs(userInfo.userId)
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.pungs);
         })
         .catch((error) => console.error('펑 데이터를 불러오는 데 실패했습니다:', error));
+
+      // console.log('pungs contentData:', contentData);
     } else if (activeTab === 'reviews') {
-      fetchMyProfileReviews()
+      fetchMyProfileReviews(userInfo.userId)
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.reviews);
         })
         .catch((error) => console.error('리뷰 데이터를 불러오는 데 실패했습니다:', error));
+
+      // console.log('reviews contendData:', contentData);
     }
   }, [activeTab]);
 
@@ -55,30 +60,44 @@ const Profile = () => {
 
   return (
     <Wrapper>
-      <HeaderWrapper>
-        <Header>{userInfo?.userName || ' '}</Header>
-        <UploadButton onClick={handleLogout}>로그아웃</UploadButton>
-      </HeaderWrapper>
+      <ProfileWrapper>
+        {' '}
+        <LineWrapper>
+          <Header>{userInfo?.userName || ' '}</Header>
+          <UploadButton onClick={handleLogout}>로그아웃</UploadButton>
+        </LineWrapper>
+        <LineWrapper>
+          {profileData && (
+            <LineWrapper>
+              <p>팔로워 수: {profileData.followerCount}</p>
+              <p>팔로잉 수: {profileData.followingCount}</p>
+            </LineWrapper>
+          )}
+        </LineWrapper>
+      </ProfileWrapper>
       <TabWrapper>
-        g
-        <TabButton isActive={activeTab === 'pungs'} onClick={() => setActiveTab('pungs')}>
+        <TabButton isactive={activeTab === 'pungs'} onClick={() => setActiveTab('pungs')}>
           펑
         </TabButton>
-        <TabButton isActive={activeTab === 'reviews'} onClick={() => setActiveTab('reviews')}>
+        <TabButton isactive={activeTab === 'reviews'} onClick={() => setActiveTab('reviews')}>
           리뷰
         </TabButton>
       </TabWrapper>
       <Content>
-        {profileData && (
-          <ProfileInfo>
-            <p>팔로워 수: {profileData.followerCount}</p>
-            <p>팔로잉 수: {profileData.followingCount}</p>
-          </ProfileInfo>
-        )}
         <ItemList>
           {contentData.map((item, index) => (
             <Item key={index}>
-              {activeTab === 'pungs' ? <p>펑 ID: {item.pungId}</p> : <p>리뷰: {item.reviewText}</p>}
+              {activeTab === 'pungs' ? (
+                <p>
+                  <img
+                    src={`${S3_URL}/uploaded-images/${item.imageId}`}
+                    alt="펑 사진"
+                    width="30%"
+                  />
+                </p>
+              ) : (
+                <p>{item.reviewText}</p>
+              )}
             </Item>
           ))}
         </ItemList>
@@ -90,20 +109,25 @@ const Profile = () => {
 export default Profile;
 
 const Wrapper = styled.div`
-  padding-top: 18%;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  z-index: 2;
 `;
 
-const HeaderWrapper = styled.div`
+const LineWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
+`;
+
+const ProfileWrapper = styled.div`
   padding: 20px;
-  background-color: white;
-  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  width: 100%;
-  height: 18%;
-  z-index: 2;
+  flex: 1;
 `;
 
 const Header = styled.div`
@@ -124,14 +148,13 @@ const UploadButton = styled.button`
 const TabWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 18%;
   background-color: #f5f5f5;
   padding: 10px 0;
 `;
 
 const TabButton = styled.button`
-  background-color: ${(props) => (props.isActive ? '#6398f2' : 'transparent')};
-  color: ${(props) => (props.isActive ? 'white' : 'black')};
+  background-color: ${(props) => (props.isactive ? '#6398f2' : 'transparent')};
+  color: ${(props) => (props.isactive ? 'white' : 'black')};
   border: none;
   padding: 10px 20px;
   cursor: pointer;
@@ -174,19 +197,6 @@ const Item = styled.div`
 //   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
 //   flex-direction: column;
 //   z-index: 2;
-// `;
-
-// const LineWrapper = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-bottom: 10px;
-// `;
-
-// const Content = styled.div`
-//   padding: 20px;
-//   overflow-y: auto;
-//   flex: 1;
 // `;
 
 // const Header = styled.div`

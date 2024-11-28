@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import useStore from '../store/store';
 import styled from 'styled-components';
 import HomeIcon from '../assets/icons/home.svg';
-import AddIcon from '../assets/icons/add.svg';
+import AddIcon from '../assets/icons/add-pung.png';
 import ProfileIcon from '../assets/icons/profile.svg';
 
 const Navbar = () => {

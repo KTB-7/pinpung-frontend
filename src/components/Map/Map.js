@@ -96,8 +96,9 @@ const Map = () => {
     if (bounds) {
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
+      const userId = userInfo.userId;
 
-      fetchNearbyCafes(19, sw.getLng(), sw.getLat(), ne.getLng(), ne.getLat())
+      fetchNearbyCafes(userId, sw.getLng(), sw.getLat(), ne.getLng(), ne.getLat())
         .then((data) => setCafes(data.places))
         .catch((error) => console.error('카페 목록 가져오기 실패:', error));
     }

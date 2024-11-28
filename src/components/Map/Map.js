@@ -7,13 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import { getUserLocation } from '../../api/locationApi';
 import { fetchNearbyCafes } from '../../api/placesApi';
 import useStore from '../../store/store';
+import useAuthStore from '../../store/auth';
 import CafeMarker from './CafeMarker';
 import { debounce } from 'lodash';
 
 const Map = () => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
-  const userInfo = useStore((state) => state.userInfo);
+  const userInfo = useAuthStore((state) => state.userInfo);
+  const setCenter = useStore((state) => state.setCenter);
+
   const [userLocation, setUserLocation] = useState({ latitude: 37.400113, longitude: 127.106766 });
   const [cafes, setCafes] = useState([]);
   const [level, setLevel] = useState(3);
@@ -30,6 +33,7 @@ const Map = () => {
       .catch((error) => {
         console.error('위치 정보를 가져오는 중 오류 발생', error);
       });
+    setCenter({ latitude: userLocation.latitude, longitude: userLocation.longitude });
   }, []);
 
   // 맵 변경 이벤트 처리
@@ -124,7 +128,7 @@ const Map = () => {
     <div
       ref={mapRef}
       id="map"
-      style={{ position: 'absolute', width: '100vw', height: '90vh', zIndex: 1 }}
+      style={{ position: 'absolute', width: '100vw', height: '90vh' }}
       onClick={handleMapClick}
     >
       {mapInstance.current && (

@@ -70,9 +70,12 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
           map: map,
         });
 
-        // 마커 클릭 이벤트 등록
-        kakao.maps.event.addListener(customOverlay, 'click', () => {
-          onMarkerClick(place.placeId); // 클릭 시 선택된 카페 전달
+        // // 마커 클릭 이벤트 등록
+        // kakao.maps.event.addListener(customOverlay, 'click', () => {
+        //   onMarkerClick(place.placeId); // 클릭 시 선택된 카페 전달
+        // });
+        markerWrapper.addEventListener('click', () => {
+          onMarkerClick(place.placeId);
         });
 
         // 마커를 객체에 저장 (중복 방지)

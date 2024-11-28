@@ -9,7 +9,9 @@ const Login = () => {
 
   return (
     <Wrapper>
-      <h2>로그인하고 핑펑에서 카페 추천을 받아보세요.</h2>
+      <h2>로그인하고 핑펑에서</h2>
+      <h2>카페 추천을 받아보세요</h2>
+      <br />
       <img src={kakaoLoginImage} alt="카카오 로그인" onClick={handleLogin} />
     </Wrapper>
   );
@@ -22,6 +24,7 @@ const Wrapper = styled.div`
   position: fixed;
   width: 100vw;
   height: 100vh;
+  padding: 40px 40px;
   background-color: white;
   flex-direction: column;
   align-items: center;

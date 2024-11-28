@@ -47,14 +47,12 @@ const Profile = () => {
     }
   }, [activeTab]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
+      await clearAuth();
       window.location.href = `${API_URL}/logout`;
-
-      clearAuth();
-      navigate('/logout-success');
     } catch (error) {
-      console.log('로그아웃에 실패했습니다.');
+      console.error('로그아웃 처리 중 에러 발생:', error);
     }
   };
 

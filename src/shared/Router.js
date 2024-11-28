@@ -3,7 +3,7 @@ import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import OAuthCallback from '../pages/OAuthCallback';
 import Login from '../pages/Login';
-import Map from '../components/Map/Map';
+import MapLayout from '../components/Map/MapLayout';
 import Navbar from '../components/Navbar';
 import PlaceOverview from '../pages/PlaceOverview';
 import UploadPung from '../pages/UploadPung';
@@ -12,40 +12,27 @@ import PrivateRoute from './PrivateRoute';
 import useStore from '../store/store';
 
 const Router = () => {
-  const showMap = useStore((state) => state.showMap);
   const showNavbar = useStore((state) => state.showNavbar);
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-        <Route path="/places/:placeId" element={<PlaceOverview />} />
-        <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />
-        <Route path="/places/:placeId/upload-review" element={<UploadReview />} />
+        {/* PrivateRoute로 보호된 라우트 그룹 */}
+        <Route element={<PrivateRoute />}>
+          {/* MapLayout이 필요한 페이지 */}
+          <Route element={<MapLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/places/:placeId" element={<PlaceOverview />} />
+          </Route>
+          <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />
+          <Route path="/places/:placeId/upload-review" element={<UploadReview />} />
+        </Route>
+
+        {/* 비보호 라우트 */}
+        <Route path="/profile" element={<Profile />} />
         <Route path="/oauth/callback" element={<OAuthCallback />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <Profile />
-            </PrivateRoute>
-          }
-        />
       </Routes>
-      {showMap && (
-        <div style={{ position: 'relative' }}>
-          <Map />
-        </div>
-      )}
       {showNavbar && <Navbar />}
     </BrowserRouter>
   );

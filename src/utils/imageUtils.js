@@ -29,7 +29,8 @@ export const cropImage = async (file) => {
     };
 
     img.onerror = (error) => {
-      reject(new Error('이미지 로드 오류:', error));
+      console.error('Image failed to load:', error.message || error);
+      reject(new Error('이미지 로드 실패: ' + img.src));
     };
   });
 };

@@ -1,7 +1,38 @@
 import imageCompression from 'browser-image-compression';
 
+export const convertToWebP = async (file) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(
+              new File([blob], file.name.replace(/\.[^/.]+$/, '.webp'), { type: 'image/webp' }),
+            );
+          } else {
+            reject(new Error('WebP 변환 실패'));
+          }
+        },
+        'image/webp',
+        0.8, // 품질 설정
+      );
+    };
+
+    img.onerror = (error) => reject(new Error('이미지 로드 실패: ' + error.message));
+  });
+};
+
 export const cropImage = async (file) => {
-  //이미지의 가로 길이에 맞게 세로 길이까지 자르되, 가운데 부분으로 자르기
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.src = URL.createObjectURL(file);
@@ -16,34 +47,22 @@ export const cropImage = async (file) => {
       const offsetX = (img.width - size) / 2;
       const offsetY = (img.height - size) / 2;
 
-      // Draw the centered square crop
       ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, size, size);
 
-      canvas.toBlob((blob) => {
-        if (blob) {
-          resolve(new File([blob], file.name, { type: 'image/webp' }));
-        } else {
-          reject(new Error('이미지 크롭 중 블롭 변환 실패'));
-        }
-      }, 'image/webp');
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(new File([blob], file.name, { type: file.type })); // 원래 형식 유지
+          } else {
+            reject(new Error('이미지 크롭 중 블롭 변환 실패'));
+          }
+        },
+        file.type, // 원본 형식 유지
+      );
     };
 
-    img.onerror = (error) => {
-      console.error('Image failed to load:', error.message || error);
-      reject(new Error('이미지 로드 실패: ' + img.src));
-    };
+    img.onerror = (error) => reject(new Error('이미지 로드 실패: ' + error.message));
   });
-};
-
-export const compressAndPadImage = async (file) => {
-  try {
-    const compressedFile = await compressImage(file);
-    const paddedImage = await addPadding(compressedFile);
-
-    return paddedImage;
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 // 이미지 압축 함수
@@ -89,17 +108,18 @@ export const addPadding = async (file) => {
       const offsetY = (targetHeight - newHeight) / 2;
       ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
 
-      canvas.toBlob((blob) => {
-        if (blob) {
-          resolve(new File([blob], file.name, { type: 'image/webp' }));
-        } else {
-          reject(new Error('패딩 처리 중 블롭 변환 실패'));
-        }
-      }, 'image/webp');
-
-      img.onerror = (error) => {
-        reject(new Error('이미지 로드 오류:', error));
-      };
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(new File([blob], file.name, { type: file.type })); // 원래 형식 유지
+          } else {
+            reject(new Error('패딩 처리 중 블롭 변환 실패'));
+          }
+        },
+        file.type, // 원본 형식 유지
+      );
     };
+
+    img.onerror = (error) => reject(new Error('이미지 로드 실패: ' + error.message));
   });
 };

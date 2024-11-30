@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
 import useAuthStore from '../store/auth';
 import { addPung } from '../api/pungApi';
-import { compressAndPadImage } from '../utils/imageUtils';
+import { compressImage, addPadding, convertToWebP } from '../utils/imageUtils';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -27,7 +27,9 @@ const UploadPung = () => {
   const handleUpload = async () => {
     if (image) {
       try {
-        const finalImage = await compressAndPadImage(image);
+        const compressedFile = await compressImage(image); // 압축만 처리
+        const paddedFile = await addPadding(compressedFile); // 패딩 추가
+        const finalImage = await convertToWebP(paddedFile); // WebP로 변환
 
         addPung(userInfo.userId, placeId, finalImage, finalImage, text);
 

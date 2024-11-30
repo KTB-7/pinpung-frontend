@@ -13,19 +13,15 @@ export const convertToWebP = async (file) => {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
 
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            resolve(
-              new File([blob], file.name.replace(/\.[^/.]+$/, '.webp'), { type: 'image/webp' }),
-            );
-          } else {
-            reject(new Error('WebP 변환 실패'));
-          }
-        },
-        'image/webp',
-        0.8, // 품질 설정
-      );
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(
+            new File([blob], file.name.replace(/\.[^/.]+$/, '.webp'), { type: 'image/webp' }),
+          );
+        } else {
+          reject(new Error('WebP 변환 실패'));
+        }
+      }, 'image/webp');
     };
 
     img.onerror = (error) => reject(new Error('이미지 로드 실패: ' + error.message));

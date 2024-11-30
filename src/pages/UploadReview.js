@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
 import useAuthStore from '../store/auth';
 import { addReview } from '../api/reviewApi';
-import { compressImage } from '../utils/imageUtils';
+import { compressImage, convertToWebP } from '../utils/imageUtils';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -27,7 +27,8 @@ const UploadReview = () => {
   const handleUpload = async () => {
     if (image) {
       try {
-        const finalImage = await compressImage(image);
+        const compressedFile = await compressImage(image);
+        const finalImage = await convertToWebP(compressedFile);
 
         addReview(userInfo.userId, placeId, text, finalImage);
 

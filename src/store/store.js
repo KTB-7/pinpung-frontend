@@ -1,6 +1,7 @@
 /* Navbar와 BottomSheet 상태관리 */
 
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 const useStore = create(
   persist(

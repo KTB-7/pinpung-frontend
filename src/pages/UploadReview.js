@@ -25,17 +25,19 @@ const UploadReview = () => {
   };
 
   const handleUpload = async () => {
+    const finalImage = null;
+
     if (image) {
-      try {
-        const compressedFile = await compressImage(image);
-        const finalImage = await convertToWebP(compressedFile);
+      const compressedFile = await compressImage(image);
+      finalImage = await convertToWebP(compressedFile);
+    }
 
-        addReview(userInfo.userId, placeId, text, finalImage);
+    try {
+      addReview(userInfo.userId, placeId, text, finalImage);
 
-        navigate(-1);
-      } catch (error) {
-        console.log('리뷰 업로드 중 오류 발생:', error);
-      }
+      navigate(-1);
+    } catch (error) {
+      console.log('리뷰 업로드 중 오류 발생:', error);
     }
   };
 

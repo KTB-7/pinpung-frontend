@@ -73,7 +73,7 @@ const BottomSheet = ({ placeId }) => {
                 {' '}
                 {review.imageId && (
                   <img
-                    src={`${S3_URL}/uploaded-images/${review.imageId}`}
+                    src={`${S3_URL}/original-images/${review.imageId}`}
                     alt="리뷰 사진"
                     style={{ height: '20vh' }}
                   />

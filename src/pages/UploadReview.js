@@ -25,7 +25,7 @@ const UploadReview = () => {
   };
 
   const handleUpload = async () => {
-    const finalImage = null;
+    let finalImage = null;
 
     if (image) {
       const compressedFile = await compressImage(image);

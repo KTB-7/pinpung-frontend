@@ -13,4 +13,9 @@ const publicInstance = axios.create({
   timeout: 60000,
 });
 
-export { securedInstance, publicInstance };
+const refreshInstance = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+  withCredentials: true,
+});
+
+export { securedInstance, publicInstance, refreshInstance };

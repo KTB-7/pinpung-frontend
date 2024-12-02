@@ -54,13 +54,6 @@ const BottomSheet = ({ placeId }) => {
           <LineWrapper>
             {cafeData.tags ? cafeData.tags.map((tag) => `#${tag}`).join(' ') : '태그 정보 없음'}
           </LineWrapper>
-          {/* {cafeData.representativePung && (
-            <img
-              src={`${S3_URL}/uploaded-images/${cafeData.representativePung.imageId}`}
-              alt="대표 사진"
-              width="40%"
-            />
-          )} */}
           <div style={{ marginBottom: '20px' }}></div>
           <LineWrapper>
             <Header>후기</Header>
@@ -72,17 +65,19 @@ const BottomSheet = ({ placeId }) => {
               style={{ borderTop: '1px solid lightgray', marginBottom: '10px' }}
             >
               <br />
-              <h6>{review.userName}</h6>
+              <h6 style={{ 'font-weight': 'bold' }}>{review.userName}</h6>
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
               <br />
               <p>{review.text}</p>
               <p>
                 {' '}
-                <img
-                  src={`${S3_URL}/uploaded-images/${review.imageId}`}
-                  alt="리뷰 사진"
-                  style={{ height: '20vh' }}
-                />
+                {review.imageId && (
+                  <img
+                    src={`${S3_URL}/uploaded-images/${review.imageId}`}
+                    alt="리뷰 사진"
+                    style={{ height: '20vh' }}
+                  />
+                )}
               </p>
             </div>
           ))}

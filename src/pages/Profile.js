@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import useAuthStore from '../store/auth';
-import { useNavigate } from 'react-router-dom';
 import { fetchMyProfilePungs, fetchMyProfileReviews } from '../api/profileApi';
 import styled from 'styled-components';
 
@@ -14,8 +13,6 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('pungs'); // 'pungs' 또는 'reviews'
   const [profileData, setProfileData] = useState(null);
   const [contentData, setContentData] = useState([]);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     // 인증되지 않은 경우 로그인 리다이렉트
@@ -47,9 +44,9 @@ const Profile = () => {
     }
   }, [activeTab]);
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
-      await clearAuth();
+      clearAuth();
       window.location.href = `${API_URL}/logout`;
     } catch (error) {
       console.error('로그아웃 처리 중 에러 발생:', error);

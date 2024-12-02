@@ -1,8 +1,7 @@
 /* 인터셉터 설정 파일 */
 
-import { securedInstance } from '../api/axiosInstance';
+import { securedInstance, refreshInstance } from '../api/axiosInstance';
 import useAuthStore from '../store/auth';
-import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -14,9 +13,6 @@ export const setupRequestInterceptor = () => {
       config.headers['Cache-Control'] = 'no-cache';
       config.headers['Pragma'] = 'no-cache';
       config.headers['Expires'] = '0';
-
-      // 추가 보안 헤더
-      //config.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
 
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -41,7 +37,9 @@ export const setupRequestInterceptor = () => {
         originalRequest._retry = true;
         try {
           const userId = useAuthStore.getState().userId;
-          const refreshResponse = await axios.post(`${API_URL}/api/token/refresh`, { userId });
+          const refreshResponse = await refreshInstance.post(`${API_URL}/api/token/refresh`, {
+            userId,
+          });
           const { accessToken } = refreshResponse.data;
 
           // 상태 업데이트하고, 그 전 요청 다시 처리하자
@@ -51,7 +49,10 @@ export const setupRequestInterceptor = () => {
           return securedInstance(originalRequest);
         } catch (refreshError) {
           console.error('토큰 갱신 실패:', refreshError);
-          // TODO: 로그아웃시키고 로그인페이지로 돌아가게 처리
+
+          // 로그아웃시키고 로그인페이지로 돌아가게 처리
+          useAuthStore.getState().clearAuth();
+          window.location.href = '/login';
 
           return Promise.reject(refreshError);
         }

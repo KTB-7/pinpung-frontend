@@ -35,17 +35,23 @@ pipeline {
                     env.REACT_APP_KAKAO_MAP_KEY = kakaoKey
 
                     def apiUrl = sh(
-                        script: "aws ssm get-parameter --name '/pinpung/REACT_APP_API_URL' --region $REGION --with-decryption --query 'Parameter.Value' --output text",
+                        script: "aws ssm get-parameter --name '/pinpung/REACT_APP_API_URL' --region $REGION --query 'Parameter.Value' --output text",
                         returnStdout: true
                     ).trim()
                     env.REACT_APP_API_URL = apiUrl
+
+                    def s3Url = sh(
+                        script: "aws ssm get-parameter --name '/pinpung/REACT_APP_S3_BASE_URL' --region $REGION --query 'Parameter.Value' --output text",
+                        returnStdout: true
+                    ).trim()
+                    env.REACT_APP_S3_BASE_URL = s3Url
                 }
             }
         }
 
         stage('Build React App') {
             steps {
-                withEnv(["REACT_APP_KAKAO_MAP_KEY=${env.REACT_APP_KAKAO_MAP_KEY}", "REACT_APP_API_URL=${env.REACT_APP_API_URL}"]) {
+                withEnv(["REACT_APP_KAKAO_MAP_KEY=${env.REACT_APP_KAKAO_MAP_KEY}", "REACT_APP_API_URL=${env.REACT_APP_API_URL}", "REACT_APP_S3_BASE_URL=${env.REACT_APP_S3_BASE_URL}"]) {
                     sh 'CI=false npm run build'
                 }
             }

@@ -166,10 +166,6 @@ const Content = styled.div`
   flex: 1;
 `;
 
-const ProfileInfo = styled.div`
-  margin-bottom: 20px;
-`;
-
 const ItemList = styled.div`
   display: flex;
   flex-direction: column;
@@ -182,29 +178,3 @@ const Item = styled.div`
   border-radius: 5px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
 `;
-
-// const Wrapper = styled.div`
-//   display: flex;
-//   position: fixed;
-//   width: 100%;
-//   height: 18%;
-//   background-color: white;
-//   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
-//   flex-direction: column;
-//   z-index: 2;
-// `;
-
-// const Header = styled.div`
-//   font-size: 20px;
-//   font-weight: bold;
-// `;
-
-// const UploadButton = styled.button`
-//   background-color: #6398f2;
-//   color: white;
-//   font-weight: bold;
-//   border: none;
-//   border-radius: 5px;
-//   padding: 5px 10px;
-//   cursor: pointer;
-// `;

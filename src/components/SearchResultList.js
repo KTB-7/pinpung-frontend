@@ -8,12 +8,12 @@ import { Button, ListGroup, Card, Image } from 'react-bootstrap';
 const SearchResultList = ({}) => {
   const userId = useAuthStore((state) => state.userInfo?.userId);
   const bounds = useStore((state) => state.bounds);
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get('keyword');
   const sort = searchParams.get('sort') || 'accuracy';
 
-  // const [sortType, setSortType] = useState('accuracy'); // 정렬방식: 'accuracy' 또는 'distance'
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 리스트
 
   useEffect(() => {
@@ -49,8 +49,13 @@ const SearchResultList = ({}) => {
         console.error('검색 결과를 가져오는 데 실패했습니다.');
       }
     };
+
     fetchSearchResults();
   }, [sort, keyword, bounds, userId]);
+
+  const handleSortChange = (newSort) => {
+    navigate(`/search-results?keyword=${keyword}&sort${newSort}`);
+  };
 
   return (
     <div style={{ padding: '1rem' }}>
@@ -60,14 +65,14 @@ const SearchResultList = ({}) => {
       <div className="d-flex justify-content-center mb-3">
         <Button
           variant={sortType === 'accuracy' ? 'primary' : 'outline-primary'}
-          onClick={() => setSortType('accuracy')}
+          onClick={() => handleSortChange('accuracy')}
           style={{ marginRight: '1rem' }}
         >
           정확도순
         </Button>
         <Button
           variant={sortType === 'distance' ? 'primary' : 'outline-primary'}
-          onClick={() => setSortType('distance')}
+          onClick={() => handleSortChange('distance')}
         >
           거리순
         </Button>

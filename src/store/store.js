@@ -23,6 +23,8 @@ const useStore = create(
       setSelectedPlaceName: (placeName) => set({ selectedPlaceName: placeName }),
       selectedNavbar: 'home',
       setSelectedNavbar: (icon) => set({ selectedNavbar: icon }),
+      query: '',
+      setQuery: (query) => set({ query }),
     }),
     {
       name: 'app-storage',

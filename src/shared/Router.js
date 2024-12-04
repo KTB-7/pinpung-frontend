@@ -8,6 +8,7 @@ import Navbar from '../components/Navbar';
 import PlaceOverview from '../pages/PlaceOverview';
 import UploadPung from '../pages/UploadPung';
 import UploadReview from '../pages/UploadReview';
+import DefaultSearch from '../pages/DefaultSearch';
 import PrivateRoute from './PrivateRoute';
 import useStore from '../store/store';
 
@@ -26,6 +27,7 @@ const Router = () => {
           </Route>
           <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />
           <Route path="/places/:placeId/upload-review" element={<UploadReview />} />
+          <Route path="/search-results" element={<DefaultSearch />} />
         </Route>
 
         {/* 비보호 라우트 */}

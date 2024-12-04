@@ -54,7 +54,7 @@ const SearchResultList = ({}) => {
   }, [sort, keyword, bounds, userId]);
 
   const handleSortChange = (newSort) => {
-    navigate(`/search-results?keyword=${keyword}&sort${newSort}`);
+    navigate(`/search-results?keyword=${keyword}&sort=${newSort}`);
   };
 
   const handlePlaceClick = (placeId) => {

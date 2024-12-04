@@ -5,8 +5,9 @@ import useAuthStore from '../store/auth';
 import useStore from '../store/store';
 import { Button, ListGroup, Card, Image } from 'react-bootstrap';
 
-const SearchResultList = ({}) => {
+const SearchResultList = () => {
   const userId = useAuthStore((state) => state.userInfo?.userId);
+  const userLocation = useStore((state) => state.userLocation);
   const bounds = useStore((state) => state.bounds);
   const navigate = useNavigate();
 
@@ -58,8 +59,9 @@ const SearchResultList = ({}) => {
   };
 
   const handlePlaceClick = (placeId) => {
-    navigate(`/places/${placeId}`);
     //TODO: PlaceOverview로 가게하고, 그 장소 중심으로 두고 맵 렌더링
+
+    navigate(`/places/${placeId}`);
   };
 
   return (
@@ -69,14 +71,14 @@ const SearchResultList = ({}) => {
       {/* 정렬 버튼 */}
       <div className="d-flex justify-content-center mb-3">
         <Button
-          variant={sortType === 'accuracy' ? 'primary' : 'outline-primary'}
+          variant={sort === 'accuracy' ? 'primary' : 'outline-primary'}
           onClick={() => handleSortChange('accuracy')}
           style={{ marginRight: '1rem' }}
         >
           정확도순
         </Button>
         <Button
-          variant={sortType === 'distance' ? 'primary' : 'outline-primary'}
+          variant={sort === 'distance' ? 'primary' : 'outline-primary'}
           onClick={() => handleSortChange('distance')}
         >
           거리순

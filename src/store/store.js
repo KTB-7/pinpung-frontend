@@ -7,10 +7,10 @@ const useStore = create(
   persist(
     (set) => ({
       //persistent 상태
-      center: null,
-      setCenter: (location) => set({ center: location }),
-      mapRect: null,
-      setMapRect: (rect) => set({ mapRect: rect }),
+      userLocation: null,
+      setUserLocation: (location) => set({ userLocation: location }),
+      bounds: null,
+      setBounds: (rect) => set({ bounds: rect }),
 
       //메모리(렘) 상태
       showMap: true,
@@ -23,11 +23,13 @@ const useStore = create(
       setSelectedPlaceName: (placeName) => set({ selectedPlaceName: placeName }),
       selectedNavbar: 'home',
       setSelectedNavbar: (icon) => set({ selectedNavbar: icon }),
+      searchResults: [],
+      setSearchResults: (results) => set({ searchResults: results }),
     }),
     {
       name: 'app-storage',
       getStorage: () => localStorage,
-      partialize: (state) => ({ center: state.center, mapRect: state.mapRect }),
+      partialize: (state) => ({ userLocation: state.userLocation, bounds: state.bounds }),
     },
   ),
 );

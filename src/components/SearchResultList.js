@@ -57,6 +57,11 @@ const SearchResultList = ({}) => {
     navigate(`/search-results?keyword=${keyword}&sort${newSort}`);
   };
 
+  const handlePlaceClick = (placeId) => {
+    navigate(`/places/${placeId}`);
+    //TODO: PlaceOverview로 가게하고, 그 장소 중심으로 두고 맵 렌더링
+  };
+
   return (
     <div style={{ padding: '1rem' }}>
       <h5 style={{ textAlign: 'center', marginBottom: '1rem' }}>{keyword}</h5>
@@ -81,7 +86,11 @@ const SearchResultList = ({}) => {
       {/* 검색 결과 리스트 */}
       <ListGroup>
         {searchResults.map((place) => (
-          <ListGroup.Item key={place.placeId} className="mb-3">
+          <ListGroup.Item
+            key={place.placeId}
+            onClick={() => handlePlaceClick(place.placeId)}
+            className="mb-3"
+          >
             <Card>
               <Card.Body className="d-flex align-items-center">
                 {/* 이미지 */}

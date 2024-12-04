@@ -97,7 +97,7 @@ const SearchResultList = ({}) => {
                 <div style={{ marginRight: '1rem' }}>
                   {place.imageId ? (
                     <Image
-                      src={`${process.env.REACT_APP_S3_BASE_URL}/uploaded-images/${place.imageId}`}
+                      src={`${process.env.REACT_APP_S3_BASE_URL}/original-images/${place.imageId}`}
                       alt="장소 이미지"
                       style={{
                         width: '80px',

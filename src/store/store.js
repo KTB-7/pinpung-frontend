@@ -6,13 +6,12 @@ import { persist } from 'zustand/middleware';
 const useStore = create(
   persist(
     (set) => ({
-      //persistent 상태
+      //메모리(렘) 상태
       userLocation: null,
       setUserLocation: (location) => set({ userLocation: location }),
-      bounds: null,
-      setBounds: (rect) => set({ bounds: rect }),
+      mapRect: null,
+      setMapRect: (rect) => set({ mapRect: rect }),
 
-      //메모리(렘) 상태
       showMap: true,
       setShowMap: (show) => set({ showMap: show }),
       showNavbar: true,
@@ -26,11 +25,11 @@ const useStore = create(
       searchResults: [],
       setSearchResults: (results) => set({ searchResults: results }),
     }),
-    {
-      name: 'app-storage',
-      getStorage: () => localStorage,
-      partialize: (state) => ({ userLocation: state.userLocation, bounds: state.bounds }),
-    },
+    // {
+    //   name: 'app-storage',
+    //   getStorage: () => localStorage,
+    //   partialize: (state) => ({ userLocation: state.userLocation, mapRect: state.mapRect }),
+    // },
   ),
 );
 

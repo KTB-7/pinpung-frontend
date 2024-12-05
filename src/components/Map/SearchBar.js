@@ -25,21 +25,17 @@ const SearchBar = () => {
   };
 
   return (
-    <div
-      style={{ position: 'absolute', top: '0', left: '0', right: '0', margin: '0.5rem', zIndex: 2 }}
-    >
-      <Form className="d-flex" onClick={handleSearchBarClick}>
-        <Form.Control
-          type="search"
-          placeholder="검색..."
-          className="me-2"
-          aria-label="Search"
-          id="home-search-input"
-          style={{ height: '45px', flex: 1 }}
-          onKeyDown={handleSearch}
-        />
-      </Form>
-    </div>
+    <Form className="d-flex" onClick={handleSearchBarClick}>
+      <Form.Control
+        type="search"
+        placeholder="검색..."
+        className="me-2"
+        aria-label="Search"
+        id="home-search-input"
+        style={{ height: '45px', flex: 1 }}
+        onKeyDown={handleSearch}
+      />
+    </Form>
   );
 };
 

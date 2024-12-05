@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import useAuthStore from '../store/auth';
 import { fetchMyProfilePungs, fetchMyProfileReviews } from '../api/profileApi';
+import profileImg from '../assets/images/profile-img.png';
 import styled from 'styled-components';
 
 const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -56,19 +57,46 @@ const Profile = () => {
   return (
     <Wrapper>
       <ProfileWrapper>
-        {' '}
         <LineWrapper>
           <Header>{userInfo?.userName || ' '}</Header>
           <UploadButton onClick={handleLogout}>로그아웃</UploadButton>
         </LineWrapper>
-        <LineWrapper>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <img src={profileImg} style={{ height: '45px', marginTop: '8px' }} />
           {profileData && (
-            <LineWrapper>
-              <p>팔로워 수: {profileData.followerCount}</p>
-              <p>팔로잉 수: {profileData.followingCount}</p>
-            </LineWrapper>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '60%',
+                marginLeft: 'auto',
+                marginTop: '10px',
+              }}
+            >
+              <div>
+                펑
+                <br />
+                <div style={{ textAlign: 'center' }}>{profileData.pungCount}</div>
+              </div>
+              <div style={{ marginLeft: '20px' }}>
+                리뷰
+                <br />
+                <div style={{ textAlign: 'center' }}>{profileData.reviewCount}</div>
+              </div>
+              <div style={{ marginLeft: '20px' }}>
+                팔로워
+                <br />
+                <div style={{ textAlign: 'center' }}>{profileData.followerCount}</div>
+              </div>
+              <div style={{ marginLeft: '20px' }}>
+                팔로잉
+                <br />
+                <div style={{ textAlign: 'center' }}>{profileData.followingCount}</div>
+              </div>
+            </div>
           )}
-        </LineWrapper>
+        </div>
       </ProfileWrapper>
       <TabWrapper>
         <TabButton isactive={activeTab === 'pungs'} onClick={() => setActiveTab('pungs')}>
@@ -91,7 +119,16 @@ const Profile = () => {
                   />
                 </p>
               ) : (
-                <p>{item.reviewText}</p>
+                <div>
+                  {item.imageId && (
+                    <img
+                      src={`${S3_URL}/original-images/${item.imageId}`}
+                      alt="리뷰 사진"
+                      style={{ height: '15vh' }}
+                    />
+                  )}
+                  <p>{item.reviewText}</p>
+                </div>
               )}
             </Item>
           ))}
@@ -105,7 +142,7 @@ export default Profile;
 
 const Wrapper = styled.div`
   display: flex;
-  position: fixed;
+  position: relative;
   width: 100%;
   background-color: white;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
@@ -161,7 +198,7 @@ const TabButton = styled.button`
 `;
 
 const Content = styled.div`
-  padding: 20px;
+  padding: 10px;
   overflow-y: auto;
   flex: 1;
 `;

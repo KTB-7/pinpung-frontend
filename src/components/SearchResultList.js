@@ -65,28 +65,34 @@ const SearchResultList = () => {
   };
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h5 style={{ textAlign: 'center', marginBottom: '1rem' }}>{keyword}</h5>
-
+    <div>
       {/* 정렬 버튼 */}
-      <div className="d-flex justify-content-center mb-3">
+      <div
+        className="d-flex justify-content-left mb-3"
+        style={{
+          marginTop: '0.5rem',
+        }}
+      >
         <Button
-          variant={sort === 'accuracy' ? 'primary' : 'outline-primary'}
+          variant={sort === 'accuracy' ? 'secondary' : 'outline-secondary'}
           onClick={() => handleSortChange('accuracy')}
-          style={{ marginRight: '1rem' }}
+          style={{ marginRight: '0.5rem', height: '30px' }}
+          size="sm" // 버튼 크기 줄이기
         >
           정확도순
         </Button>
         <Button
-          variant={sort === 'distance' ? 'primary' : 'outline-primary'}
+          variant={sort === 'distance' ? 'secondary' : 'outline-secondary'}
           onClick={() => handleSortChange('distance')}
+          style={{ height: '30px' }}
+          size="sm"
         >
           거리순
         </Button>
       </div>
 
       {/* 검색 결과 리스트 */}
-      <ListGroup>
+      <ListGroup style={{ overflowY: 'auto', height: 'calc(100vh - 120px)' }}>
         {searchResults.map((place) => (
           <ListGroup.Item
             key={place.placeId}

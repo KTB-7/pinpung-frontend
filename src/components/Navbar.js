@@ -16,7 +16,7 @@ const Navbar = () => {
       <Menu>
         <li>
           <IconLink to="/">
-            <img src={HomeIcon} alt="Home" style={{ marginTop: '19px', width: '28px' }} />
+            <img src={HomeIcon} alt="Home" style={{ marginTop: '19px', height: '53px' }} />
           </IconLink>
         </li>
         <li>
@@ -26,7 +26,7 @@ const Navbar = () => {
         </li>
         <li>
           <IconLink to="/profile">
-            <img src={ProfileIcon} alt="profile" style={{ marginTop: '19px', width: '30px' }} />
+            <img src={ProfileIcon} alt="profile" style={{ marginTop: '19px', height: '53px' }} />
           </IconLink>
         </li>
       </Menu>
@@ -53,7 +53,7 @@ const Menu = styled.ul`
   justify-content: space-around;
   width: 100%;
   padding: 0;
-  margin: 0 33px;
+  margin: 0 36px;
 `;
 
 const IconLink = styled(Link)`

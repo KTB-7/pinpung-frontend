@@ -65,20 +65,23 @@ const SearchResultList = () => {
   };
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h5 style={{ textAlign: 'center', marginBottom: '1rem' }}>{keyword}</h5>
-
+    <div>
       {/* 정렬 버튼 */}
-      <div className="d-flex justify-content-center mb-3">
+      <div
+        className="d-flex justify-content-left mb-3"
+        style={{
+          marginTop: '1.5rem',
+        }}
+      >
         <Button
-          variant={sort === 'accuracy' ? 'primary' : 'outline-primary'}
+          variant={sort === 'accuracy' ? 'secondary' : 'outline-secondary'}
           onClick={() => handleSortChange('accuracy')}
           style={{ marginRight: '1rem' }}
         >
           정확도순
         </Button>
         <Button
-          variant={sort === 'distance' ? 'primary' : 'outline-primary'}
+          variant={sort === 'distance' ? 'secondary' : 'outline-secondary'}
           onClick={() => handleSortChange('distance')}
         >
           거리순

@@ -38,8 +38,6 @@ const BottomSheet = ({ placeId }) => {
     navigate(`/places/${placeId}/upload-review`);
   };
 
-  console.log('cafeData:', cafeData);
-
   return (
     <Wrapper>
       <Handle />
@@ -65,7 +63,7 @@ const BottomSheet = ({ placeId }) => {
               style={{ borderTop: '1px solid lightgray', marginBottom: '10px' }}
             >
               <br />
-              <h6 style={{ 'font-weight': 'bold' }}>{review.userName}</h6>
+              <h6 style={{ fontWeight: 'bold' }}>{review.userName}</h6>
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
               <br />
               <p>{review.text}</p>

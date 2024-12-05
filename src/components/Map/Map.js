@@ -16,8 +16,10 @@ const Map = () => {
   const mapInstance = useRef(null);
   const navigate = useNavigate();
 
-  const center = useStore((state) => state.center);
-  const setCenter = useStore((state) => state.setCenter);
+  const userLocation = useStore((state) => state.userLocation);
+  const setUserLocation = useStore((state) => state.setUserLocation);
+  const mapRect = useStore((state) => state.mapRect);
+  const setMapRect = useStore((state) => state.setMapRect);
   const userInfo = useAuthStore((state) => state.userInfo);
 
   const [cafes, setCafes] = useState([]);
@@ -27,16 +29,16 @@ const Map = () => {
 
   // 사용자 위치 가져오기
   useEffect(() => {
-    if (!center) {
+    if (!userLocation) {
       getUserLocation()
         .then((location) => {
-          setCenter({ latitude: location.latitude, longitude: location.longitude });
+          setUserLocation({ latitude: location.latitude, longitude: location.longitude });
         })
         .catch((error) => {
           console.error('위치 정보를 가져오는 중 오류 발생', error);
         });
     }
-  }, [center, setCenter]);
+  }, [userLocation, setUserLocation]);
 
   // 맵 변경 이벤트 처리
   const handleMapChange = () => {
@@ -46,6 +48,8 @@ const Map = () => {
 
       const rect = mapInstance.current.getBounds();
       setBounds(rect);
+      console.log(rect);
+      // setMapRect({rect})
     }
   };
 
@@ -60,7 +64,7 @@ const Map = () => {
   const initializeMap = useCallback(() => {
     const container = mapRef.current;
     const options = {
-      center: new kakao.maps.LatLng(center.latitude, center.longitude),
+      center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
       level,
     };
 
@@ -78,11 +82,11 @@ const Map = () => {
       kakao.maps.event.removeListener(map, 'zoom_changed', handleMapChange);
       kakao.maps.event.removeListener(map, 'click', handleMapClick);
     };
-  }, [center, level]);
+  }, [userLocation, level]);
 
   // 맵 초기화 및 이벤트 리스너 등록
   useEffect(() => {
-    if (center) {
+    if (userLocation) {
       const script = document.createElement('script');
       script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&autoload=false`;
       script.onload = () => {
@@ -97,7 +101,7 @@ const Map = () => {
         document.head.removeChild(script);
       };
     }
-  }, [center, initializeMap]);
+  }, [userLocation, initializeMap]);
 
   // bounds 변경 시 카페 목록 다시 가져오기
   useEffect(() => {

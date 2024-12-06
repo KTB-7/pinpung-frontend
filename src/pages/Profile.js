@@ -63,7 +63,7 @@ const Profile = () => {
         </LineWrapper>
 
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <img src={profileImg} style={{ height: '45px', marginTop: '8px' }} />
+          <img src={profileImg} alt="프로필 이미지" style={{ height: '45px', marginTop: '8px' }} />
           {profileData && (
             <div
               style={{

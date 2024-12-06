@@ -13,10 +13,9 @@ export const fetchPungs = async (placeId, page) => {
   }
 };
 
-export const addPung = async (userId, placeId, imageWithText, pureImage, text) => {
+export const addPung = async (placeId, imageWithText, pureImage, text) => {
   const data = new FormData();
 
-  data.append('userId', userId);
   data.append('placeId', placeId);
   data.append('imageWithText', imageWithText);
   data.append('pureImage', pureImage);

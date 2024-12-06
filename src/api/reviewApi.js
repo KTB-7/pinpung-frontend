@@ -2,10 +2,9 @@ import { securedInstance } from './axiosInstance';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export const addReview = async (userId, placeId, text, image) => {
+export const addReview = async (placeId, text, image) => {
   const data = new FormData();
 
-  data.append('userId', userId);
   data.append('placeId', placeId);
   data.append('text', text);
 
@@ -27,10 +26,9 @@ export const addReview = async (userId, placeId, text, image) => {
   }
 };
 
-export const modifyReview = async (userId, placeId, reviewId, text, image) => {
+export const modifyReview = async (placeId, reviewId, text, image) => {
   const data = new FormData();
 
-  data.append('userId', userId);
   data.append('placeId', placeId);
   data.append('text', text);
   data.append('reviewId', reviewId);
@@ -53,10 +51,9 @@ export const modifyReview = async (userId, placeId, reviewId, text, image) => {
   }
 };
 
-export const deleteReview = async (userId, placeId, reviewId) => {
+export const deleteReview = async (placeId, reviewId) => {
   const data = new FormData();
 
-  data.append('userId', userId);
   data.append('placeId', placeId);
   data.append('reviewId', reviewId);
 

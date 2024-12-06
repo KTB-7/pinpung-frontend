@@ -141,9 +141,9 @@ const Profile = () => {
 export default Profile;
 
 const Wrapper = styled.div`
-  display: flex;
   position: relative;
   width: 100%;
+  margin-bottom: 20%;
   background-color: white;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
   flex-direction: column;

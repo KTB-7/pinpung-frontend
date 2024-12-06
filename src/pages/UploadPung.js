@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
-import useAuthStore from '../store/auth';
 import { addPung } from '../api/pungApi';
 import { compressImage, addPadding, convertToWebP } from '../utils/imageUtils';
 import styled from 'styled-components';
@@ -14,7 +13,6 @@ const UploadPung = () => {
   const [text, setText] = useState('');
 
   const selectedPlaceName = useStore((state) => state.selectedPlaceName);
-  const userInfo = useAuthStore((state) => state.userInfo);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -31,7 +29,7 @@ const UploadPung = () => {
         const paddedFile = await addPadding(compressedFile); // 패딩 추가
         const finalImage = await convertToWebP(paddedFile); // WebP로 변환
 
-        addPung(userInfo.userId, placeId, finalImage, finalImage, text);
+        addPung(placeId, finalImage, finalImage, text);
 
         navigate(-1);
       } catch (error) {

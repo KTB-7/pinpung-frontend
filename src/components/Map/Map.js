@@ -115,9 +115,8 @@ const Map = () => {
     if (mapRect) {
       // const sw = mapRect.getSouthWest();
       // const ne = mapRect.getNorthEast();
-      const userId = userInfo.userId;
 
-      fetchNearbyCafes(userId, mapRect.ha, mapRect.qa, mapRect.oa, mapRect.pa)
+      fetchNearbyCafes(mapRect.ha, mapRect.qa, mapRect.oa, mapRect.pa)
         .then((data) => setCafes(data.places))
         .catch((error) => console.error('카페 목록 가져오기 실패:', error));
     }

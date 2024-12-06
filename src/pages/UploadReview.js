@@ -14,7 +14,6 @@ const UploadReview = () => {
   const [text, setText] = useState('');
 
   const selectedPlaceName = useStore((state) => state.selectedPlaceName);
-  const userInfo = useAuthStore((state) => state.userInfo);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -33,7 +32,7 @@ const UploadReview = () => {
     }
 
     try {
-      addReview(userInfo.userId, placeId, text, finalImage);
+      addReview(placeId, text, finalImage);
 
       navigate(-1);
     } catch (error) {

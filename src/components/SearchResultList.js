@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { searchListAccuracy, searchListDistance } from '../api/searchApi';
-import useAuthStore from '../store/auth';
 import useStore from '../store/store';
 import { Button, ListGroup, Card, Image } from 'react-bootstrap';
 
 const SearchResultList = () => {
-  const userId = useAuthStore((state) => state.userInfo?.userId);
   const userLocation = useStore((state) => state.userLocation);
   const mapRect = useStore((state) => state.mapRect);
   const navigate = useNavigate();
@@ -24,11 +22,9 @@ const SearchResultList = () => {
       console.log('keyword', keyword, 'mapRect', mapRect);
       try {
         let response;
-        //console.log(userId, keyword, mapRect.ha, mapRect.qa, mapRect.oa, mapRect.pa);
 
         if (sort === 'accuracy') {
           response = await searchListAccuracy(
-            userId,
             keyword,
             mapRect.ha,
             mapRect.qa,
@@ -37,7 +33,6 @@ const SearchResultList = () => {
           );
         } else if (sort === 'distance') {
           response = await searchListDistance(
-            userId,
             keyword,
             mapRect.ha,
             mapRect.qa,
@@ -54,7 +49,7 @@ const SearchResultList = () => {
     };
 
     fetchSearchResults();
-  }, [sort, keyword, mapRect, userId]);
+  }, [sort, keyword, mapRect]);
 
   const handleSortChange = (newSort) => {
     navigate(`/search-results?keyword=${keyword}&sort=${newSort}`);

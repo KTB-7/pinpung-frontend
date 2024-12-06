@@ -25,7 +25,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (activeTab === 'pungs') {
-      fetchMyProfilePungs(userInfo.userId)
+      fetchMyProfilePungs()
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.pungs);
@@ -34,7 +34,7 @@ const Profile = () => {
 
       // console.log('pungs contentData:', contentData);
     } else if (activeTab === 'reviews') {
-      fetchMyProfileReviews(userInfo.userId)
+      fetchMyProfileReviews()
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.reviews);

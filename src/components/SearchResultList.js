@@ -49,7 +49,7 @@ const SearchResultList = () => {
     };
 
     fetchSearchResults();
-  }, [sort, keyword, mapRect]);
+  }, [sort, keyword, mapRect, userLocation.longitude, userLocation.latitude]);
 
   const handleSortChange = (newSort) => {
     navigate(`/search-results?keyword=${keyword}&sort=${newSort}`);

@@ -20,7 +20,6 @@ const Map = () => {
   const setUserLocation = useStore((state) => state.setUserLocation);
   const mapRect = useStore((state) => state.mapRect);
   const setMapRect = useStore((state) => state.setMapRect);
-  const userInfo = useAuthStore((state) => state.userInfo);
 
   const [cafes, setCafes] = useState([]);
   const [level, setLevel] = useState(3);

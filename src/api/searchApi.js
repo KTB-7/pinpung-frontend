@@ -2,11 +2,10 @@ import { securedInstance } from './axiosInstance';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export const searchMap = async (userId, keyword, swLng, swLat, neLng, neLat) => {
+export const searchMap = async (keyword, swLng, swLat, neLng, neLat) => {
   try {
     const response = await securedInstance.get(`${API_URL}/search/map`, {
       params: {
-        userId,
         keyword,
         swLng,
         swLat,
@@ -21,11 +20,10 @@ export const searchMap = async (userId, keyword, swLng, swLat, neLng, neLat) => 
   }
 };
 
-export const searchListAccuracy = async (userId, keyword, swLng, swLat, neLng, neLat) => {
+export const searchListAccuracy = async (keyword, swLng, swLat, neLng, neLat) => {
   try {
     const response = await securedInstance.get(`${API_URL}/search/list/accuracy`, {
       params: {
-        userId,
         keyword,
         swLng,
         swLat,
@@ -40,11 +38,10 @@ export const searchListAccuracy = async (userId, keyword, swLng, swLat, neLng, n
   }
 };
 
-export const searchListDistance = async (userId, keyword, swLng, swLat, neLng, neLat, x, y) => {
+export const searchListDistance = async (keyword, swLng, swLat, neLng, neLat, x, y) => {
   try {
     const response = await securedInstance.get(`${API_URL}/search/list/distance`, {
       params: {
-        userId,
         keyword,
         swLng,
         swLat,

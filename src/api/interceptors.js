@@ -36,10 +36,7 @@ export const setupRequestInterceptor = () => {
       if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
-          const userId = useAuthStore.getState().userId;
-          const refreshResponse = await refreshInstance.post(`${API_URL}/api/token/refresh`, {
-            userId,
-          });
+          const refreshResponse = await refreshInstance.post(`${API_URL}/api/token/refresh`);
           const { accessToken } = refreshResponse.data;
 
           // 상태 업데이트하고, 그 전 요청 다시 처리하자

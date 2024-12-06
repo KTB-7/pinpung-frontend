@@ -25,7 +25,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (activeTab === 'pungs') {
-      fetchMyProfilePungs(userInfo.userId)
+      fetchMyProfilePungs()
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.pungs);
@@ -34,7 +34,7 @@ const Profile = () => {
 
       // console.log('pungs contentData:', contentData);
     } else if (activeTab === 'reviews') {
-      fetchMyProfileReviews(userInfo.userId)
+      fetchMyProfileReviews()
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.reviews);
@@ -63,7 +63,7 @@ const Profile = () => {
         </LineWrapper>
 
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <img src={profileImg} style={{ height: '45px', marginTop: '8px' }} />
+          <img src={profileImg} alt="프로필 이미지" style={{ height: '45px', marginTop: '8px' }} />
           {profileData && (
             <div
               style={{
@@ -111,23 +111,28 @@ const Profile = () => {
           {contentData.map((item, index) => (
             <Item key={index}>
               {activeTab === 'pungs' ? (
-                <p>
+                <div>
                   <img
                     src={`${S3_URL}/uploaded-images/${item.imageId}`}
                     alt="펑 사진"
                     width="30%"
                   />
-                </p>
+                </div>
               ) : (
                 <div>
-                  {item.imageId && (
-                    <img
-                      src={`${S3_URL}/original-images/${item.imageId}`}
-                      alt="리뷰 사진"
-                      style={{ height: '15vh' }}
-                    />
-                  )}
-                  <p>{item.reviewText}</p>
+                  <small>{new Date(item.updatedAt).toLocaleDateString()}</small>
+                  <p>{item.placeName}</p>
+                  <div>{item.reviewText}</div>
+                  <p>
+                    {' '}
+                    {item.imageId && (
+                      <img
+                        src={`${S3_URL}/original-images/${item.imageId}`}
+                        alt="리뷰 사진"
+                        style={{ height: '15vh' }}
+                      />
+                    )}
+                  </p>
                 </div>
               )}
             </Item>
@@ -141,9 +146,9 @@ const Profile = () => {
 export default Profile;
 
 const Wrapper = styled.div`
-  display: flex;
   position: relative;
   width: 100%;
+  margin-bottom: 20%;
   background-color: white;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
   flex-direction: column;
@@ -198,7 +203,6 @@ const TabButton = styled.button`
 `;
 
 const Content = styled.div`
-  padding: 10px;
   overflow-y: auto;
   flex: 1;
 `;

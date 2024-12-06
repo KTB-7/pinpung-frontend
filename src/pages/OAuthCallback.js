@@ -15,7 +15,6 @@ const OAuthCallback = () => {
         const params = new URLSearchParams(location.search);
         const status = params.get('status');
         const token = params.get('token');
-        const userId = params.get('userId');
         const userName = params.get('userName');
         const userEmail = params.get('userEmail');
 
@@ -23,7 +22,6 @@ const OAuthCallback = () => {
           setAccessToken(token);
           localStorage.setItem('accessToken', token);
           setUserInfo({
-            userId,
             userName,
             userEmail,
           });

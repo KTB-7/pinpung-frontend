@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
-import useAuthStore from '../store/auth';
 import { addReview } from '../api/reviewApi';
 import { compressImage, convertToWebP } from '../utils/imageUtils';
 import styled from 'styled-components';
+import { ClipLoader } from 'react-spinners';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const UploadReview = () => {
@@ -12,9 +12,9 @@ const UploadReview = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [text, setText] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const selectedPlaceName = useStore((state) => state.selectedPlaceName);
-  const userInfo = useAuthStore((state) => state.userInfo);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -31,12 +31,15 @@ const UploadReview = () => {
       const compressedFile = await compressImage(image);
       finalImage = await convertToWebP(compressedFile);
     }
+    setLoading(true);
 
     try {
-      addReview(userInfo.userId, placeId, text, finalImage);
+      addReview(placeId, text, finalImage);
 
+      setLoading(false);
       navigate(-1);
     } catch (error) {
+      setLoading(false);
       console.log('리뷰 업로드 중 오류 발생:', error);
     }
   };
@@ -76,7 +79,7 @@ const UploadReview = () => {
             <textarea
               value={text}
               onChange={handleTextChange}
-              placeholder="텍스트를 입력하세요"
+              placeholder=""
               className="form-control"
               rows="4"
               style={{ width: '100%' }}
@@ -84,9 +87,13 @@ const UploadReview = () => {
           </div>
         </CenteredArea>
         <div className="d-flex justify-content-center">
-          <UploadButton onClick={handleUpload} className="btn btn-primary">
-            후기 올리기
-          </UploadButton>
+          {loading ? (
+            <ClipLoader color={'#8c8c8c'} size={50} />
+          ) : (
+            <UploadButton onClick={handleUpload} className="btn btn-primary">
+              후기 올리기
+            </UploadButton>
+          )}
         </div>
       </Form>
     </Wrapper>

@@ -6,7 +6,7 @@ import CafeMarkerIcon from '../../assets/icons/cafe-marker.svg';
 import { cropImage } from '../../utils/imageUtils';
 import './CafeMarker.css';
 
-const DEFAULT_MARKER_IMAGE = CafeMarkerIcon; //'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+const DEFAULT_MARKER_IMAGE = CafeMarkerIcon;
 
 const fetchImageAsBlob = async (url) => {
   const response = await fetch(url);

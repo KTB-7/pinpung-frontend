@@ -1,12 +1,20 @@
 import { getUserLocation } from '../../api/locationApi';
+import useStore from '../../store/store';
 import LocationIcon from '../../assets/icons/compass-icon.svg';
 import styled from 'styled-components';
 
 const LocationButton = () => {
+  const userLocation = useStore((state) => state.userLocation);
+  const setUserLocation = useStore((state) => state.setUserLocation);
+
   const handleLocationClick = async () => {
     try {
       const location = await getUserLocation();
       console.log('현재 위치:', location);
+      setUserLocation({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
       // TODO: 받은 위치대로 다시 맵 불러와야함
     } catch (error) {
       console.error('위치 요청 실패:', error.message);

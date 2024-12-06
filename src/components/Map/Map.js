@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { getUserLocation } from '../../api/locationApi';
 import { fetchNearbyCafes } from '../../api/placesApi';
 import useStore from '../../store/store';
-import useAuthStore from '../../store/auth';
 import CafeMarker from './CafeMarker';
 import { debounce } from 'lodash';
 
@@ -20,11 +19,9 @@ const Map = () => {
   const setUserLocation = useStore((state) => state.setUserLocation);
   const mapRect = useStore((state) => state.mapRect);
   const setMapRect = useStore((state) => state.setMapRect);
-  const userInfo = useAuthStore((state) => state.userInfo);
 
   const [cafes, setCafes] = useState([]);
   const [level, setLevel] = useState(3);
-  const [bounds, setBounds] = useState(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   // 사용자 위치 가져오기
@@ -47,9 +44,13 @@ const Map = () => {
       setLevel(newLevel);
 
       const rect = mapInstance.current.getBounds();
-      setBounds(rect);
-      console.log(rect);
-      // setMapRect({rect})
+
+      setMapRect({
+        swLng: rect.ha,
+        swLat: rect.qa,
+        neLng: rect.oa,
+        neLat: rect.pa,
+      });
     }
   };
 
@@ -75,6 +76,10 @@ const Map = () => {
     kakao.maps.event.addListener(map, 'dragend', debounce(handleMapChange, 200));
     kakao.maps.event.addListener(map, 'zoom_changed', debounce(handleMapChange, 200));
     kakao.maps.event.addListener(map, 'click', handleMapClick);
+
+    const rect = mapInstance.current.getBounds();
+
+    setMapRect(rect);
 
     // 클린업 함수에서 이벤트 리스너 제거
     return () => {
@@ -105,16 +110,15 @@ const Map = () => {
 
   // bounds 변경 시 카페 목록 다시 가져오기
   useEffect(() => {
-    if (bounds) {
-      const sw = bounds.getSouthWest();
-      const ne = bounds.getNorthEast();
-      const userId = userInfo.userId;
+    if (mapRect) {
+      // const sw = mapRect.getSouthWest();
+      // const ne = mapRect.getNorthEast();
 
-      fetchNearbyCafes(userId, sw.getLng(), sw.getLat(), ne.getLng(), ne.getLat())
+      fetchNearbyCafes(mapRect.ha, mapRect.qa, mapRect.oa, mapRect.pa)
         .then((data) => setCafes(data.places))
         .catch((error) => console.error('카페 목록 가져오기 실패:', error));
     }
-  }, [bounds]);
+  }, [mapRect]);
 
   const handleMarkerClick = (placeId) => {
     navigate(`/places/${placeId}`);

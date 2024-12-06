@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
-import useAuthStore from '../store/auth';
 import { addPung } from '../api/pungApi';
 import { compressImage, addPadding, convertToWebP } from '../utils/imageUtils';
 import styled from 'styled-components';
+import { ClipLoader } from 'react-spinners';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const UploadPung = () => {
@@ -12,9 +12,9 @@ const UploadPung = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [text, setText] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const selectedPlaceName = useStore((state) => state.selectedPlaceName);
-  const userInfo = useAuthStore((state) => state.userInfo);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -26,18 +26,24 @@ const UploadPung = () => {
 
   const handleUpload = async () => {
     if (image) {
+      setLoading(true);
       try {
         const compressedFile = await compressImage(image); // 압축만 처리
         const paddedFile = await addPadding(compressedFile); // 패딩 추가
         const finalImage = await convertToWebP(paddedFile); // WebP로 변환
 
-        addPung(userInfo.userId, placeId, finalImage, finalImage, text);
+        addPung(placeId, finalImage, finalImage, text);
 
+        setLoading(false);
         navigate(-1);
       } catch (error) {
+        setLoading(false);
         console.log('펑 업로드 중 오류 발생:', error);
       }
     }
+  };
+  const handleButtonClick = () => {
+    document.getElementById('file-input').click();
   };
 
   const handleClose = async () => {
@@ -63,22 +69,28 @@ const UploadPung = () => {
               <br /> 24시간 뒤에 펑! 돼요
             </h3>
           </div>
-          <div className="col-12 d-flex justify-content-center mb-3">
-            <div className="input-group" style={{ width: 'auto' }}>
-              <input
-                type="file"
-                className="form-control"
-                accept="image/*"
-                onChange={handleImageUpload}
-              />
-              {image && <ImagePreview src={URL.createObjectURL(image)} alt="미리보기" />}
-            </div>
+          <div className="d-flex justify-content-center">
+            {/* 숨겨진 파일 입력 */}
+            <HiddenInput
+              id="file-input"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
+            {/* 버튼 */}
+            <SquareButton
+              onClick={handleButtonClick}
+              image={image ? URL.createObjectURL(image) : null}
+            >
+              {!image && <span style={{ fontSize: '40px' }}>+</span>}
+            </SquareButton>
           </div>
+          <p></p>
           <div className="col-12 mb-4">
             <textarea
               value={text}
               onChange={handleTextChange}
-              placeholder="텍스트를 입력하세요"
+              placeholder="소감을 남겨주세요"
               className="form-control"
               rows="1"
               style={{ width: '100%' }}
@@ -86,7 +98,11 @@ const UploadPung = () => {
           </div>
         </CenteredArea>
         <div className="d-flex justify-content-center">
-          <UploadButton onClick={handleUpload}>업로드</UploadButton>
+          {loading ? (
+            <ClipLoader color={'#FFFFFF'} size={50} />
+          ) : (
+            <UploadButton onClick={handleUpload}>업로드</UploadButton>
+          )}
         </div>
       </Form>
     </Wrapper>
@@ -98,8 +114,9 @@ export default UploadPung;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 90vh;
+  margin-bottom: 10%;
   overflow: hidden;
   box-sizing: border-box;
   background-color: #434343;
@@ -155,9 +172,26 @@ const UploadButton = styled.button`
   cursor: pointer;
 `;
 
-const ImagePreview = styled.img`
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  margin-left: 10px;
+const HiddenInput = styled.input`
+  display: none; // 화면에 보이지 않도록 숨김
+`;
+
+// 정사각형 버튼 스타일
+const SquareButton = styled.div`
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+  background-image: ${({ image }) => (image ? `url(${image})` : 'none')};
+  background-size: cover;
+  background-position: center;
+
+  span {
+    color: #888;
+    font-size: 14px;
+  }
 `;

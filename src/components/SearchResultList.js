@@ -8,7 +8,7 @@ import { Button, ListGroup, Card, Image } from 'react-bootstrap';
 const SearchResultList = () => {
   const userId = useAuthStore((state) => state.userInfo?.userId);
   const userLocation = useStore((state) => state.userLocation);
-  const bounds = useStore((state) => state.bounds);
+  const mapRect = useStore((state) => state.mapRect);
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -19,28 +19,30 @@ const SearchResultList = () => {
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      if (!keyword || !bounds) return;
+      if (!keyword || !mapRect) return;
 
+      console.log('keyword', keyword, 'mapRect', mapRect);
       try {
         let response;
+        //console.log(userId, keyword, mapRect.ha, mapRect.qa, mapRect.oa, mapRect.pa);
 
         if (sort === 'accuracy') {
           response = await searchListAccuracy(
             userId,
             keyword,
-            bounds.swLng,
-            bounds.swLat,
-            bounds.neLng,
-            bounds.neLat,
+            mapRect.ha,
+            mapRect.qa,
+            mapRect.oa,
+            mapRect.pa,
           );
         } else if (sort === 'distance') {
           response = await searchListDistance(
             userId,
             keyword,
-            bounds.swLng,
-            bounds.swLat,
-            bounds.neLng,
-            bounds.neLat,
+            mapRect.ha,
+            mapRect.qa,
+            mapRect.oa,
+            mapRect.pa,
             userLocation.longitude,
             userLocation.latitude,
           );
@@ -52,7 +54,7 @@ const SearchResultList = () => {
     };
 
     fetchSearchResults();
-  }, [sort, keyword, bounds, userId]);
+  }, [sort, keyword, mapRect, userId]);
 
   const handleSortChange = (newSort) => {
     navigate(`/search-results?keyword=${keyword}&sort=${newSort}`);
@@ -60,7 +62,6 @@ const SearchResultList = () => {
 
   const handlePlaceClick = (placeId) => {
     //TODO: PlaceOverview로 가게하고, 그 장소 중심으로 두고 맵 렌더링
-
     navigate(`/places/${placeId}`);
   };
 

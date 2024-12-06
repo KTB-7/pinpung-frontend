@@ -111,19 +111,18 @@ const Profile = () => {
           {contentData.map((item, index) => (
             <Item key={index}>
               {activeTab === 'pungs' ? (
-                <p>
+                <div>
                   <img
                     src={`${S3_URL}/uploaded-images/${item.imageId}`}
                     alt="펑 사진"
                     width="30%"
                   />
-                </p>
+                </div>
               ) : (
-                <>
-                  <h6 style={{ fontWeight: 'bold' }}>{item.userName}</h6>
+                <div>
                   <small>{new Date(item.updatedAt).toLocaleDateString()}</small>
-                  <br />
-                  <p>{item.reviewText}</p>
+                  <p>{item.placeName}</p>
+                  <div>{item.reviewText}</div>
                   <p>
                     {' '}
                     {item.imageId && (
@@ -134,7 +133,7 @@ const Profile = () => {
                       />
                     )}
                   </p>
-                </>
+                </div>
               )}
             </Item>
           ))}

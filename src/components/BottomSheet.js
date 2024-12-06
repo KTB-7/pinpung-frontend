@@ -60,7 +60,7 @@ const BottomSheet = ({ placeId }) => {
           {cafeData.reviews?.reviews.map((review) => (
             <div
               key={review.reviewId}
-              style={{ borderTop: '1px solid lightgray', marginBottom: '10px' }}
+              style={{ borderTop: '1px solid whitesmoke', marginBottom: '10px' }}
             >
               <br />
               <h6 style={{ fontWeight: 'bold' }}>{review.userName}</h6>

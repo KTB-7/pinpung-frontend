@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { getUserLocation } from '../../api/locationApi';
 import { fetchNearbyCafes } from '../../api/placesApi';
 import useStore from '../../store/store';
-import useAuthStore from '../../store/auth';
 import CafeMarker from './CafeMarker';
 import { debounce } from 'lodash';
 

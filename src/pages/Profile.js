@@ -119,16 +119,22 @@ const Profile = () => {
                   />
                 </p>
               ) : (
-                <div>
-                  {item.imageId && (
-                    <img
-                      src={`${S3_URL}/original-images/${item.imageId}`}
-                      alt="리뷰 사진"
-                      style={{ height: '15vh' }}
-                    />
-                  )}
+                <>
+                  <h6 style={{ fontWeight: 'bold' }}>{item.userName}</h6>
+                  <small>{new Date(item.updatedAt).toLocaleDateString()}</small>
+                  <br />
                   <p>{item.reviewText}</p>
-                </div>
+                  <p>
+                    {' '}
+                    {item.imageId && (
+                      <img
+                        src={`${S3_URL}/original-images/${item.imageId}`}
+                        alt="리뷰 사진"
+                        style={{ height: '15vh' }}
+                      />
+                    )}
+                  </p>
+                </>
               )}
             </Item>
           ))}
@@ -198,7 +204,6 @@ const TabButton = styled.button`
 `;
 
 const Content = styled.div`
-  padding: 10px;
   overflow-y: auto;
   flex: 1;
 `;

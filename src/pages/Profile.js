@@ -189,7 +189,9 @@ const TabWrapper = styled.div`
   padding: 10px 0;
 `;
 
-const TabButton = styled.button`
+const TabButton = styled.button.attrs((props) => ({
+  isactive: undefined,
+}))`
   background-color: ${(props) => (props.isactive ? '#6398f2' : 'transparent')};
   color: ${(props) => (props.isactive ? 'white' : 'black')};
   border: none;

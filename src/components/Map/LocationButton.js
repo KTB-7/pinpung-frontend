@@ -4,18 +4,14 @@ import LocationIcon from '../../assets/icons/compass-icon.svg';
 import styled from 'styled-components';
 
 const LocationButton = () => {
-  const userLocation = useStore((state) => state.userLocation);
-  const setUserLocation = useStore((state) => state.setUserLocation);
+  const setMoveToLocation = useStore((state) => state.setMoveToLocation);
 
   const handleLocationClick = async () => {
     try {
       const location = await getUserLocation();
-      console.log('현재 위치:', location);
-      setUserLocation({
-        latitude: location.latitude,
-        longitude: location.longitude,
-      });
-      // TODO: 받은 위치대로 다시 맵 불러와야함
+      // console.log('현위치 다시 받아옴', location);
+
+      setMoveToLocation(location);
     } catch (error) {
       console.error('위치 요청 실패:', error.message);
       // TODO: 사용자에게 알리는 UI 추가
@@ -35,10 +31,6 @@ const Wrapper = styled.div`
   position: fixed;
   bottom: 11%;
   right: 8px;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   margin: 2%;
   z-index: 2;

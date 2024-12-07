@@ -9,8 +9,12 @@ const useStore = create(
       //메모리(렘) 상태
       userLocation: null,
       setUserLocation: (location) => set({ userLocation: location }),
+      moveToLocation: null,
+      setMoveToLocation: (location) => set({ moveToLocation: location }),
       mapRect: null,
       setMapRect: (rect) => set({ mapRect: rect }),
+      mapLevel: null,
+      setMapLevel: (level) => set({ mapLevel: level }),
 
       showMap: true,
       setShowMap: (show) => set({ showMap: show }),

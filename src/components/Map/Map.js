@@ -21,6 +21,7 @@ const Map = () => {
   const setMapRect = useStore((state) => state.setMapRect);
   const mapLevel = useStore((state) => state.mapLevel);
   const setMapLevel = useStore((state) => state.setMapLevel);
+  const moveToLocation = useStore((state) => state.moveToLocation);
 
   const [cafes, setCafes] = useState([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -33,15 +34,6 @@ const Map = () => {
       console.error('위치 정보를 가져오는 중 오류 발생', error);
     }
   };
-
-  // 사용자 위치 가져오기
-  useEffect(() => {
-    if (!userLocation) {
-      fetchAndSetUserLocation();
-    }
-  }, [userLocation, fetchAndSetUserLocation]);
-
-  // 맵 변경 이벤트 처리
 
   const updateMapRect = useCallback(
     (map) => {
@@ -76,7 +68,7 @@ const Map = () => {
 
   const initializeMap = useCallback(() => {
     const container = mapRef.current;
-    const initialLevel = mapLevel; // ?? 3; // mapLevel 없으면 3으로
+    const initialLevel = mapLevel ?? 3; // mapLevel 없으면 3으로
     let map;
 
     if (mapRect) {
@@ -122,6 +114,25 @@ const Map = () => {
     kakao.maps.event.removeListener(map, 'zoom_changed', handleMapChange);
     kakao.maps.event.removeListener(map, 'click', handleMapClick);
   };
+
+  // 사용자 위치 가져오기 1
+  useEffect(() => {
+    if (!userLocation) {
+      fetchAndSetUserLocation();
+    }
+  }, [userLocation, fetchAndSetUserLocation]);
+
+  // 사용자 위치 가져오기 2: moveToLocation 상태 변경 시 지도 중심 이동
+  useEffect(() => {
+    if (moveToLocation && mapInstance.current) {
+      const { latitude, longitude } = moveToLocation;
+      const newCenter = new kakao.maps.LatLng(latitude, longitude);
+      mapInstance.current.setCenter(newCenter); // 지도 중심 이동
+      setMapLevel(mapInstance.current.getLevel()); // 현재 레벨 업데이트
+      setUserLocation({ latitude, longitude });
+      updateMapRect(mapInstance.current); // 지도 영역 업데이트
+    }
+  }, [moveToLocation, updateMapRect, setMapLevel]);
 
   // 맵 초기화 및 이벤트 리스너 등록
   useEffect(() => {

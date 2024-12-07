@@ -19,40 +19,53 @@ const Map = () => {
   const setUserLocation = useStore((state) => state.setUserLocation);
   const mapRect = useStore((state) => state.mapRect);
   const setMapRect = useStore((state) => state.setMapRect);
+  const mapLevel = useStore((state) => state.mapLevel);
+  const setMapLevel = useStore((state) => state.setMapLevel);
 
   const [cafes, setCafes] = useState([]);
-  const [level, setLevel] = useState(3);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const fetchAndSetUserLocation = async () => {
+    try {
+      const location = await getUserLocation();
+      setUserLocation({ latitude: location.latitude, longitude: location.longitude });
+    } catch (error) {
+      console.error('위치 정보를 가져오는 중 오류 발생', error);
+    }
+  };
 
   // 사용자 위치 가져오기
   useEffect(() => {
     if (!userLocation) {
-      getUserLocation()
-        .then((location) => {
-          setUserLocation({ latitude: location.latitude, longitude: location.longitude });
-        })
-        .catch((error) => {
-          console.error('위치 정보를 가져오는 중 오류 발생', error);
-        });
+      fetchAndSetUserLocation();
     }
-  }, [userLocation, setUserLocation]);
+  }, [userLocation, fetchAndSetUserLocation]);
 
   // 맵 변경 이벤트 처리
-  const handleMapChange = () => {
+
+  const updateMapRect = useCallback(
+    (map) => {
+      const rect = map.getBounds();
+      const sw = rect.getSouthWest();
+      const ne = rect.getNorthEast();
+      setMapRect({
+        swLng: sw.getLng(),
+        swLat: sw.getLat(),
+        neLng: ne.getLng(),
+        neLat: ne.getLat(),
+      });
+    },
+    [setMapRect],
+  );
+
+  // 맵 변경 이벤트 처리
+  const handleMapChange = useCallback(() => {
     if (mapInstance.current) {
       const newLevel = mapInstance.current.getLevel();
-      setLevel(newLevel);
-
-      const rect = mapInstance.current.getBounds();
-
-      setMapRect({
-        swLng: rect.ha,
-        swLat: rect.qa,
-        neLng: rect.oa,
-        neLat: rect.pa,
-      });
+      setMapLevel(newLevel);
+      updateMapRect(mapInstance.current);
     }
-  };
+  }, [setMapLevel, updateMapRect]);
 
   const handleMapClick = () => {
     if (isSheetOpen) {
@@ -61,33 +74,54 @@ const Map = () => {
     }
   };
 
-  // 맵 초기화 함수
   const initializeMap = useCallback(() => {
     const container = mapRef.current;
-    const options = {
-      center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
-      level,
-    };
+    const initialLevel = mapLevel; // ?? 3; // mapLevel 없으면 3으로
+    let map;
 
-    const map = new kakao.maps.Map(container, options);
+    if (mapRect) {
+      // 이전 상태 복원: 중심 좌표와 레벨 설정하자..
+      const centerLat = (mapRect.swLat + mapRect.neLat) / 2;
+      const centerLng = (mapRect.swLng + mapRect.neLng) / 2;
+
+      map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(centerLat, centerLng),
+        level: initialLevel,
+      });
+    } else {
+      // userLocation 기반 초기화
+      if (!userLocation) return; // 유저 위치 없으면 대기
+
+      map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
+        level: initialLevel,
+      });
+    }
+
     mapInstance.current = map;
 
-    // 맵 이동 및 줌 변경 시 이벤트 리스너 등록
+    // 맵 이벤트 등록
+    registerMapEvents(map);
+
+    // 초기 상태 저장 (처음 로드 시만 호출)
+    if (!mapRect) updateMapRect(map);
+
+    return () => cleanupMapEvents(map);
+  }, [userLocation, mapRect, mapLevel]);
+
+  // 맵 이벤트 등록 함수
+  const registerMapEvents = (map) => {
     kakao.maps.event.addListener(map, 'dragend', debounce(handleMapChange, 200));
     kakao.maps.event.addListener(map, 'zoom_changed', debounce(handleMapChange, 200));
     kakao.maps.event.addListener(map, 'click', handleMapClick);
+  };
 
-    const rect = mapInstance.current.getBounds();
-
-    setMapRect(rect);
-
-    // 클린업 함수에서 이벤트 리스너 제거
-    return () => {
-      kakao.maps.event.removeListener(map, 'dragend', handleMapChange);
-      kakao.maps.event.removeListener(map, 'zoom_changed', handleMapChange);
-      kakao.maps.event.removeListener(map, 'click', handleMapClick);
-    };
-  }, [userLocation, level]);
+  // 맵 이벤트 클린업 함수
+  const cleanupMapEvents = (map) => {
+    kakao.maps.event.removeListener(map, 'dragend', handleMapChange);
+    kakao.maps.event.removeListener(map, 'zoom_changed', handleMapChange);
+    kakao.maps.event.removeListener(map, 'click', handleMapClick);
+  };
 
   // 맵 초기화 및 이벤트 리스너 등록
   useEffect(() => {
@@ -111,10 +145,8 @@ const Map = () => {
   // bounds 변경 시 카페 목록 다시 가져오기
   useEffect(() => {
     if (mapRect) {
-      // const sw = mapRect.getSouthWest();
-      // const ne = mapRect.getNorthEast();
-
-      fetchNearbyCafes(mapRect.ha, mapRect.qa, mapRect.oa, mapRect.pa)
+      const { swLng, swLat, neLng, neLat } = mapRect;
+      fetchNearbyCafes(swLng, swLat, neLng, neLat)
         .then((data) => setCafes(data.places))
         .catch((error) => console.error('카페 목록 가져오기 실패:', error));
     }

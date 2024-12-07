@@ -3,8 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
 import { addReview } from '../api/reviewApi';
 import { compressImage, convertToWebP } from '../utils/imageUtils';
-import styled from 'styled-components';
 import { ClipLoader } from 'react-spinners';
+import { debounce } from 'lodash';
+import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const UploadReview = () => {
@@ -44,6 +45,8 @@ const UploadReview = () => {
     }
   };
 
+  const debouncedHandleUpload = debounce(handleUpload, 1000);
+
   const handleClose = async () => {
     navigate(-1);
   };
@@ -82,7 +85,7 @@ const UploadReview = () => {
               placeholder=""
               className="form-control"
               rows="4"
-              style={{ width: '100%' }}
+              style={{ width: '100%', resize: 'none' }}
             />
           </div>
         </CenteredArea>
@@ -90,7 +93,7 @@ const UploadReview = () => {
           {loading ? (
             <ClipLoader color={'#8c8c8c'} size={50} />
           ) : (
-            <UploadButton onClick={handleUpload} className="btn btn-primary">
+            <UploadButton onClick={debouncedHandleUpload} className="btn btn-primary">
               후기 올리기
             </UploadButton>
           )}

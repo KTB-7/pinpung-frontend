@@ -93,7 +93,7 @@ const UploadPung = () => {
               placeholder="소감을 남겨주세요"
               className="form-control"
               rows="1"
-              style={{ width: '100%' }}
+              style={{ width: '100%', resize: 'none' }}
             />
           </div>
         </CenteredArea>

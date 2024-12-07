@@ -4,7 +4,6 @@ import axios from 'axios';
 
 const securedInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  withCredentials: true,
   timeout: 60000,
 });
 
@@ -15,7 +14,6 @@ const publicInstance = axios.create({
 
 const refreshInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  withCredentials: true,
 });
 
 export { securedInstance, publicInstance, refreshInstance };

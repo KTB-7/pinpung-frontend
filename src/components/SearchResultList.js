@@ -43,6 +43,7 @@ const SearchResultList = () => {
           );
         }
         setSearchResults(response.searchPlaceInfoDTOList);
+        console.log(response);
       } catch (error) {
         console.error('검색 결과를 가져오는 데 실패했습니다.');
       }

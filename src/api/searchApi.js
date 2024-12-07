@@ -4,7 +4,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export const searchMap = async (keyword, swLng, swLat, neLng, neLat) => {
   try {
-    const response = await securedInstance.get(`${API_URL}/search/map`, {
+    const response = await securedInstance.get(`${API_URL}/api/search/map`, {
       params: {
         keyword,
         swLng,
@@ -22,7 +22,7 @@ export const searchMap = async (keyword, swLng, swLat, neLng, neLat) => {
 
 export const searchListAccuracy = async (keyword, swLng, swLat, neLng, neLat) => {
   try {
-    const response = await securedInstance.get(`${API_URL}/search/list/accuracy`, {
+    const response = await securedInstance.get(`${API_URL}/api/search/list/accuracy`, {
       params: {
         keyword,
         swLng,
@@ -40,7 +40,7 @@ export const searchListAccuracy = async (keyword, swLng, swLat, neLng, neLat) =>
 
 export const searchListDistance = async (keyword, swLng, swLat, neLng, neLat, x, y) => {
   try {
-    const response = await securedInstance.get(`${API_URL}/search/list/distance`, {
+    const response = await securedInstance.get(`${API_URL}/api/search/list/distance`, {
       params: {
         keyword,
         swLng,

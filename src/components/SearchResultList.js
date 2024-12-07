@@ -2,18 +2,20 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { searchListAccuracy, searchListDistance } from '../api/searchApi';
 import useStore from '../store/store';
+import { ClipLoader } from 'react-spinners';
 import { Button, ListGroup, Card, Image } from 'react-bootstrap';
 
 const SearchResultList = () => {
+  const [loading, setLoading] = useState(false);
+
   const userLocation = useStore((state) => state.userLocation);
   const mapRect = useStore((state) => state.mapRect);
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
+  const [searchResults, setSearchResults] = useState([]); // 검색 결과 리스트
   const keyword = searchParams.get('keyword');
   const sort = searchParams.get('sort') || 'accuracy';
-
-  const [searchResults, setSearchResults] = useState([]); // 검색 결과 리스트
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -26,24 +28,24 @@ const SearchResultList = () => {
         if (sort === 'accuracy') {
           response = await searchListAccuracy(
             keyword,
-            mapRect.ha,
-            mapRect.qa,
-            mapRect.oa,
-            mapRect.pa,
+            mapRect.swLng,
+            mapRect.swLat,
+            mapRect.neLng,
+            mapRect.neLat,
           );
         } else if (sort === 'distance') {
           response = await searchListDistance(
             keyword,
-            mapRect.ha,
-            mapRect.qa,
-            mapRect.oa,
-            mapRect.pa,
+            mapRect.swLng,
+            mapRect.swLat,
+            mapRect.neLng,
+            mapRect.neLat,
             userLocation.longitude,
             userLocation.latitude,
           );
         }
         setSearchResults(response.searchPlaceInfoDTOList);
-        console.log(response);
+        console.log('백 response:', response);
       } catch (error) {
         console.error('검색 결과를 가져오는 데 실패했습니다.');
       }

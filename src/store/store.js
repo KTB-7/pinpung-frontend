@@ -11,6 +11,8 @@ const useStore = create(
       setUserLocation: (location) => set({ userLocation: location }),
       mapRect: null,
       setMapRect: (rect) => set({ mapRect: rect }),
+      mapLevel: null,
+      setMapLevel: (level) => set({ mapLevel: level }),
 
       showMap: true,
       setShowMap: (show) => set({ showMap: show }),

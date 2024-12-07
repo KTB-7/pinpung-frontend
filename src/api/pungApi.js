@@ -2,16 +2,16 @@ import { securedInstance } from './axiosInstance';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export const fetchPungs = async (placeId, page) => {
-  try {
-    const response = await securedInstance.get(`${API_URL}/api/pungs/${placeId}`, page);
+// export const fetchPungsByPlace = async (placeId, page) => {
+//   try {
+//     const response = await securedInstance.get(`${API_URL}/api/pungs/byPlace/${placeId}`, page);
 
-    return response.data;
-  } catch (error) {
-    console.error('펑 가져오기 실패:', error);
-    throw new Error('펑을 가져오는 데 실패했습니다.');
-  }
-};
+//     return response.data;
+//   } catch (error) {
+//     console.error('펑 가져오기 실패:', error);
+//     throw new Error('펑을 가져오는 데 실패했습니다.');
+//   }
+// };
 
 export const addPung = async (placeId, imageWithText, pureImage, text) => {
   const data = new FormData();

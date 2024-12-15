@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { searchListAccuracy, searchListDistance } from '../api/searchApi';
 import useStore from '../store/store';
 import { ClipLoader } from 'react-spinners';
-import { Button, ListGroup, Card, Image } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
 
 const SearchResultList = () => {
   const [loading, setLoading] = useState(false);
@@ -102,7 +102,7 @@ const SearchResultList = () => {
         }}
       >
         {loading ? (
-          <div>Loading...</div>
+          <ClipLoader />
         ) : searchResults ? (
           searchResults.map((place) => (
             <div
@@ -142,7 +142,7 @@ const SearchResultList = () => {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      borderRadius: '8px',
+                      borderRadius: '5%',
                     }}
                   />
                 ) : (
@@ -154,7 +154,7 @@ const SearchResultList = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      borderRadius: '8px',
+                      borderRadius: '5%',
                     }}
                   ></div>
                 )}

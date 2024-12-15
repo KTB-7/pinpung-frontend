@@ -16,7 +16,7 @@ const Navbar = () => {
       <Menu>
         <li>
           <IconLink to="/">
-            <img src={BrowseIcon} alt="Home" style={{ marginTop: '19px', height: '57px' }} />
+            <img src={BrowseIcon} alt="Browse" style={{ marginTop: '19px', width: '61px' }} />
           </IconLink>
         </li>
         <li>
@@ -26,7 +26,7 @@ const Navbar = () => {
         </li>
         <li>
           <IconLink to="/profile">
-            <img src={ProfileIcon} alt="profile" style={{ marginTop: '20px', height: '56px' }} />
+            <img src={ProfileIcon} alt="profile" style={{ marginTop: '22.5px', width: '62px' }} />
           </IconLink>
         </li>
       </Menu>

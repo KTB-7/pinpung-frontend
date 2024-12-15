@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import useStore from '../store/store';
 import styled from 'styled-components';
-import HomeIcon from '../assets/icons/home.svg';
-import AddIcon from '../assets/icons/add-pung.png';
-import ProfileIcon from '../assets/icons/profile.svg';
+import BrowseIcon from '../assets/icons/browse-icon.svg';
+import AddIcon from '../assets/icons/add-pung-icon.svg';
+import ProfileIcon from '../assets/icons/profile-icon.svg';
 
 const Navbar = () => {
   const showNavbar = useStore((state) => state.showNavbar);
@@ -16,7 +16,7 @@ const Navbar = () => {
       <Menu>
         <li>
           <IconLink to="/">
-            <img src={HomeIcon} alt="Home" style={{ marginTop: '19px', height: '53px' }} />
+            <img src={BrowseIcon} alt="Home" style={{ marginTop: '19px', height: '57px' }} />
           </IconLink>
         </li>
         <li>
@@ -26,7 +26,7 @@ const Navbar = () => {
         </li>
         <li>
           <IconLink to="/profile">
-            <img src={ProfileIcon} alt="profile" style={{ marginTop: '19px', height: '53px' }} />
+            <img src={ProfileIcon} alt="profile" style={{ marginTop: '20px', height: '56px' }} />
           </IconLink>
         </li>
       </Menu>

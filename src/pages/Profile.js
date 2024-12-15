@@ -174,7 +174,7 @@ const Header = styled.div`
 `;
 
 const UploadButton = styled.button`
-  background-color: #6398f2;
+  background-color: #ff9c0e;
   color: white;
   font-weight: bold;
   border: none;
@@ -193,14 +193,14 @@ const TabWrapper = styled.div`
 const TabButton = styled.button.attrs((props) => ({
   isactive: undefined,
 }))`
-  background-color: ${(props) => (props.isactive ? '#6398f2' : 'transparent')};
+  background-color: ${(props) => (props.isactive ? '#ff9c0e' : 'transparent')};
   color: ${(props) => (props.isactive ? 'white' : 'black')};
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   font-weight: bold;
   &:hover {
-    background-color: #6398f2;
+    background-color: #ff9c0e;
     color: white;
   }
 `;

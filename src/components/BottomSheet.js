@@ -131,7 +131,7 @@ const Header = styled.div`
 `;
 
 const UploadButton = styled.button`
-  background-color: #6398f2;
+  background-color: #ff9c0e;
   color: white;
   font-weight: bold;
   border: none;

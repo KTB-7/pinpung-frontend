@@ -14,8 +14,21 @@ const useAuthStore = create(
     {
       name: 'auth-storage',
       getStorage: () => localStorage,
+      partialize: (state) => ({ accessToken: state.accessToken, userInfo: state.userInfo }),
     },
   ),
 );
 
+useAuthStore.subscribe((state) => {
+  console.log('Auth State Changed:', state);
+});
+
 export default useAuthStore;
+// const useAuthStore = create((set) => ({
+//   accessToken: null,
+//   userInfo: null,
+
+//   setAccessToken: (token) => set({ accessToken: token }),
+//   setUserInfo: (userInfo) => set({ userInfo }),
+//   clearAuth: () => set({ accessToken: null, userInfo: null }),
+// }));

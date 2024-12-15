@@ -6,7 +6,8 @@ import styled from 'styled-components';
 const OAuthCallback = () => {
   const navigate = useNavigate();
   const location = useLocation(); // 현재 URL 정보 가져오기
-  const { setAccessToken, setUserInfo } = useAuthStore();
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setUserInfo = useAuthStore((state) => state.setUserInfo);
 
   useEffect(() => {
     const processRedirectData = () => {

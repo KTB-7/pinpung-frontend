@@ -8,14 +8,14 @@ const API_URL = process.env.REACT_APP_API_URL;
 export const setupRequestInterceptor = () => {
   securedInstance.interceptors.request.use(
     (config) => {
-      const token = useAuthStore.getState().accessToken;
+      const accessToken = useAuthStore.getState().accessToken;
 
       config.headers['Cache-Control'] = 'no-cache';
       config.headers['Pragma'] = 'no-cache';
       config.headers['Expires'] = '0';
 
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
       } else {
         console.warn('AccessToken이 없습니다.');
       }

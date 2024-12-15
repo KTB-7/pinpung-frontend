@@ -8,17 +8,16 @@
 }
 
 .marker-wrapper.hasPung:not(.byFriend) {
-  border: 5px solid #6398f2;
-  border-radius: 50%;
+  border: 5px solid #ff9c0e;
+  border-radius: 5%;
 }
 
 .marker-wrapper.byFriend {
-  border: 5px solid #a790f8; /* 보라색 테두리 */
-  border-radius: 50%;
+  border: 5px solid #fe6d33;
+  border-radius: 5%;
 }
 
 .marker-image {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
 }

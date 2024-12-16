@@ -36,6 +36,7 @@ export const setupRequestInterceptor = () => {
       if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
+          console.log('refresh 로직 진입점');
           const refreshResponse = await refreshInstance.post(`${API_URL}/api/token/refresh`);
           const { accessToken } = refreshResponse.data;
 

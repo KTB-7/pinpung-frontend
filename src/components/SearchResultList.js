@@ -7,6 +7,7 @@ import { Button, Image } from 'react-bootstrap';
 
 const SearchResultList = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const userLocation = useStore((state) => state.userLocation);
   const mapRect = useStore((state) => state.mapRect);
@@ -22,6 +23,7 @@ const SearchResultList = () => {
     console.log('keyword', keyword, 'mapRect', mapRect);
 
     setLoading(true);
+    setError(null);
 
     try {
       let response;
@@ -46,10 +48,12 @@ const SearchResultList = () => {
         );
       }
       setSearchResults(response.searchPlaceInfoDtoList);
-      console.log('searchResults:', searchResults);
-      console.log('백 response:', response);
+      console.log('1. searchResults:', searchResults);
+      console.log('2. 백 response:', response);
     } catch (error) {
-      console.error('검색 결과를 가져오는 데 실패했습니다.');
+      console.error('검색 결과를 가져오는 데 실패했습니다.', error);
+      setError('검색 결과를 가져오는 데 실패했습니다.');
+      setSearchResults([]);
     } finally {
       setLoading(false);
     }
@@ -103,6 +107,8 @@ const SearchResultList = () => {
       >
         {loading ? (
           <ClipLoader />
+        ) : error ? (
+          <div style={{ color: '#888' }}>{error}</div>
         ) : searchResults ? (
           searchResults.map((place) => (
             <div
@@ -125,7 +131,7 @@ const SearchResultList = () => {
                   리뷰 {place.reviewCount} {place.byFriend && '  친구가 방문한 장소'}
                 </p>
                 <p style={{ fontSize: '0.8rem', color: '#606060', marginBottom: '0.5rem' }}>
-                  {place.x}
+                  {place.address}
                 </p>
                 <p style={{ fontSize: '0.8rem', color: '#484848', margin: 0 }}>
                   {place.tags?.length ? place.tags.map((tag) => `#${tag} `).join('') : ' '}
@@ -162,7 +168,7 @@ const SearchResultList = () => {
             </div>
           ))
         ) : (
-          <div style={{ textAlign: 'center', color: '#888' }}>검색 결과가 없습니다.</div>
+          <div style={{ color: '#888' }}>검색 결과가 없습니다.</div>
         )}
       </div>
     </div>

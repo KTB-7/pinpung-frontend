@@ -20,7 +20,7 @@ const useAuthStore = create(
 );
 
 useAuthStore.subscribe((state) => {
-  console.log('Auth State Changed:', state);
+  console.log('Auth State Changed:');
 });
 
 export default useAuthStore;

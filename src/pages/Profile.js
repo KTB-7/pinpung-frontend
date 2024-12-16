@@ -47,9 +47,9 @@ const Profile = () => {
 
   const handleLogout = () => {
     try {
-      localStorage.removeItem('auth-storage');
-      clearAuth();
       window.location.href = `${API_URL}/logout`;
+      // localStorage.removeItem('auth-storage');
+      // clearAuth();
     } catch (error) {
       console.error('로그아웃 처리 중 에러 발생:', error);
     }

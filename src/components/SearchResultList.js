@@ -161,7 +161,6 @@ const SearchResultList = () => {
                     style={{
                       width: '100%',
                       height: '100%',
-                      backgroundColor: '#f0f0f0',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',

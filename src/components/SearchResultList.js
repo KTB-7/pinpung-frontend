@@ -134,7 +134,12 @@ const SearchResultList = () => {
                   {place.address}
                 </p>
                 <p style={{ fontSize: '0.8rem', color: '#484848', margin: 0 }}>
-                  {place.tags?.length ? place.tags.map((tag) => `#${tag} `).join('') : ' '}
+                  {place.tags?.length
+                    ? place.tags
+                        .slice(0, 3)
+                        .map((tag) => `#${tag} `)
+                        .join('')
+                    : ' '}{' '}
                 </p>
               </div>
 

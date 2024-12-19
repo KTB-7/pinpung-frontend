@@ -10,7 +10,7 @@ const AIButton = () => {
 
 export default AIButton;
 
-const StyledLink = styled.Link`
+const StyledLink = styled(Link)`
   position: fixed;
   bottom: 20%;
   right: 0px;

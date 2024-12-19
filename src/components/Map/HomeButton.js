@@ -1,17 +1,18 @@
+import { Link } from 'react-router-dom';
 import HomeIcon from '../../assets/icons/browse-icon.svg'; // 나중에 변경
 import styled from 'styled-components';
 
 const HomeButton = () => {
   return (
-    <Wrapper>
+    <StyledLink to="/">
       <img src={HomeIcon} alt="Home 아이콘" />
-    </Wrapper>
+    </StyledLink>
   );
 };
 
 export default HomeButton;
 
-const Wrapper = styled.div`
+const StyledLink = styled(Link)`
   position: fixed;
   bottom: 20%;
   right: 0px;

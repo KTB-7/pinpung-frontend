@@ -1,17 +1,16 @@
+import { Link } from 'react-router-dom';
 import AIIcon from '../../assets/icons/ai-icon.svg';
 import styled from 'styled-components';
 
 const AIButton = () => {
-  return (
-    <Wrapper>
-      <img src={AIIcon} alt="AI 아이콘" />
-    </Wrapper>
-  );
+  <StyledLink to="/ai-home">
+    <img src={AIIcon} alt="AI 아이콘" />
+  </StyledLink>;
 };
 
 export default AIButton;
 
-const Wrapper = styled.div`
+const StyledLink = styled.Link`
   position: fixed;
   bottom: 20%;
   right: 0px;

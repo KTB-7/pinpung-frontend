@@ -42,15 +42,6 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
           }
         }
 
-        // const markerImage = new kakao.maps.MarkerImage(markerImageUrl, new kakao.maps.Size(40, 40)); //25, 40
-
-        // // 마커 생성
-        // const marker = new kakao.maps.Marker({
-        //   map: map,
-        //   position: new kakao.maps.LatLng(place.y, place.x),
-        //   image: markerImage,
-        // });
-
         // HTML 요소 생성
         const markerWrapper = document.createElement('div');
         markerWrapper.classList.add('marker-wrapper');
@@ -70,12 +61,8 @@ const CafeMarker = ({ cafes, map, onMarkerClick }) => {
           map: map,
         });
 
-        // // 마커 클릭 이벤트 등록
-        // kakao.maps.event.addListener(customOverlay, 'click', () => {
-        //   onMarkerClick(place.placeId); // 클릭 시 선택된 카페 전달
-        // });
         markerWrapper.addEventListener('click', () => {
-          onMarkerClick(place.placeId);
+          onMarkerClick(place.placeId, parseFloat(place.x), parseFloat(place.y));
         });
 
         // 마커를 객체에 저장 (중복 방지)

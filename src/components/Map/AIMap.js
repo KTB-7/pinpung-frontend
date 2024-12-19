@@ -1,16 +1,16 @@
-/* 사용자 위치를 기반으로 맵을 로드하고, 맵 이동 시 카페목록 갱신 */
+/* 사용자 위치를 기반으로 AI 맵을 로드하고, AI 맵 이동 시 카페목록 갱신 */
 /* global kakao */
 /* eslint react-hooks/exhaustive-deps: "off" */
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserLocation } from '../../api/locationApi';
-import { fetchNearbyCafes } from '../../api/placesApi';
+import { fetchAIRecommendCafes } from '../../api/aiApi'; // 위에서 준 api
 import useStore from '../../store/store';
-import CafeMarker from './CafeMarker';
+import AICafeMarker from './AICafeMarker';
 import { debounce } from 'lodash';
 
-const Map = () => {
+const AIMap = () => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const navigate = useNavigate();
@@ -23,7 +23,8 @@ const Map = () => {
   const setMapLevel = useStore((state) => state.setMapLevel);
   const moveToLocation = useStore((state) => state.moveToLocation);
 
-  const [cafes, setCafes] = useState([]);
+  // AI추천 카페 목록 상태
+  const [aiCafes, setAICafes] = useState([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const fetchAndSetUserLocation = async () => {
@@ -50,7 +51,6 @@ const Map = () => {
     [setMapRect],
   );
 
-  // 맵 변경 이벤트 처리
   const handleMapChange = useCallback(() => {
     if (mapInstance.current) {
       const newLevel = mapInstance.current.getLevel();
@@ -62,44 +62,31 @@ const Map = () => {
   const handleMapClick = () => {
     if (isSheetOpen) {
       setIsSheetOpen(false);
-      navigate('/');
+      navigate('/ai-home');
     }
   };
 
   const initializeMap = useCallback(() => {
     const container = mapRef.current;
-    const initialLevel = mapLevel ?? 3; // mapLevel 없으면 3으로
-    let map;
+    const initialLevel = mapLevel ?? 3;
 
-    if (mapRect) {
-      // 이전 상태 복원: 중심 좌표와 레벨 설정하자..
-      const centerLat = (mapRect.swLat + mapRect.neLat) / 2;
-      const centerLng = (mapRect.swLng + mapRect.neLng) / 2;
-
-      map = new kakao.maps.Map(container, {
-        center: new kakao.maps.LatLng(centerLat, centerLng),
-        level: initialLevel,
-      });
-    } else {
-      // userLocation 기반 초기화
-      if (!userLocation) return; // 유저 위치 없으면 대기
-
-      map = new kakao.maps.Map(container, {
-        center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
-        level: initialLevel,
-      });
-    }
+    if (!userLocation) return;
+    const map = new kakao.maps.Map(container, {
+      center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
+      level: initialLevel,
+    });
 
     mapInstance.current = map;
 
     // 맵 이벤트 등록
     registerMapEvents(map);
 
-    // 초기 상태 저장 (처음 로드 시만 호출)
-    if (!mapRect) updateMapRect(map);
+    if (!mapRect) {
+      updateMapRect(map);
+    }
 
     return () => cleanupMapEvents(map);
-  }, [userLocation, mapRect, mapLevel]);
+  }, [userLocation, mapRect, mapLevel, handleMapChange, updateMapRect]);
 
   // 맵 이벤트 등록 함수
   const registerMapEvents = (map) => {
@@ -128,12 +115,12 @@ const Map = () => {
     if (moveToLocation && mapInstance.current) {
       const { latitude, longitude } = moveToLocation;
       const newCenter = new kakao.maps.LatLng(latitude, longitude);
-      mapInstance.current.setCenter(newCenter); // 지도 중심 이동
-      setMapLevel(mapInstance.current.getLevel()); // 현재 레벨 업데이트
+      mapInstance.current.setCenter(newCenter);
+      setMapLevel(mapInstance.current.getLevel());
       setUserLocation({ latitude, longitude });
-      updateMapRect(mapInstance.current); // 지도 영역 업데이트
+      updateMapRect(mapInstance.current);
     }
-  }, [moveToLocation, updateMapRect, setMapLevel]);
+  }, [moveToLocation, updateMapRect, setMapLevel, setUserLocation]);
 
   // 맵 초기화 및 이벤트 리스너 등록
   useEffect(() => {
@@ -154,33 +141,37 @@ const Map = () => {
     }
   }, [userLocation, initializeMap]);
 
-  // bounds 변경 시 카페 목록 다시 가져오기
+  // bounds 변경 시 AI 카페 목록 다시 가져오기
   useEffect(() => {
-    if (mapRect) {
+    if (mapRect && userLocation) {
       const { swLng, swLat, neLng, neLat } = mapRect;
-      fetchNearbyCafes(swLng, swLat, neLng, neLat)
-        .then((data) => setCafes(data.places))
-        .catch((error) => console.error('카페 목록 가져오기 실패:', error));
+      console.log('swLng:', swLng);
+      const { latitude: y, longitude: x } = userLocation;
+      console.log('y:', y);
+
+      fetchAIRecommendCafes(swLng, swLat, neLng, neLat, x, y)
+        .then((data) => setAICafes(data.places))
+        .catch((error) => console.error('AI 추천 카페 목록 가져오기 실패:', error));
     }
-  }, [mapRect]);
+  }, [mapRect, userLocation]);
 
   const handleMarkerClick = (placeId) => {
-    navigate(`/places/${placeId}`);
+    navigate(`/ai-home/places/${placeId}`);
     setIsSheetOpen(true);
   };
 
   return (
     <div
       ref={mapRef}
-      id="map"
+      id="ai-map"
       style={{ position: 'absolute', width: '100vw', height: '90vh' }}
       onClick={handleMapClick}
     >
       {mapInstance.current && (
-        <CafeMarker cafes={cafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
+        <AICafeMarker cafes={aiCafes} map={mapInstance.current} onMarkerClick={handleMarkerClick} />
       )}
     </div>
   );
 };
 
-export default Map;
+export default AIMap;

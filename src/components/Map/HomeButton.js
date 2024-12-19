@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
-import AIIcon from '../../assets/icons/ai-icon.svg';
+import HomeIcon from '../../assets/icons/browse-icon.svg'; // 나중에 변경
 import styled from 'styled-components';
 
-const AIButton = () => {
+const HomeButton = () => {
   return (
-    <StyledLink to="/ai-home">
-      <img src={AIIcon} alt="AI 아이콘" />
+    <StyledLink to="/">
+      <img src={HomeIcon} alt="Home 아이콘" />
     </StyledLink>
   );
 };
 
-export default AIButton;
+export default HomeButton;
 
 const StyledLink = styled(Link)`
   position: fixed;

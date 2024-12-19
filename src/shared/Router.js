@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '../pages/Home';
+import MapLayout from '../components/Map/MapLayout';
+import AIHome from '../pages/AIHome';
+import AIMapLayout from '../components/Map/AIMapLayout';
 import Profile from '../pages/Profile';
 import OAuthCallback from '../pages/OAuthCallback';
 import Login from '../pages/Login';
-import MapLayout from '../components/Map/MapLayout';
 import Navbar from '../components/Navbar';
 import PlaceOverview from '../pages/PlaceOverview';
 import UploadPung from '../pages/UploadPung';
@@ -24,6 +26,10 @@ const Router = () => {
           <Route element={<MapLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/places/:placeId" element={<PlaceOverview />} />
+          </Route>
+          <Route element={<AIMapLayout />}>
+            <Route path="/ai-home" element={<AIHome />} />
+            <Route path="/ai-home/places/:placeId" element={<PlaceOverview />} />
           </Route>
           <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />
           <Route path="/places/:placeId/upload-review" element={<UploadReview />} />

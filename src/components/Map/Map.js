@@ -123,6 +123,7 @@ const Map = () => {
   }, [userLocation, fetchAndSetUserLocation]);
 
   // 사용자 위치 가져오기 2: moveToLocation 상태 변경 시 지도 중심 이동
+  //(이거 맞는지 확인.. userLocation과 그냥 선택카페로 맵 중심이동과 상충되는듯)
   useEffect(() => {
     if (moveToLocation && mapInstance.current) {
       const { latitude, longitude } = moveToLocation;

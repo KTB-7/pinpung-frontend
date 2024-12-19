@@ -3,9 +3,11 @@ import AIIcon from '../../assets/icons/ai-icon.svg';
 import styled from 'styled-components';
 
 const AIButton = () => {
-  <StyledLink to="/ai-home">
-    <img src={AIIcon} alt="AI 아이콘" />
-  </StyledLink>;
+  return (
+    <StyledLink to="/ai-home">
+      <img src={AIIcon} alt="AI 아이콘" />
+    </StyledLink>
+  );
 };
 
 export default AIButton;

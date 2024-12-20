@@ -6,17 +6,33 @@ import { ClipLoader } from 'react-spinners';
 import { Button, Image } from 'react-bootstrap';
 
 const SearchResultList = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
+  // const moveToLocation = useStore((state) => state.moveToLocation);
+  const setMoveToLocation = useStore((state) => state.setMoveToLocation);
   const userLocation = useStore((state) => state.userLocation);
   const mapRect = useStore((state) => state.mapRect);
-  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [searchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 리스트
   const keyword = searchParams.get('keyword');
   const sort = searchParams.get('sort') || 'accuracy';
+
+  const handleSortChange = (newSort) => {
+    navigate(`/search-results?keyword=${keyword}&sort=${newSort}`);
+  };
+
+  const handlePlaceClick = (placeId, x, y) => {
+    if (isNaN(y) || isNaN(x)) {
+      console.error('유효하지 않은 좌표:', { y, x });
+      return;
+    }
+    //setIsSheetOpen(true);
+    setMoveToLocation({ latitude: parseFloat(y), longitude: parseFloat(x) });
+    navigate(`/places/${placeId}`);
+  };
 
   const fetchSearchResults = useCallback(async () => {
     if (!keyword || !mapRect || !userLocation) return;
@@ -63,15 +79,6 @@ const SearchResultList = () => {
     fetchSearchResults();
   }, [fetchSearchResults]);
 
-  const handleSortChange = (newSort) => {
-    navigate(`/search-results?keyword=${keyword}&sort=${newSort}`);
-  };
-
-  const handlePlaceClick = (placeId) => {
-    //TODO: PlaceOverview로 가게하고, 그 장소 중심으로 두고 맵 렌더링
-    navigate(`/places/${placeId}`);
-  };
-
   return (
     <div>
       {/* 정렬 버튼 */}
@@ -113,7 +120,7 @@ const SearchResultList = () => {
           searchResults.map((place) => (
             <div
               key={place.placeId}
-              onClick={() => handlePlaceClick(place.placeId)}
+              onClick={() => handlePlaceClick(place.placeId, place.x, place.y)}
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',

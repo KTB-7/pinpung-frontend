@@ -17,6 +17,7 @@ const Map = () => {
 
   const userLocation = useStore((state) => state.userLocation);
   const setUserLocation = useStore((state) => state.setUserLocation);
+  const setMoveToLocation = useStore((state) => state.setMoveToLocation);
   const mapRect = useStore((state) => state.mapRect);
   const setMapRect = useStore((state) => state.setMapRect);
   const mapLevel = useStore((state) => state.mapLevel);
@@ -99,7 +100,7 @@ const Map = () => {
     if (!mapRect) updateMapRect(map);
 
     return () => cleanupMapEvents(map);
-  }, [userLocation, mapRect, mapLevel]);
+  }, [userLocation, mapLevel]);
 
   // 맵 이벤트 등록 함수
   const registerMapEvents = (map) => {
@@ -125,13 +126,18 @@ const Map = () => {
   // 사용자 위치 가져오기 2: moveToLocation 상태 변경 시 지도 중심 이동
   //(이거 맞는지 확인.. userLocation과 그냥 선택카페로 맵 중심이동과 상충되는듯)
   useEffect(() => {
+    // console.log('useEffect for moveToLocation:', moveToLocation);
     if (moveToLocation && mapInstance.current) {
       const { latitude, longitude } = moveToLocation;
       const newCenter = new kakao.maps.LatLng(latitude, longitude);
-      mapInstance.current.setCenter(newCenter); // 지도 중심 이동
+      mapInstance.current.panTo(newCenter); // 지도 중심 이동
       setMapLevel(mapInstance.current.getLevel()); // 현재 레벨 업데이트
-      setUserLocation({ latitude, longitude });
       updateMapRect(mapInstance.current); // 지도 영역 업데이트
+
+      // console.log('지도 중심 이동:', { latitude, longitude });
+
+      // moveToLocation 초기화 (필수인지 확인 필요..)
+      // setMoveToLocation(null); // 중복 실행 방지
     }
   }, [moveToLocation, updateMapRect, setMapLevel]);
 
@@ -164,10 +170,14 @@ const Map = () => {
     }
   }, [mapRect]);
 
-  const handleMarkerClick = (placeId) => {
-    navigate(`/places/${placeId}`);
-    setIsSheetOpen(true);
-  };
+  const handleMarkerClick = useCallback(
+    (placeId, x, y) => {
+      setIsSheetOpen(true);
+      setMoveToLocation({ latitude: y, longitude: x });
+      navigate(`/places/${placeId}`);
+    },
+    [navigate, setMoveToLocation],
+  );
 
   return (
     <div

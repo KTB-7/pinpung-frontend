@@ -7,9 +7,9 @@ export const getUserLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        resolve({ latitude, longitude });
+        //resolve({ latitude, longitude });
 
-        //resolve({ latitude: 37.400113, longitude: 127.106766 });//유스페이스
+        resolve({ latitude: 37.400113, longitude: 127.106766 }); //유스페이스
       },
       (error) => {
         reject(error);

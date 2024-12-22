@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const AIButton = () => {
   return (
-    <StyledLink to="/ai-home">
+    <StyledLink to="/ai-home?view=map">
       <img src={AIIcon} alt="AI 아이콘" />
     </StyledLink>
   );

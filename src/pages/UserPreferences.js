@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { registerMyTaste } from './userApi'; // 위에서 제시한 API 호출 함수
+import { registerMyTaste } from '../api/userApi';
 import { useNavigate } from 'react-router-dom';
 
-const CafePreference = () => {
+const UserPreferences = () => {
   const navigate = useNavigate();
 
   const ageOptions = ['10대', '20대', '30대', '40대', '50대', '60대', '70대 이상'];
-  const menuOptions = ['아메리카노', '라떼', '스무디', '차', '디저트'];
   const activitiesOptions = ['공부', '친구와 모임', '미팅', '휴식', '데이트'];
+  const menuOptions = ['아메리카노', '라떼', '스무디', '차', '디저트'];
 
   const [age, setAge] = useState('');
-  const [selectedMenus, setSelectedMenus] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
+  const [selectedMenus, setSelectedMenus] = useState([]);
 
   const handleAgeSelect = (selectedAge) => {
     setAge(selectedAge);
@@ -30,7 +30,7 @@ const CafePreference = () => {
 
   const handleSubmit = async () => {
     // 조건 충족 시 등록 요청 후 처리하자
-    if (age && activities && menus) {
+    if (age && selectedActivities && selectedMenus) {
       try {
         console.log('사용자 취향 등록:', age, selectedActivities, selectedMenus);
         await registerMyTaste(age, selectedActivities, selectedMenus);
@@ -39,9 +39,11 @@ const CafePreference = () => {
       }
     }
   };
-
+  //  width: 100%;
+  // height: 90vh;
+  // margin-bottom: 10%;
   return (
-    <div className="container mt-4">
+    <div className="container mt-4" style={{ bottom: '10%' }}>
       <h4 className="mb-3">"00님"의 카페 취향을 알려주세요!</h4>
 
       {/* 나이 선택*/}
@@ -159,4 +161,4 @@ const CafePreference = () => {
   );
 };
 
-export default CafePreference;
+export default UserPreferences;

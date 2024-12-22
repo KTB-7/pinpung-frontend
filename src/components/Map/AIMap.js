@@ -22,6 +22,7 @@ const AIMap = () => {
   const mapLevel = useStore((state) => state.mapLevel);
   const setMapLevel = useStore((state) => state.setMapLevel);
   const moveToLocation = useStore((state) => state.moveToLocation);
+  const setMoveToLocation = useStore((state) => state.setMoveToLocation);
 
   // AI추천 카페 목록 상태
   const [aiCafes, setAICafes] = useState([]);
@@ -51,6 +52,7 @@ const AIMap = () => {
     [setMapRect],
   );
 
+  // 맵 변경 이벤트 처리
   const handleMapChange = useCallback(() => {
     if (mapInstance.current) {
       const newLevel = mapInstance.current.getLevel();
@@ -68,25 +70,38 @@ const AIMap = () => {
 
   const initializeMap = useCallback(() => {
     const container = mapRef.current;
-    const initialLevel = mapLevel ?? 3;
+    const initialLevel = mapLevel ?? 3; // mapLevel 없으면 3으로
+    let map;
 
-    if (!userLocation) return;
-    const map = new kakao.maps.Map(container, {
-      center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
-      level: initialLevel,
-    });
+    if (mapRect) {
+      // 이전 상태 복원: 중심 좌표와 레벨 설정하자..
+      const centerLat = (mapRect.swLat + mapRect.neLat) / 2;
+      const centerLng = (mapRect.swLng + mapRect.neLng) / 2;
+
+      map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(centerLat, centerLng),
+        level: initialLevel,
+      });
+    } else {
+      // userLocation 기반 초기화
+      if (!userLocation) return; // 유저 위치 없으면 대기
+
+      map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(userLocation.latitude, userLocation.longitude),
+        level: initialLevel,
+      });
+    }
 
     mapInstance.current = map;
 
     // 맵 이벤트 등록
     registerMapEvents(map);
 
-    if (!mapRect) {
-      updateMapRect(map);
-    }
+    // 초기 상태 저장 (처음 로드 시만 호출)
+    if (!mapRect) updateMapRect(map);
 
     return () => cleanupMapEvents(map);
-  }, [userLocation, mapRect, mapLevel, handleMapChange, updateMapRect]);
+  }, [userLocation, mapLevel]);
 
   // 맵 이벤트 등록 함수
   const registerMapEvents = (map) => {
@@ -112,15 +127,20 @@ const AIMap = () => {
   // 사용자 위치 가져오기 2: moveToLocation 상태 변경 시 지도 중심 이동
   //(이거 맞는지 확인.. userLocation과 그냥 선택카페로 맵 중심이동과 상충되는듯)
   useEffect(() => {
+    // console.log('useEffect for moveToLocation:', moveToLocation);
     if (moveToLocation && mapInstance.current) {
       const { latitude, longitude } = moveToLocation;
       const newCenter = new kakao.maps.LatLng(latitude, longitude);
-      mapInstance.current.setCenter(newCenter);
-      setMapLevel(mapInstance.current.getLevel());
-      setUserLocation({ latitude, longitude });
-      updateMapRect(mapInstance.current);
+      mapInstance.current.panTo(newCenter); // 지도 중심 이동
+      setMapLevel(mapInstance.current.getLevel()); // 현재 레벨 업데이트
+      updateMapRect(mapInstance.current); // 지도 영역 업데이트
+
+      // console.log('지도 중심 이동:', { latitude, longitude });
+
+      // moveToLocation 초기화 (필수인지 확인 필요..)
+      // setMoveToLocation(null); // 중복 실행 방지
     }
-  }, [moveToLocation, updateMapRect, setMapLevel, setUserLocation]);
+  }, [moveToLocation, updateMapRect, setMapLevel]);
 
   // 맵 초기화 및 이벤트 리스너 등록
   useEffect(() => {
@@ -145,9 +165,8 @@ const AIMap = () => {
   useEffect(() => {
     if (mapRect && userLocation) {
       const { swLng, swLat, neLng, neLat } = mapRect;
-      console.log('swLng:', swLng);
       const { latitude: y, longitude: x } = userLocation;
-      console.log('y:', y);
+      console.log('swLng:', swLng, 'swLat:', swLat, 'x:', x, 'y:', y);
 
       fetchAIRecommendCafes(swLng, swLat, neLng, neLat, x, y)
         .then((data) => setAICafes(data.places))
@@ -155,10 +174,14 @@ const AIMap = () => {
     }
   }, [mapRect, userLocation]);
 
-  const handleMarkerClick = (placeId) => {
-    navigate(`/ai-home/places/${placeId}`);
-    setIsSheetOpen(true);
-  };
+  const handleMarkerClick = useCallback(
+    (placeId, x, y) => {
+      setIsSheetOpen(true);
+      setMoveToLocation({ latitude: y, longitude: x });
+      navigate(`/ai-home/places/${placeId}`);
+    },
+    [navigate, setMoveToLocation],
+  );
 
   return (
     <div

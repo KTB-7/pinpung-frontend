@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import backgroundImage from '../assets/images/login-background.svg';
+import pinpungLogoIcon from '../assets/icons/pinpung-logo-icon.svg';
 import kakaoLoginImage from '../assets/images/kakao_login_medium_narrow.png';
 
 const Login = () => {
@@ -9,6 +11,8 @@ const Login = () => {
 
   return (
     <Wrapper>
+      <img src={pinpungLogoIcon} alt="핑펑 로고" style={{ marginLeft: '15px' }} />
+      <h1 style={{ fontWeight: 'bold' }}>PinPung</h1>
       <h2>로그인하고 핑펑에서</h2>
       <h2>카페 추천을 받아보세요</h2>
       <br />
@@ -25,7 +29,13 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   padding: 40px 40px;
+
+  background-image: url(${backgroundImage});
+  background-position: center;
+  background-size: contain;
+  backgroound-repeat: no-repeat;
   background-color: white;
+
   flex-direction: column;
   align-items: center;
   justify-content: center;

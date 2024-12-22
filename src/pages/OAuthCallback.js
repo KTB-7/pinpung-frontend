@@ -27,8 +27,7 @@ const OAuthCallback = () => {
             userEmail,
           });
 
-          alert('로그인 성공! 홈으로 이동합니다.');
-          navigate('/');
+          navigate('/user-preferences');
         } else {
           alert('로그인 실패. 다시 시도해주세요.');
           navigate('/');

@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import useAuthStore from '../store/auth';
 import { registerMyTaste } from '../api/userApi';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const UserPreferences = () => {
   const navigate = useNavigate();
+  const userName = useAuthStore((state) => state.userInfo.userName);
 
-  const ageOptions = ['10대', '20대', '30대', '40대', '50대', '60대', '70대 이상'];
+  const ageOptions = [
+    { value: 10, label: '10대' },
+    { value: 20, label: '20대' },
+    { value: 30, label: '30대' },
+    { value: 40, label: '40대' },
+    { value: 50, label: '50대' },
+    { value: 60, label: '60대' },
+    { value: 70, label: '70대 이상' },
+  ];
   const activitiesOptions = ['공부', '친구와 모임', '미팅', '휴식', '데이트'];
   const menuOptions = ['아메리카노', '라떼', '스무디', '차', '디저트'];
 
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState(null);
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [selectedMenus, setSelectedMenus] = useState([]);
 
@@ -26,7 +36,7 @@ const UserPreferences = () => {
     }
   };
 
-  const isFormValid = age !== '' && selectedMenus.length > 0 && selectedActivities.length > 0;
+  const isFormValid = age !== '' && selectedActivities.length > 0 && selectedMenus.length > 0;
 
   const handleSubmit = async () => {
     // 조건 충족 시 등록 요청 후 처리하자
@@ -34,38 +44,52 @@ const UserPreferences = () => {
       try {
         console.log('사용자 취향 등록:', age, selectedActivities, selectedMenus);
         await registerMyTaste(age, selectedActivities, selectedMenus);
+        navigate('/');
       } catch (error) {
         console.log('카페 취향 등록 중 오류 발생:', error);
       }
     }
   };
-  //  width: 100%;
-  // height: 90vh;
-  // margin-bottom: 10%;
+
   return (
-    <div className="container mt-4" style={{ bottom: '10%' }}>
-      <h4 className="mb-3">"00님"의 카페 취향을 알려주세요!</h4>
+    <div className="container mt-4">
+      <h5
+        className="mb-3"
+        style={{
+          textAlign: 'center',
+          fontWeight: 'bold',
+          fontWeight: 'bold',
+        }}
+      >
+        {userName} 님에 대해 조금 더 알려주세요!
+      </h5>
+      <br />
 
       {/* 나이 선택*/}
-      <div className="mb-4">
-        <h5 className="mb-2">연령대</h5>
+      <div className="mb-5" style={{ margin: '10px' }}>
+        <div
+          style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', fontSize: '18px' }}
+        >
+          연령대
+        </div>
         <div className="d-flex flex-wrap gap-2">
           {ageOptions.map((option) => {
-            const selected = age === option;
+            const selected = age === option.value;
             return (
               <button
-                key={option}
+                key={option.value}
                 type="button"
                 className="btn"
                 style={{
-                  border: `2px solid ${selected ? '#FF9C0E' : '#D0D0D0'}`,
+                  border: `1px solid ${selected ? '#FF8800' : '#D0D0D0'}`,
                   borderRadius: '20px',
-                  color: selected ? '#FF9C0E' : 'black',
+                  fontSize: '15px',
+                  color: selected ? '#FF8800' : 'gray',
                   backgroundColor: 'white',
                 }}
-                onClick={() => handleAgeSelect(option)}
+                onClick={() => handleAgeSelect(option.value)}
               >
-                {option}
+                {option.label}
               </button>
             );
           })}
@@ -73,8 +97,13 @@ const UserPreferences = () => {
       </div>
 
       {/* 메뉴 선택 */}
-      <div className="mb-4">
-        <h5 className="mb-2">좋아하는 메뉴를 선택해주세요! (복수 선택 가능)</h5>
+      <div className="mb-5" style={{ margin: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <span style={{ fontSize: '18px' }}>좋아하는 메뉴를 선택해주세요</span>
+          <span style={{ fontSize: '12px', color: 'gray', marginLeft: '10px' }}>
+            (복수 선택 가능)
+          </span>
+        </div>
         <div className="d-flex flex-wrap gap-2">
           {menuOptions.map((option) => {
             const selected = selectedMenus.includes(option);
@@ -84,9 +113,10 @@ const UserPreferences = () => {
                 type="button"
                 className="btn"
                 style={{
-                  border: `2px solid ${selected ? '#FF9C0E' : '#D0D0D0'}`,
+                  border: `1px solid ${selected ? '#FF8800' : '#D0D0D0'}`,
                   borderRadius: '20px',
-                  color: selected ? '#FF9C0E' : 'black',
+                  fontSize: '15px',
+                  color: selected ? '#FF8800' : 'gray',
                   backgroundColor: 'white',
                 }}
                 onClick={() => toggleSelection(option, selectedMenus, setSelectedMenus)}
@@ -99,8 +129,13 @@ const UserPreferences = () => {
       </div>
 
       {/* activities 선택*/}
-      <div className="mb-4">
-        <h5 className="mb-2">가는 주요 목적을 알려주세요! (복수 선택 가능)</h5>
+      <div className="mb-5" style={{ margin: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <span style={{ fontSize: '18px' }}>주로 가는 목적을 알려주세요</span>
+          <span style={{ fontSize: '12px', color: 'gray', marginLeft: '10px' }}>
+            (복수 선택 가능)
+          </span>
+        </div>
         <div className="d-flex flex-wrap gap-2">
           {activitiesOptions.map((option) => {
             const selected = selectedActivities.includes(option);
@@ -110,9 +145,10 @@ const UserPreferences = () => {
                 type="button"
                 className="btn"
                 style={{
-                  border: `2px solid ${selected ? '#FF9C0E' : '#D0D0D0'}`,
+                  border: `1px solid ${selected ? '#FF8800' : '#D0D0D0'}`,
                   borderRadius: '20px',
-                  color: selected ? '#FF9C0E' : 'black',
+                  fontSize: '15px',
+                  color: selected ? '#FF8800' : 'gray',
                   backgroundColor: 'white',
                 }}
                 onClick={() => toggleSelection(option, selectedActivities, setSelectedActivities)}
@@ -125,7 +161,7 @@ const UserPreferences = () => {
       </div>
 
       {/* 버튼들 */}
-      <div className="d-flex justify-content-between">
+      <div className="text-center">
         <button
           className="btn"
           style={{
@@ -133,7 +169,7 @@ const UserPreferences = () => {
             borderRadius: '5px',
             backgroundColor: isFormValid ? '#FF9C0E' : '#D0D0D0',
             color: 'white',
-            padding: '10px 20px',
+            padding: '10px 125px',
           }}
           type="button"
           disabled={!isFormValid}
@@ -142,20 +178,18 @@ const UserPreferences = () => {
           핑펑 시작하기
         </button>
 
-        <button
-          className="btn"
-          style={{
-            border: 'none',
-            borderRadius: '5px',
-            backgroundColor: '#f0f0f0',
-            color: 'black',
-            padding: '10px 20px',
-          }}
-          type="button"
-          onClick={() => navigate('/')}
-        >
-          넘어가기
-        </button>
+        <div style={{ marginTop: '1rem' }}>
+          <span
+            style={{
+              textDecoration: 'underline',
+              cursor: 'pointer',
+              color: 'gray',
+            }}
+            onClick={() => navigate('/')}
+          >
+            넘어가기
+          </span>
+        </div>
       </div>
     </div>
   );

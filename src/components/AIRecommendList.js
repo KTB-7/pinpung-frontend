@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useAIRecommendCafes from '../hooks/useAIRecommendCafes';
 import useStore from '../store/store';
 import { ClipLoader } from 'react-spinners';
-import { Button, Image } from 'react-bootstrap';
+import { Container, Row, Col, Image } from 'react-bootstrap';
 
 const AIRecommendList = () => {
   const navigate = useNavigate();
@@ -21,90 +21,108 @@ const AIRecommendList = () => {
   );
   const aiCafes = data?.places || [];
 
-  //   if (isLoading) return <ListContainer>리스트를 불러오는 중...</ListContainer>;
-  //   if (error) return <ListContainer>에러 발생</ListContainer>;
-
   const handlePlaceClick = (placeId) => {
     navigate(`/ai-home/places/${placeId}`);
   };
 
   return (
-    <div
+    <Container
+      fluid
       style={{
+        position: 'absolute',
+        top: '8vh',
+        left: 0,
+        width: '100vw',
+        height: '82vh',
         overflowY: 'auto',
-        width: '100%',
-        height: 'calc(100vh - 220px)',
+        zIndex: 3,
         backgroundColor: 'white',
-        zIndex: '3',
       }}
     >
       {isLoading ? (
-        <ClipLoader />
+        <div className="text-center">
+          <ClipLoader />
+        </div>
       ) : error ? (
-        <div style={{ color: '#888' }}>{error}</div>
+        <div className="text-center text-danger">{error}</div>
       ) : aiCafes ? (
         aiCafes.map((place) => (
-          <div
+          <Row
             key={place.placeId}
+            className="align-items-center mb-3"
             onClick={() => handlePlaceClick(place.placeId)}
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '10px 0',
-              height: '',
-              marginBottom: '0.5rem',
               cursor: 'pointer',
+              padding: '1vh',
             }}
           >
-            {/* 장소 정보 */}
-            <div style={{ flex: 1, marginRight: '1rem' }}>
-              <h6 style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>{place.placeName}</h6>
-              <p style={{ fontSize: '0.8rem', color: '#606060', marginBottom: '0.5rem' }}>
+            <Col xs={8}>
+              <h6
+                className="fw mb-1"
+                style={{
+                  fontSize: '0.9rem',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {place.placeName}
+              </h6>
+              <p
+                className="text-muted mb-1"
+                style={{
+                  fontSize: '0.7rem',
+                  color: '#606060',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
                 {place.address}
               </p>
-              <p style={{ fontSize: '0.8rem', color: '#484848', margin: 0 }}>
+              <p
+                className="text-muted"
+                style={{
+                  fontSize: '0.7rem',
+                }}
+              >
                 {place.tags?.length
                   ? place.tags
                       .slice(0, 3)
                       .map((tag) => `#${tag} `)
                       .join('')
-                  : ' '}{' '}
+                  : ''}
               </p>
-            </div>
-
-            {/* 이미지 */}
-            <div style={{ width: '130px', height: '100px', flexShrink: 0 }}>
+            </Col>
+            <Col xs={4}>
               {place.imageId ? (
                 <Image
                   src={`${process.env.REACT_APP_S3_BASE_URL}/original-images/${place.imageId}`}
                   alt="장소 이미지"
                   style={{
                     width: '100%',
-                    height: '100%',
+                    height: '12vh',
                     objectFit: 'cover',
-                    borderRadius: '5%',
+                    borderRadius: '5px',
                   }}
                 />
               ) : (
                 <div
                   style={{
                     width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '5%',
+                    height: '12vh',
+                    backgroundColor: '#f8f9fa',
+                    borderRadius: '5px',
                   }}
-                ></div>
+                />
               )}
-            </div>
-          </div>
+            </Col>
+          </Row>
         ))
       ) : (
-        <div style={{ color: '#888' }}>검색 결과가 없습니다.</div>
+        <div className="text-center text-muted">검색 결과가 없습니다.</div>
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -29,7 +29,7 @@ export default LocationButton;
 
 const Wrapper = styled.div`
   position: fixed;
-  bottom: 11%;
+  bottom: 12%;
   right: 8px;
   cursor: pointer;
   margin: 2%;
@@ -37,7 +37,5 @@ const Wrapper = styled.div`
   img {
     width: 100%;
     height: 100%;
-    max-width: 60px;
-    max-height: 60px;
   }
 `;

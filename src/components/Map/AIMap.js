@@ -166,24 +166,25 @@ const AIMap = () => {
     if (mapRect && userLocation) {
       const { swLng, swLat, neLng, neLat } = mapRect;
       const { latitude: y, longitude: x } = userLocation;
-      console.log(
-        'swLng:',
-        swLng,
-        'swLat:',
-        swLat,
-        'neLng:',
-        neLng,
-        'neLat:',
-        neLat,
-        'x:',
-        x,
-        'y:',
-        y,
-      );
+      // console.log(
+      //   'swLng:',
+      //   swLng,
+      //   'swLat:',
+      //   swLat,
+      //   'neLng:',
+      //   neLng,
+      //   'neLat:',
+      //   neLat,
+      //   'x:',
+      //   x,
+      //   'y:',
+      //   y,
+      // );
 
       fetchAIRecommendCafes(swLng, swLat, neLng, neLat, x, y)
         .then((data) => setAICafes(data.places))
         .catch((error) => console.error('AI 추천 카페 목록 가져오기 실패:', error));
+      // console.log('aiCafes:', aiCafes);
     }
   }, [mapRect, userLocation]);
 

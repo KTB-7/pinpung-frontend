@@ -27,12 +27,15 @@ const AIRecommendList = () => {
   const handlePlaceClick = (placeId) => {
     navigate(`/ai-home/places/${placeId}`);
   };
+
   return (
     <div
       style={{
         overflowY: 'auto',
+        width: '100%',
         height: 'calc(100vh - 220px)',
-        padding: '0 10px',
+        backgroundColor: 'white',
+        zIndex: '3',
       }}
     >
       {isLoading ? (

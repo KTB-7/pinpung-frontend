@@ -91,7 +91,7 @@ const SearchResultList = () => {
         <Button
           variant={sort === 'accuracy' ? 'secondary' : 'outline-secondary'}
           onClick={() => handleSortChange('accuracy')}
-          style={{ marginRight: '0.5rem', height: '30px' }}
+          style={{ marginRight: '0.5rem', height: '3.5vh' }}
           size="sm"
         >
           정확도순
@@ -99,7 +99,7 @@ const SearchResultList = () => {
         <Button
           variant={sort === 'distance' ? 'secondary' : 'outline-secondary'}
           onClick={() => handleSortChange('distance')}
-          style={{ height: '30px' }}
+          style={{ height: '3.5vh' }}
           size="sm"
         >
           거리순
@@ -108,8 +108,8 @@ const SearchResultList = () => {
       <div
         style={{
           overflowY: 'auto',
-          height: 'calc(100vh - 220px)',
-          padding: '0 10px',
+          height: '75vh',
+          padding: '0 2vw',
         }}
       >
         {loading ? (
@@ -125,7 +125,7 @@ const SearchResultList = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: '10px 0',
+                padding: '0.5rem 0',
                 height: '',
                 marginBottom: '0.5rem',
                 cursor: 'pointer',
@@ -133,8 +133,8 @@ const SearchResultList = () => {
             >
               {/* 장소 정보 */}
               <div style={{ flex: 1, marginRight: '1rem' }}>
-                <h6 style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>{place.placeName}</h6>
-                <p style={{ fontSize: '0.8rem', color: '#606060', marginBottom: '0.3rem' }}>
+                <div style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>{place.placeName}</div>
+                <p style={{ fontSize: '0.7rem', color: '#606060', marginBottom: '0.3rem' }}>
                   리뷰 {place.reviewCount} {place.byFriend && '  친구가 방문한 장소'}
                 </p>
                 <p style={{ fontSize: '0.8rem', color: '#606060', marginBottom: '0.5rem' }}>
@@ -151,7 +151,7 @@ const SearchResultList = () => {
               </div>
 
               {/* 이미지 */}
-              <div style={{ width: '130px', height: '100px', flexShrink: 0 }}>
+              <div style={{ width: '35vw', height: '12vh', flexShrink: 0 }}>
                 {place.imageId ? (
                   <Image
                     src={`${process.env.REACT_APP_S3_BASE_URL}/original-images/${place.imageId}`}

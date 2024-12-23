@@ -91,7 +91,7 @@ const Wrapper = styled.div`
   display: flex;
   position: fixed;
   bottom: 10%;
-  top: 45%;
+  top: 53%;
   left: 0;
   width: 100%;
   background-color: white;

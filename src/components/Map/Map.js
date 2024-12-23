@@ -17,12 +17,12 @@ const Map = () => {
 
   const userLocation = useStore((state) => state.userLocation);
   const setUserLocation = useStore((state) => state.setUserLocation);
-  const setMoveToLocation = useStore((state) => state.setMoveToLocation);
   const mapRect = useStore((state) => state.mapRect);
   const setMapRect = useStore((state) => state.setMapRect);
   const mapLevel = useStore((state) => state.mapLevel);
   const setMapLevel = useStore((state) => state.setMapLevel);
   const moveToLocation = useStore((state) => state.moveToLocation);
+  const setMoveToLocation = useStore((state) => state.setMoveToLocation);
 
   const [cafes, setCafes] = useState([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);

@@ -37,4 +37,8 @@ const useStore = create(
   ),
 );
 
+// useStore.subscribe((state) => {
+//   console.log('현재 Zustand moveToLocation:', state.moveToLocation);
+// });
+
 export default useStore;

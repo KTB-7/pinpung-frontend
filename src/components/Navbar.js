@@ -16,17 +16,17 @@ const Navbar = () => {
       <Menu>
         <li>
           <IconLink to="/">
-            <img src={BrowseIcon} alt="Browse" style={{ marginTop: '19px', width: '61px' }} />
+            <img src={BrowseIcon} alt="Browse" style={{ marginTop: '2.2vh', width: '16vw' }} />
           </IconLink>
         </li>
         <li>
           <IconLink to="/add-pung">
-            <img src={AddIcon} alt="Add" style={{ position: 'relative', bottom: '20px' }} />
+            <img src={AddIcon} alt="Add" style={{ position: 'relative', bottom: '2.3vh' }} />
           </IconLink>
         </li>
         <li>
           <IconLink to="/profile">
-            <img src={ProfileIcon} alt="profile" style={{ marginTop: '22.5px', width: '62px' }} />
+            <img src={ProfileIcon} alt="profile" style={{ marginTop: '2.7vh', width: '15.9vw' }} />
           </IconLink>
         </li>
       </Menu>
@@ -38,7 +38,7 @@ const Nav = styled.nav`
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 10%;
+  height: 10vh;
   background-color: white;
   display: flex;
   justify-content: center;
@@ -53,7 +53,7 @@ const Menu = styled.ul`
   justify-content: space-around;
   width: 100%;
   padding: 0;
-  margin: 0 36px;
+  margin: 0 9vw;
 `;
 
 const IconLink = styled(Link)`

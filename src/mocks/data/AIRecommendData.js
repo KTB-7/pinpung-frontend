@@ -16,7 +16,7 @@ export const AIRecommendData = {
       placeId: 26,
       placeName: '빙스퐁 판교2호점',
       address: '경기 성남시 분당구 대왕판교로 670',
-      tags: ['가짜태그1'],
+      tags: ['가짜태그1', '가짜태그1'],
       imageId: 0,
       x: '127.107078257823',
       y: '37.4020354514922',

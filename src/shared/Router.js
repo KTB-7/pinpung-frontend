@@ -8,6 +8,7 @@ import OAuthCallback from '../pages/OAuthCallback';
 import Login from '../pages/Login';
 import Navbar from '../components/Navbar';
 import PlaceOverview from '../pages/PlaceOverview';
+import AIPlaceOverview from '../pages/AIPlaceOverview';
 import UserPreferences from '../pages/UserPreferences';
 import UploadPung from '../pages/UploadPung';
 import UploadReview from '../pages/UploadReview';
@@ -30,7 +31,7 @@ const Router = () => {
           </Route>
           <Route element={<AIMapLayout />}>
             <Route path="/ai-home" element={<AIHome />} />
-            <Route path="/ai-home/places/:placeId" element={<PlaceOverview />} />
+            <Route path="/ai-home/places/:placeId" element={<AIPlaceOverview />} />
           </Route>
           <Route path="/user-preferences" element={<UserPreferences />} />
           <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />

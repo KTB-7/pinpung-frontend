@@ -12,14 +12,12 @@ import PlaceOverview from '../pages/PlaceOverview';
 import AIPlaceOverview from '../pages/AIPlaceOverview';
 import UserPreferences from '../pages/UserPreferences';
 import UploadPung from '../pages/UploadPung';
+import UploadPungWithSearch from '../pages/UploadPungWithSearch';
 import UploadReview from '../pages/UploadReview';
 import DefaultSearch from '../pages/DefaultSearch';
 import PrivateRoute from './PrivateRoute';
-import useStore from '../store/store';
 
 const Router = () => {
-  const showNavbar = useStore((state) => state.showNavbar);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -35,6 +33,7 @@ const Router = () => {
           </Route>
           <Route path="/user-preferences" element={<UserPreferences />} />
           <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />
+          <Route path="/upload-pung-with-search/:placeId?" element={<UploadPungWithSearch />} />
           <Route path="/places/:placeId/upload-review" element={<UploadReview />} />
           <Route path="/search-results" element={<DefaultSearch />} />
           <Route path="/my-page" element={<MyPage />} />
@@ -45,7 +44,7 @@ const Router = () => {
         <Route path="/oauth/callback" element={<OAuthCallback />} />
         <Route path="/login" element={<Login />} />
       </Routes>
-      {showNavbar && <Navbar />}
+      <Navbar />
     </BrowserRouter>
   );
 };

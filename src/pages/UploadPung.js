@@ -8,7 +8,7 @@ import { ClipLoader } from 'react-spinners';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const UploadPung = () => {
-  const { placeId } = useParams(); // URL 파라미터에서 placeId를 받아옴
+  const { placeId } = useParams();
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [text, setText] = useState('');

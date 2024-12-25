@@ -10,17 +10,17 @@ const BottomSheet = ({ placeId }) => {
   const [cafeData, setCafeData] = useState(null);
   const navigate = useNavigate();
 
+  const fetchCafeData = async () => {
+    try {
+      const data = await fetchCafeDetails(placeId);
+      setCafeData(data);
+    } catch (error) {
+      console.error('카페 상세 정보 가져오기 실패:', error);
+    }
+  };
+
   useEffect(() => {
     if (!placeId) return;
-
-    const fetchCafeData = async () => {
-      try {
-        const data = await fetchCafeDetails(placeId);
-        setCafeData(data);
-      } catch (error) {
-        console.error('카페 상세 정보 가져오기 실패:', error);
-      }
-    };
 
     fetchCafeData();
   }, [placeId]);

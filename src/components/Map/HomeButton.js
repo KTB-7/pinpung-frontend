@@ -21,12 +21,10 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin: 2%;
+  margin: 3%;
   z-index: 2;
   img {
     width: 100%;
     height: 100%;
-    max-width: 65px;
-    max-height: 65px;
   }
 `;

@@ -33,7 +33,7 @@ const Router = () => {
           </Route>
           <Route path="/user-preferences" element={<UserPreferences />} />
           <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />
-          <Route path="/upload-pung-with-search/:placeId?" element={<UploadPungWithSearch />} />
+          <Route path="/upload-pung-with-search" element={<UploadPungWithSearch />} />
           <Route path="/places/:placeId/upload-review" element={<UploadReview />} />
           <Route path="/search-results" element={<DefaultSearch />} />
           <Route path="/my-page" element={<MyPage />} />

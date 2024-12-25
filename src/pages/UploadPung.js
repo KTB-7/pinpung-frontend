@@ -85,7 +85,7 @@ const UploadPung = () => {
               {!image && <span style={{ fontSize: '40px' }}>+</span>}
             </SquareButton>
           </div>
-          <p></p>
+          <div style={{ height: '6vh' }} />
           <div className="col-12 mb-4">
             <textarea
               value={text}
@@ -168,6 +168,7 @@ const UploadButton = styled.button`
   font-weight: bold;
   border: none;
   border-radius: 5px;
+  width: 83vw;
   padding: 10px 30px;
   cursor: pointer;
 `;

@@ -160,6 +160,7 @@ const UploadButton = styled.button`
   font-weight: bold;
   border: none;
   border-radius: 5px;
+  width: 85vw;
   padding: 10px 30px;
   cursor: pointer;
 `;

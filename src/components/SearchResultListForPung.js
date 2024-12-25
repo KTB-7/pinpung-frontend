@@ -1,36 +1,31 @@
 // SearchResultListForPung.js
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
 import { searchListAccuracy, searchListDistance } from '../api/searchApi';
 import useStore from '../store/store';
 import { ClipLoader } from 'react-spinners';
 import { Button, Image } from 'react-bootstrap';
 
-const SearchResultListForPung = ({ onPlaceSelect }) => {
-  const navigate = useNavigate();
+const SearchResultListForPung = ({ keyword, sort = 'accuracy', onPlaceSelect }) => {
   const setMoveToLocation = useStore((state) => state.setMoveToLocation);
   const userLocation = useStore((state) => state.userLocation);
   const mapRect = useStore((state) => state.mapRect);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const [searchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 리스트
-  const keyword = searchParams.get('keyword');
-  const sort = searchParams.get('sort') || 'accuracy';
+  const [currentSort, setCurrentSort] = useState(sort);
 
   const handleSortChange = (newSort) => {
-    navigate(`/search-results?keyword=${keyword}&sort=${newSort}`);
+    setCurrentSort(newSort);
   };
 
-  const handlePlaceClick = (placeId, x, y) => {
-    if (isNaN(y) || isNaN(x)) {
-      console.error('유효하지 않은 좌표:', { y, x });
+  const handlePlaceClick = (place) => {
+    if (isNaN(place.y) || isNaN(place.x)) {
+      console.error('유효하지 않은 좌표:', { y: place.y, x: place.x });
       return;
     }
     // 장소 선택 시 onPlaceSelect 콜백 호출
-    onPlaceSelect(placeId);
+    onPlaceSelect(place);
   };
 
   const fetchSearchResults = useCallback(async () => {
@@ -43,7 +38,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
     try {
       let response;
 
-      if (sort === 'accuracy') {
+      if (currentSort === 'accuracy') {
         response = await searchListAccuracy(
           keyword,
           mapRect.swLng,
@@ -51,7 +46,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
           mapRect.neLng,
           mapRect.neLat,
         );
-      } else if (sort === 'distance') {
+      } else if (currentSort === 'distance') {
         response = await searchListDistance(
           keyword,
           mapRect.swLng,
@@ -63,7 +58,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
         );
       }
       setSearchResults(response.searchPlaceInfoDtoList);
-      console.log('1. searchResults:', searchResults);
+      console.log('1. searchResults:', response.searchPlaceInfoDtoList);
       console.log('2. 백 response:', response);
     } catch (error) {
       console.error('검색 결과를 가져오는 데 실패했습니다.', error);
@@ -72,7 +67,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
     } finally {
       setLoading(false);
     }
-  }, [keyword, mapRect, userLocation, sort]);
+  }, [keyword, mapRect, userLocation, currentSort]);
 
   useEffect(() => {
     fetchSearchResults();
@@ -88,7 +83,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
         }}
       >
         <Button
-          variant={sort === 'accuracy' ? 'secondary' : 'outline-secondary'}
+          variant={currentSort === 'accuracy' ? 'secondary' : 'outline-secondary'}
           onClick={() => handleSortChange('accuracy')}
           style={{ marginRight: '0.5rem', height: '3.5vh' }}
           size="sm"
@@ -96,7 +91,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
           정확도순
         </Button>
         <Button
-          variant={sort === 'distance' ? 'secondary' : 'outline-secondary'}
+          variant={currentSort === 'distance' ? 'secondary' : 'outline-secondary'}
           onClick={() => handleSortChange('distance')}
           style={{ height: '3.5vh' }}
           size="sm"
@@ -107,7 +102,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
       <div
         style={{
           overflowY: 'auto',
-          height: '75vh',
+          maxHeight: '60vh',
           padding: '0 2vw',
         }}
       >
@@ -119,7 +114,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
           searchResults.map((place) => (
             <div
               key={place.placeId}
-              onClick={() => handlePlaceClick(place.placeId, place.x, place.y)}
+              onClick={() => handlePlaceClick(place)}
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -134,7 +129,7 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
               <div style={{ flex: 1, marginRight: '1rem' }}>
                 <div style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>{place.placeName}</div>
                 <p style={{ fontSize: '0.7rem', color: '#606060', marginBottom: '0.3rem' }}>
-                  리뷰 {place.reviewCount} {place.byFriend && '  친구가 방문한 장소'}
+                  리뷰 {place.reviewCount} {place.byFriend && ' 친구가 방문한 장소'}
                 </p>
                 <p style={{ fontSize: '0.8rem', color: '#606060', marginBottom: '0.5rem' }}>
                   {place.address}
@@ -171,11 +166,9 @@ const SearchResultListForPung = ({ onPlaceSelect }) => {
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: '5%',
-                      backgroundColor: '#f0f0f0',
+                      backgroundColor: '#fff',
                     }}
-                  >
-                    이미지 없음
-                  </div>
+                  ></div>
                 )}
               </div>
             </div>

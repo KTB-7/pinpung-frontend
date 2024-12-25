@@ -35,9 +35,10 @@ const UploadReview = () => {
     setLoading(true);
 
     try {
-      addReview(placeId, text, finalImage);
+      await addReview(placeId, text, finalImage);
 
       setLoading(false);
+      navigate(`/places/${placeId}`);
       navigate(-1);
     } catch (error) {
       setLoading(false);
@@ -48,7 +49,7 @@ const UploadReview = () => {
   const debouncedHandleUpload = debounce(handleUpload, 1000);
 
   const handleClose = async () => {
-    navigate(-1);
+    navigate(`/places/${placeId}`);
   };
 
   return (

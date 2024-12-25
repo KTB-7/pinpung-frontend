@@ -5,7 +5,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 export const registerMyTaste = async (age, activities, menus) => {
   try {
     const response = await securedInstance.post(
-      `${API_URL}/api/my/taste`,
+      `${API_URL}/api/profile/taste`,
       {
         age: age,
         activities: activities,

@@ -31,7 +31,7 @@ const AICafeMarker = ({ cafes, map, onMarkerClick }) => {
         });
 
         markerWrapper.addEventListener('click', () => {
-          onMarkerClick(place.placeId);
+          onMarkerClick(place.placeId, parseFloat(place.x), parseFloat(place.y));
         });
 
         currentMarkers[place.placeId] = customOverlay;

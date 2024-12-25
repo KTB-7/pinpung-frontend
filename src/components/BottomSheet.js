@@ -50,7 +50,12 @@ const BottomSheet = ({ placeId }) => {
           <>{cafeData.address || ' '}</>
           <div style={{ marginBottom: '20px' }}></div>
           <LineWrapper>
-            {cafeData.tags ? cafeData.tags.map((tag) => `#${tag}`).join(' ') : '태그 정보 없음'}
+            {cafeData.tags
+              ? cafeData.tags
+                  .slice(0, 3)
+                  .map((tag) => `#${tag} `)
+                  .join('')
+              : '태그 정보 없음'}
           </LineWrapper>
           <div style={{ marginBottom: '20px' }}></div>
           <LineWrapper>

@@ -17,6 +17,8 @@ const useStore = create(
       setMapLevel: (level) => set({ mapLevel: level }),
       showSheet: false,
       setShowSheet: (show) => set({ showSheet: show }),
+      selectedPlaceName: '',
+      setSelectedPlaceName: (name) => set({ selectedPlaceName: name }),
 
       selectedNavbar: 'home',
       setSelectedNavbar: (icon) => set({ selectedNavbar: icon }),

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchCafeDetails } from '../api/placesApi';
+import useStore from '../store/store';
 import styled from 'styled-components';
 
 const S3_URL = process.env.REACT_APP_S3_BASE_URL;
@@ -9,21 +10,24 @@ const S3_URL = process.env.REACT_APP_S3_BASE_URL;
 const BottomSheet = ({ placeId }) => {
   const [cafeData, setCafeData] = useState(null);
   const navigate = useNavigate();
-
-  const fetchCafeData = async () => {
-    try {
-      const data = await fetchCafeDetails(placeId);
-      setCafeData(data);
-    } catch (error) {
-      console.error('카페 상세 정보 가져오기 실패:', error);
-    }
-  };
+  const setSelectedPlaceName = useStore((state) => state.setSelectedPlaceName);
 
   useEffect(() => {
     if (!placeId) return;
 
+    const fetchCafeData = async () => {
+      try {
+        const data = await fetchCafeDetails(placeId);
+        setCafeData(data);
+        setSelectedPlaceName(data.placeName);
+        console.log(data);
+      } catch (error) {
+        console.error('카페 상세 정보 가져오기 실패:', error);
+      }
+    };
+
     fetchCafeData();
-  }, [placeId]);
+  }, [placeId, setSelectedPlaceName]);
 
   if (!cafeData) return null;
 

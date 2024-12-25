@@ -16,17 +16,21 @@ const Navbar = () => {
       <Menu>
         <li>
           <IconLink to="/">
-            <img src={BrowseIcon} alt="Browse" style={{ marginTop: '2.2vh', width: '16vw' }} />
+            <img src={BrowseIcon} alt="Browse" style={{ width: '16vw', marginTop: '2.2vh' }} />
           </IconLink>
         </li>
         <li>
           <IconLink to="/add-pung">
-            <img src={AddIcon} alt="Add" style={{ position: 'relative', bottom: '2.3vh' }} />
+            <img
+              src={AddIcon}
+              alt="Add"
+              style={{ position: 'relative', width: '25vw', bottom: '2.3vh' }}
+            />
           </IconLink>
         </li>
         <li>
           <IconLink to="/profile">
-            <img src={ProfileIcon} alt="profile" style={{ marginTop: '2.7vh', width: '15.9vw' }} />
+            <img src={ProfileIcon} alt="profile" style={{ width: '15.9vw', marginTop: '2.7vh' }} />
           </IconLink>
         </li>
       </Menu>

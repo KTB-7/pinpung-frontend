@@ -29,7 +29,7 @@ const Navbar = () => {
           </IconLink>
         </li>
         <li>
-          <IconLink to="/profile">
+          <IconLink to="/my-page">
             <img src={ProfileIcon} alt="profile" style={{ width: '15.9vw', marginTop: '2.7vh' }} />
           </IconLink>
         </li>

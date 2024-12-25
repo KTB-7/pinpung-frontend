@@ -4,6 +4,7 @@ import MapLayout from '../components/Map/MapLayout';
 import AIHome from '../pages/AIHome';
 import AIMapLayout from '../components/Map/AIMapLayout';
 import MyPage from '../pages/MyPage';
+import ProfileRouter from './ProfileRouter';
 import OAuthCallback from '../pages/OAuthCallback';
 import Login from '../pages/Login';
 import Navbar from '../components/Navbar';
@@ -24,7 +25,6 @@ const Router = () => {
       <Routes>
         {/* PrivateRoute로 보호된 라우트 그룹 */}
         <Route element={<PrivateRoute />}>
-          {/* MapLayout이 필요한 페이지 */}
           <Route element={<MapLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/places/:placeId" element={<PlaceOverview />} />
@@ -38,6 +38,7 @@ const Router = () => {
           <Route path="/places/:placeId/upload-review" element={<UploadReview />} />
           <Route path="/search-results" element={<DefaultSearch />} />
           <Route path="/my-page" element={<MyPage />} />
+          <Route path="/user-page/:userId" element={<ProfileRouter />} />
         </Route>
 
         {/* 비보호 라우트 */}

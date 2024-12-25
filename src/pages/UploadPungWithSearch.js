@@ -7,26 +7,19 @@ import { compressImage, addPadding, convertToWebP } from '../utils/imageUtils';
 import styled from 'styled-components';
 import { ClipLoader } from 'react-spinners';
 import { Modal, Button } from 'react-bootstrap';
-import SearchBar from '../components/Map/SearchBar';
+import SearchBarForPung from '../components/SearchBarForPung';
 import SearchResultListForPung from '../components/SearchResultListForPung';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 const UploadPungWithSearch = () => {
-  const { placeId: routePlaceId } = useParams();
   const navigate = useNavigate();
-  const [placeId, setPlaceId] = useState(routePlaceId || null);
+  const [placeId, setPlaceId] = useState(null);
+  const [placeName, setPlaceName] = useState('');
   const [image, setImage] = useState(null);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [showSearchModal, setShowSearchModal] = useState(false);
-
-  const selectedPlaceName = useStore((state) => state.selectedPlaceName);
-
-  useEffect(() => {
-    if (!placeId) {
-      setShowSearchModal(true); // placeId가 없으면 모달 열기
-    }
-  }, [placeId]);
+  const [modalKeyword, setModalKeyword] = useState('');
+  const [modalSort, setModalSort] = useState('accuracy');
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -74,15 +67,28 @@ const UploadPungWithSearch = () => {
     }
   };
 
-  const handlePlaceSelect = (selectedPlaceId) => {
-    setPlaceId(selectedPlaceId);
+  const handlePlaceSelect = (selectedPlace) => {
+    setPlaceId(selectedPlace.placeId);
+    setPlaceName(selectedPlace.placeName);
     setShowSearchModal(false);
+  };
+
+  const openSearchModal = () => {
+    setShowSearchModal(true);
   };
 
   return (
     <Wrapper>
       <Header className="container-fluid">
-        {placeId ? <PlaceName> {selectedPlaceName} </PlaceName> : <SearchBar />}
+        {placeName ? (
+          <PlaceName>{placeName}</PlaceName>
+        ) : (
+          <SearchBarForPung
+            onClick={openSearchModal}
+            placeholder="장소를 검색하세요"
+            readOnly={true}
+          />
+        )}
         <CloseButton
           onClick={handleClose}
           type="button"
@@ -114,7 +120,7 @@ const UploadPungWithSearch = () => {
               {!image && <span style={{ fontSize: '40px' }}>+</span>}
             </SquareButton>
           </div>
-          <p></p>
+          <div style={{ height: '6vh' }} />
           <div className="col-12 mb-4">
             <textarea
               value={text}
@@ -134,15 +140,18 @@ const UploadPungWithSearch = () => {
           )}
         </div>
       </Form>
-
       {/* 장소 검색 모달 */}
       <Modal show={showSearchModal} onHide={() => setShowSearchModal(false)} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>장소 검색 및 선택</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SearchBar />
-          <SearchResultListForPung onPlaceSelect={handlePlaceSelect} />
+          <SearchBarForPung readOnly={false} onSearch={setModalKeyword} />
+          <SearchResultListForPung
+            keyword={modalKeyword}
+            sort={modalSort}
+            onPlaceSelect={handlePlaceSelect}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowSearchModal(false)}>
@@ -161,7 +170,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 100%;
   height: 90vh;
-  margin-bottom: 10%;
+  margin-bottom: 10vh;
   overflow: hidden;
   box-sizing: border-box;
   background-color: #434343;
@@ -213,15 +222,15 @@ const UploadButton = styled.button`
   font-weight: bold;
   border: none;
   border-radius: 5px;
+  width: 83vw;
   padding: 10px 30px;
   cursor: pointer;
 `;
 
 const HiddenInput = styled.input`
-  display: none; // 화면에 보이지 않도록 숨김
+  display: none;
 `;
 
-// 정사각형 버튼 스타일
 const SquareButton = styled.div`
   width: 70px;
   height: 70px;

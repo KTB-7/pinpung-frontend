@@ -3,7 +3,7 @@ import Home from '../pages/Home';
 import MapLayout from '../components/Map/MapLayout';
 import AIHome from '../pages/AIHome';
 import AIMapLayout from '../components/Map/AIMapLayout';
-import Profile from '../pages/Profile';
+import MyPage from '../pages/MyPage';
 import OAuthCallback from '../pages/OAuthCallback';
 import Login from '../pages/Login';
 import Navbar from '../components/Navbar';
@@ -39,7 +39,7 @@ const Router = () => {
         </Route>
 
         {/* 비보호 라우트 */}
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/my-page" element={<MyPage />} />
         <Route path="/oauth/callback" element={<OAuthCallback />} />
         <Route path="/login" element={<Login />} />
       </Routes>

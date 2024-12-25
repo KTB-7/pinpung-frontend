@@ -13,8 +13,10 @@ const Login = () => {
     <Wrapper>
       <img src={pinpungLogoIcon} alt="핑펑 로고" style={{ marginLeft: '15px' }} />
       <h1 style={{ fontWeight: 'bold' }}>PinPung</h1>
+      <br />
       <h2>로그인하고 핑펑에서</h2>
       <h2>카페 추천을 받아보세요</h2>
+      <br />
       <br />
       <img src={kakaoLoginImage} alt="카카오 로그인" onClick={handleLogin} />
     </Wrapper>

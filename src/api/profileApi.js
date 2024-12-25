@@ -2,9 +2,9 @@ import { securedInstance } from './axiosInstance';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-export const fetchMyProfilePungs = async () => {
+export const fetchMyProfilePungs = async (userId) => {
   try {
-    const response = await securedInstance.get(`${API_URL}/api/my`);
+    const response = await securedInstance.get(`${API_URL}/api/profile/${userId}`);
 
     return response.data;
   } catch (error) {
@@ -13,9 +13,9 @@ export const fetchMyProfilePungs = async () => {
   }
 };
 
-export const fetchMyProfileReviews = async () => {
+export const fetchMyProfileReviews = async (userId) => {
   try {
-    const response = await securedInstance.get(`${API_URL}/api/my/view-reviews`);
+    const response = await securedInstance.get(`${API_URL}/api/profile/${userId}/view-reviews`);
 
     return response.data;
   } catch (error) {

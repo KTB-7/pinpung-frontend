@@ -1,31 +1,18 @@
 import { useState, useEffect } from 'react';
-import useAuthStore from '../store/auth';
 import { fetchMyProfilePungs, fetchMyProfileReviews } from '../api/profileApi';
 import profileImg from '../assets/images/profile-img.png';
 import styled from 'styled-components';
 
-const API_URL = `${process.env.REACT_APP_API_URL}`;
 const S3_URL = `${process.env.REACT_APP_S3_BASE_URL}`;
 
-const Profile = () => {
-  const accessToken = useAuthStore((state) => state.accessToken);
-  const clearAuth = useAuthStore((state) => state.clearAuth);
-  const userInfo = useAuthStore((state) => state.userInfo);
+const UserPage = (userId) => {
   const [activeTab, setActiveTab] = useState('pungs'); // 'pungs' 또는 'reviews'
   const [profileData, setProfileData] = useState(null);
   const [contentData, setContentData] = useState([]);
 
   useEffect(() => {
-    // 인증되지 않은 경우 로그인 리다이렉트
-    if (!accessToken) {
-      window.location.href = `${API_URL}/oauth2/authorization/kakao`;
-      return;
-    }
-  }, [accessToken]);
-
-  useEffect(() => {
     if (activeTab === 'pungs') {
-      fetchMyProfilePungs()
+      fetchMyProfilePungs(userId)
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.pungs);
@@ -34,7 +21,7 @@ const Profile = () => {
 
       // console.log('pungs contentData:', contentData);
     } else if (activeTab === 'reviews') {
-      fetchMyProfileReviews()
+      fetchMyProfileReviews(userInfo.userId)
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.reviews);
@@ -45,22 +32,14 @@ const Profile = () => {
     }
   }, [activeTab]);
 
-  const handleLogout = () => {
-    try {
-      window.location.href = `${API_URL}/logout`;
-      // localStorage.removeItem('auth-storage');
-      // clearAuth();
-    } catch (error) {
-      console.error('로그아웃 처리 중 에러 발생:', error);
-    }
-  };
+  const handleFollow = () => {};
 
   return (
     <Wrapper>
       <ProfileWrapper>
         <LineWrapper>
-          <Header>{userInfo?.userName || ' '}</Header>
-          <UploadButton onClick={handleLogout}>로그아웃</UploadButton>
+          <Header>{profileData?.userName || ' '}</Header>
+          <UploadButton onClick={handleFollow}>팔로우</UploadButton>
         </LineWrapper>
 
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -144,7 +123,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserPage;
 
 const Wrapper = styled.div`
   position: relative;

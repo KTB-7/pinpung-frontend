@@ -7,7 +7,7 @@
   border: 1.5px solid #ff7b27;
   border-radius: 30%;
   background-color: #fff;
-  transform: translate(-50%);
+  transform: translate(-50%, -50%);
   white-space: nowrap;
 }
 

@@ -37,10 +37,10 @@ const Router = () => {
           <Route path="/places/:placeId/upload-pung" element={<UploadPung />} />
           <Route path="/places/:placeId/upload-review" element={<UploadReview />} />
           <Route path="/search-results" element={<DefaultSearch />} />
+          <Route path="/my-page" element={<MyPage />} />
         </Route>
 
         {/* 비보호 라우트 */}
-        <Route path="/my-page" element={<MyPage />} />
         <Route path="/oauth/callback" element={<OAuthCallback />} />
         <Route path="/login" element={<Login />} />
       </Routes>

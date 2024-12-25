@@ -9,13 +9,18 @@ const useAIRecommendCafes = (swLng, swLat, neLng, neLat, x, y) => {
     cacheTime: 30 * 60 * 1000,
 
     // 명시적 체크 해야함
-    enabled:
-      swLng !== null &&
-      swLat !== null &&
-      neLng !== null &&
-      neLat !== null &&
-      x !== null &&
-      y !== null,
+    // enabled:
+    //   swLng !== null &&
+    //   swLat !== null &&
+    //   neLng !== null &&
+    //   neLat !== null &&
+    //   x !== null &&
+    //   y !== null,
+    // 필터링된 데이터 반환
+    select: (data) => ({
+      ...data,
+      places: data.places.filter((_, index) => index % 5 === 0),
+    }),
   });
 };
 

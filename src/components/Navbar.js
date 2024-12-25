@@ -7,10 +7,6 @@ import AddIcon from '../assets/icons/add-pung-icon.svg';
 import ProfileIcon from '../assets/icons/profile-icon.svg';
 
 const Navbar = () => {
-  const showNavbar = useStore((state) => state.showNavbar);
-
-  if (!showNavbar) return null;
-
   return (
     <Nav>
       <Menu>
@@ -20,7 +16,7 @@ const Navbar = () => {
           </IconLink>
         </li>
         <li>
-          <IconLink to="/add-pung">
+          <IconLink to="/upload-pung-with-search/:placeId?">
             <img
               src={AddIcon}
               alt="Add"

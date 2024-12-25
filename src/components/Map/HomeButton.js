@@ -21,7 +21,7 @@ const StyledLink = styled(Link)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin: 3%;
+  margin: 2%;
   z-index: 2;
   img {
     width: 100%;

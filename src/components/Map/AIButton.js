@@ -14,14 +14,14 @@ export default AIButton;
 
 const StyledLink = styled(Link)`
   position: fixed;
-  bottom: 20%;
-  right: 0px;
+  bottom: 20vh;
+  right: 0;
   height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin: 2%;
+  margin: 2vw;
   z-index: 2;
   img {
     width: 100%;

@@ -1,20 +1,32 @@
-import React, { useState } from 'react';
+// UploadPungWithSearch.js
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../store/store';
 import { addPung } from '../api/pungApi';
 import { compressImage, addPadding, convertToWebP } from '../utils/imageUtils';
 import styled from 'styled-components';
 import { ClipLoader } from 'react-spinners';
+import { Modal, Button } from 'react-bootstrap';
+import SearchBar from '../components/Map/SearchBar';
+import SearchResultListForPung from '../components/SearchResultListForPung';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const UploadPung = () => {
-  const { placeId } = useParams();
+const UploadPungWithSearch = () => {
+  const { placeId: routePlaceId } = useParams();
   const navigate = useNavigate();
+  const [placeId, setPlaceId] = useState(routePlaceId || null);
   const [image, setImage] = useState(null);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
 
   const selectedPlaceName = useStore((state) => state.selectedPlaceName);
+
+  useEffect(() => {
+    if (!placeId) {
+      setShowSearchModal(true); // placeId가 없으면 모달 열기
+    }
+  }, [placeId]);
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -25,35 +37,52 @@ const UploadPung = () => {
   };
 
   const handleUpload = async () => {
-    if (image) {
-      setLoading(true);
-      try {
-        const compressedFile = await compressImage(image); // 압축만 처리
+    if (!placeId) {
+      alert('먼저 장소를 선택해주세요.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      let finalImage = null;
+      if (image) {
+        const compressedFile = await compressImage(image); // 압축 처리
         const paddedFile = await addPadding(compressedFile); // 패딩 추가
-        const finalImage = await convertToWebP(paddedFile); // WebP로 변환
-
-        await addPung(placeId, finalImage, finalImage, text);
-
-        setLoading(false);
-        navigate(`/places/${placeId}`);
-      } catch (error) {
-        setLoading(false);
-        console.log('펑 업로드 중 오류 발생:', error);
+        finalImage = await convertToWebP(paddedFile); // WebP로 변환
       }
+
+      await addPung(placeId, finalImage, finalImage, text);
+
+      setLoading(false);
+      navigate(`/places/${placeId}`, { state: { pungAdded: true } });
+    } catch (error) {
+      setLoading(false);
+      console.log('펑 업로드 중 오류 발생:', error);
+      alert('펑 업로드에 실패했습니다. 다시 시도해주세요.');
     }
   };
+
   const handleButtonClick = () => {
     document.getElementById('file-input').click();
   };
 
-  const handleClose = async () => {
-    navigate(`/places/${placeId}`);
+  const handleClose = () => {
+    if (placeId) {
+      navigate(`/places/${placeId}`);
+    } else {
+      navigate(-1);
+    }
+  };
+
+  const handlePlaceSelect = (selectedPlaceId) => {
+    setPlaceId(selectedPlaceId);
+    setShowSearchModal(false);
   };
 
   return (
     <Wrapper>
       <Header className="container-fluid">
-        <PlaceName> {selectedPlaceName} </PlaceName>
+        {placeId ? <PlaceName> {selectedPlaceName} </PlaceName> : <SearchBar />}
         <CloseButton
           onClick={handleClose}
           type="button"
@@ -105,11 +134,27 @@ const UploadPung = () => {
           )}
         </div>
       </Form>
+
+      {/* 장소 검색 모달 */}
+      <Modal show={showSearchModal} onHide={() => setShowSearchModal(false)} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>장소 검색 및 선택</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <SearchBar />
+          <SearchResultListForPung onPlaceSelect={handlePlaceSelect} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowSearchModal(false)}>
+            닫기
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Wrapper>
   );
 };
 
-export default UploadPung;
+export default UploadPungWithSearch;
 
 const Wrapper = styled.div`
   display: flex;

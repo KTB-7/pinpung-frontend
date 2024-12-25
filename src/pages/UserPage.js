@@ -18,10 +18,9 @@ const UserPage = () => {
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.pungs);
+          console.log('user data:', data);
         })
         .catch((error) => console.error('펑 데이터를 불러오는 데 실패했습니다:', error));
-
-      // console.log('pungs contentData:', contentData);
     } else if (activeTab === 'reviews') {
       fetchMyProfileReviews(userId)
         .then((data) => {
@@ -33,6 +32,10 @@ const UserPage = () => {
       // console.log('reviews contendData:', contentData);
     }
   }, [activeTab]);
+
+  if (!profileData) {
+    return <div>로딩 중...</div>;
+  }
 
   const handleFollow = () => {};
 
@@ -193,80 +196,3 @@ const UserPage = () => {
 };
 
 export default UserPage;
-
-const Wrapper = styled.div`
-  position: relative;
-  width: 100%;
-  margin-bottom: 20%;
-  background-color: white;
-  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
-  flex-direction: column;
-  z-index: 2;
-`;
-
-const LineWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const ProfileWrapper = styled.div`
-  padding: 20px;
-  flex: 1;
-`;
-
-const Header = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-const UploadButton = styled.button`
-  background-color: #ff9c0e;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-`;
-
-const TabWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: #f5f5f5;
-  padding: 10px 0;
-`;
-
-const TabButton = styled.button.attrs((props) => ({
-  isactive: undefined,
-}))`
-  background-color: ${(props) => (props.isactive ? '#ff9c0e' : 'transparent')};
-  color: ${(props) => (props.isactive ? 'white' : 'black')};
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-  &:hover {
-    background-color: #ff9c0e;
-    color: white;
-  }
-`;
-
-const Content = styled.div`
-  overflow-y: auto;
-  flex: 1;
-`;
-
-const ItemList = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Item = styled.div`
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-`;

@@ -32,10 +32,10 @@ const UploadPung = () => {
         const paddedFile = await addPadding(compressedFile); // 패딩 추가
         const finalImage = await convertToWebP(paddedFile); // WebP로 변환
 
-        addPung(placeId, finalImage, finalImage, text);
+        await addPung(placeId, finalImage, finalImage, text);
 
         setLoading(false);
-        navigate(-1);
+        navigate(`/places/${placeId}`);
       } catch (error) {
         setLoading(false);
         console.log('펑 업로드 중 오류 발생:', error);
@@ -47,7 +47,7 @@ const UploadPung = () => {
   };
 
   const handleClose = async () => {
-    navigate(-1);
+    navigate(`/places/${placeId}`);
   };
 
   return (

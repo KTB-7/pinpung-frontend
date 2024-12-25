@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import HomeIcon from '../../assets/icons/browse-icon.svg'; // 나중에 변경
+import HomeIcon from '../../assets/icons/home-button-icon.svg'; // 나중에 변경
 import styled from 'styled-components';
 
 const HomeButton = () => {

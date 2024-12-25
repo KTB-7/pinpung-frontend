@@ -23,9 +23,10 @@ const Map = () => {
   const setMapLevel = useStore((state) => state.setMapLevel);
   const moveToLocation = useStore((state) => state.moveToLocation);
   const setMoveToLocation = useStore((state) => state.setMoveToLocation);
+  const showSheet = useStore((state) => state.showSheet);
+  const setShowSheet = useStore((state) => state.setShowSheet);
 
   const [cafes, setCafes] = useState([]);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const fetchAndSetUserLocation = async () => {
     try {
@@ -61,8 +62,8 @@ const Map = () => {
   }, [setMapLevel, updateMapRect]);
 
   const handleMapClick = () => {
-    if (isSheetOpen) {
-      setIsSheetOpen(false);
+    if (showSheet) {
+      setShowSheet(false);
       navigate('/');
     }
   };
@@ -172,7 +173,7 @@ const Map = () => {
 
   const handleMarkerClick = useCallback(
     (placeId, x, y) => {
-      setIsSheetOpen(true);
+      setShowSheet(true);
       setMoveToLocation({ latitude: y, longitude: x });
       navigate(`/places/${placeId}`);
     },

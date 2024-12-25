@@ -14,13 +14,13 @@ const AICafeMarker = ({ cafes, map, onMarkerClick }) => {
     const currentMarkers = markers.current;
 
     cafes.forEach((place) => {
-      if (!currentMarkers[place.placeId]) {
+      if (!currentMarkers[place.placeId] && place.tags.length > 0) {
         const markerWrapper = document.createElement('div');
         markerWrapper.classList.add('ai-marker-wrapper');
 
         const markerLabel = document.createElement('div');
         markerLabel.classList.add('ai-marker-label');
-        markerLabel.innerText = '추천';
+        markerLabel.innerText = `# ${place.tags[0]}`;
 
         markerWrapper.appendChild(markerLabel);
 
@@ -31,7 +31,7 @@ const AICafeMarker = ({ cafes, map, onMarkerClick }) => {
         });
 
         markerWrapper.addEventListener('click', () => {
-          onMarkerClick(place.placeId);
+          onMarkerClick(place.placeId, parseFloat(place.x), parseFloat(place.y));
         });
 
         currentMarkers[place.placeId] = customOverlay;

@@ -72,8 +72,15 @@ const MyPage = () => {
             {userInfo?.userName || ' '}
           </h2>
           <button
-            className="btn btn-warning text-white fw-bold"
-            style={{ padding: '0.3rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.8rem' }}
+            style={{
+              color: '#fff',
+              backgroundColor: '#ff9c0e',
+              padding: '0.3rem 0.5rem',
+              border: 'none',
+              borderRadius: '0.25rem',
+              fontSize: '0.8rem',
+              fontWeight: 'bold',
+            }}
             onClick={handleLogout}
           >
             로그아웃
@@ -113,21 +120,31 @@ const MyPage = () => {
       </div>
 
       {/* 탭 */}
-      <div className="d-flex justify-content-center bg-light py-2 border-bottom">
+      <div className="d-flex justify-content-center">
         <button
-          className={`btn fw-bold ${
-            activeTab === 'pungs' ? 'btn-warning text-white' : 'btn-outline-secondary'
-          }`}
-          style={{ marginRight: '1rem', flex: 1, fontSize: '1rem' }}
+          style={{
+            color: activeTab === 'pungs' ? '#fff' : '#6c757d', // 선택되지 않은 버튼은 기본 텍스트 색상
+            backgroundColor: activeTab === 'pungs' ? '#ff9c0e' : 'transparent', // 선택되지 않은 버튼은 투명
+            marginLeft: '1rem',
+            flex: 1,
+            fontSize: '1rem',
+            border: 'none', // 선택되지 않은 버튼에 테두리 추가
+            borderRadius: '0.25rem',
+          }}
           onClick={() => setActiveTab('pungs')}
         >
           펑
         </button>
         <button
-          className={`btn fw-bold ${
-            activeTab === 'reviews' ? 'btn-warning text-white' : 'btn-outline-secondary'
-          }`}
-          style={{ flex: 1, fontSize: '1rem' }}
+          style={{
+            color: activeTab === 'reviews' ? '#fff' : '#6c757d', // 선택되지 않은 버튼은 기본 텍스트 색상
+            backgroundColor: activeTab === 'reviews' ? '#ff9c0e' : 'transparent', // 선택되지 않은 버튼은 투명
+            marginRight: '1rem',
+            flex: 1,
+            fontSize: '1rem',
+            border: 'none', // 선택되지 않은 버튼에 테두리 추가
+            borderRadius: '0.25rem',
+          }}
           onClick={() => setActiveTab('reviews')}
         >
           리뷰
@@ -180,7 +197,7 @@ const MyPage = () => {
                       src={`${S3_URL}/original-images/${item.imageId}`}
                       alt="리뷰 사진"
                       className="img-fluid mt-1"
-                      style={{ width: '100vw', objectFit: 'cover' }}
+                      style={{ width: '100vw', objectFit: 'cover', borderRadius: '3%' }}
                       loading="lazy"
                     />
                   )}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import AIIcon from '../../assets/icons/ai-icon.svg';
+import AIIcon from '../../assets/icons/ai-button-icon.svg';
 import styled from 'styled-components';
 
 const AIButton = () => {

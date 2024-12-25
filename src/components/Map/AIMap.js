@@ -2,10 +2,10 @@
 /* global kakao */
 /* eslint react-hooks/exhaustive-deps: "off" */
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserLocation } from '../../api/locationApi';
-import { fetchAIRecommendCafes } from '../../api/aiApi'; // 위에서 준 api
+import useAIRecommendCafes from '../../hooks/useAIRecommendCafes';
 import useStore from '../../store/store';
 import AICafeMarker from './AICafeMarker';
 import { debounce } from 'lodash';
@@ -25,8 +25,19 @@ const AIMap = () => {
   const setMoveToLocation = useStore((state) => state.setMoveToLocation);
 
   // AI추천 카페 목록 상태
-  const [aiCafes, setAICafes] = useState([]);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const showSheet = useStore((state) => state.showSheet);
+  const setShowSheet = useStore((state) => state.setShowSheet);
+
+  const { data, isLoading, error, refetch } = useAIRecommendCafes(
+    mapRect?.swLng,
+    mapRect?.swLat,
+    mapRect?.neLng,
+    mapRect?.neLat,
+    userLocation?.longitude,
+    userLocation?.latitude,
+  );
+
+  const aiCafes = data?.places || [];
 
   const fetchAndSetUserLocation = async () => {
     try {
@@ -62,8 +73,8 @@ const AIMap = () => {
   }, [setMapLevel, updateMapRect]);
 
   const handleMapClick = () => {
-    if (isSheetOpen) {
-      setIsSheetOpen(false);
+    if (showSheet) {
+      setShowSheet(false);
       navigate('/ai-home');
     }
   };
@@ -146,7 +157,7 @@ const AIMap = () => {
   useEffect(() => {
     if (userLocation) {
       const script = document.createElement('script');
-      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&autoload=false`;
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&autoload=false&libraries=clusterer`;
       script.onload = () => {
         kakao.maps.load(() => {
           initializeMap();
@@ -161,36 +172,17 @@ const AIMap = () => {
     }
   }, [userLocation, initializeMap]);
 
-  // bounds 변경 시 AI 카페 목록 다시 가져오기
+  // mapRect가 설정된 후 React Query의 refetch 호출
   useEffect(() => {
     if (mapRect && userLocation) {
-      const { swLng, swLat, neLng, neLat } = mapRect;
-      const { latitude: y, longitude: x } = userLocation;
-      // console.log(
-      //   'swLng:',
-      //   swLng,
-      //   'swLat:',
-      //   swLat,
-      //   'neLng:',
-      //   neLng,
-      //   'neLat:',
-      //   neLat,
-      //   'x:',
-      //   x,
-      //   'y:',
-      //   y,
-      // );
-
-      fetchAIRecommendCafes(swLng, swLat, neLng, neLat, x, y)
-        .then((data) => setAICafes(data.places))
-        .catch((error) => console.error('AI 추천 카페 목록 가져오기 실패:', error));
-      // console.log('aiCafes:', aiCafes);
+      // console.log('mapRect and userLocation are set:', mapRect, userLocation); // 디버그 로그 추가
+      refetch(); // 데이터 페칭
     }
-  }, [mapRect, userLocation]);
+  }, [mapRect, userLocation, refetch]);
 
   const handleMarkerClick = useCallback(
     (placeId, x, y) => {
-      setIsSheetOpen(true);
+      setShowSheet(true);
       setMoveToLocation({ latitude: y, longitude: x });
       navigate(`/ai-home/places/${placeId}`);
     },

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import HomeIcon from '../../assets/icons/browse-icon.svg'; // 나중에 변경
+import HomeIcon from '../../assets/icons/home-button-icon.svg';
 import styled from 'styled-components';
 
 const HomeButton = () => {
@@ -26,7 +26,5 @@ const StyledLink = styled(Link)`
   img {
     width: 100%;
     height: 100%;
-    max-width: 65px;
-    max-height: 65px;
   }
 `;

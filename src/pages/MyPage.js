@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import useAuthStore from '../store/auth';
 import { fetchMyProfilePungs, fetchMyProfileReviews } from '../api/profileApi';
 import profileImg from '../assets/images/profile-img.png';
-import styled from 'styled-components';
 
 const API_URL = `${process.env.REACT_APP_API_URL}`;
 const S3_URL = `${process.env.REACT_APP_S3_BASE_URL}`;
@@ -10,6 +9,7 @@ const S3_URL = `${process.env.REACT_APP_S3_BASE_URL}`;
 const MyPage = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
   const userInfo = useAuthStore((state) => state.userInfo);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
   const [activeTab, setActiveTab] = useState('pungs'); // 'pungs' 또는 'reviews'
   const [profileData, setProfileData] = useState(null);
   const [contentData, setContentData] = useState([]);
@@ -48,8 +48,8 @@ const MyPage = () => {
   const handleLogout = () => {
     try {
       localStorage.removeItem('auth-storage');
+      clearAuth();
       window.location.href = `${API_URL}/logout`;
-      // clearAuth();
     } catch (error) {
       console.error('로그아웃 처리 중 에러 발생:', error);
     }

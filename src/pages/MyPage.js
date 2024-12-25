@@ -7,9 +7,8 @@ import styled from 'styled-components';
 const API_URL = `${process.env.REACT_APP_API_URL}`;
 const S3_URL = `${process.env.REACT_APP_S3_BASE_URL}`;
 
-const Profile = () => {
+const MyPage = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
-  const clearAuth = useAuthStore((state) => state.clearAuth);
   const userInfo = useAuthStore((state) => state.userInfo);
   const [activeTab, setActiveTab] = useState('pungs'); // 'pungs' 또는 'reviews'
   const [profileData, setProfileData] = useState(null);
@@ -25,7 +24,8 @@ const Profile = () => {
 
   useEffect(() => {
     if (activeTab === 'pungs') {
-      fetchMyProfilePungs()
+      //console.log(userInfo);
+      fetchMyProfilePungs(userInfo.userId)
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.pungs);
@@ -34,7 +34,7 @@ const Profile = () => {
 
       // console.log('pungs contentData:', contentData);
     } else if (activeTab === 'reviews') {
-      fetchMyProfileReviews()
+      fetchMyProfileReviews(userInfo.userId)
         .then((data) => {
           setProfileData(data.defaultProfile);
           setContentData(data.reviews);
@@ -144,7 +144,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default MyPage;
 
 const Wrapper = styled.div`
   position: relative;

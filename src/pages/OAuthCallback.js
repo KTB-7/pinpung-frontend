@@ -18,6 +18,7 @@ const OAuthCallback = () => {
         const token = params.get('token');
         const userName = params.get('userName');
         const userEmail = params.get('userEmail');
+        const userId = params.get('userId');
 
         if (status === 'success' && token) {
           setAccessToken(token);
@@ -25,6 +26,7 @@ const OAuthCallback = () => {
           setUserInfo({
             userName,
             userEmail,
+            userId,
           });
 
           navigate('/user-preferences');

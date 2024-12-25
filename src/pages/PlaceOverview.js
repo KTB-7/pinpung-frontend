@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import useStore from '../store/store';
 import SearchBar from '../components/Map/SearchBar';
 import BottomSheet from '../components/BottomSheet';
 import AIButton from '../components/Map/AIButton';
@@ -7,6 +8,7 @@ import { Container } from 'react-bootstrap';
 
 const PlaceOverview = () => {
   const { placeId } = useParams();
+  const showSheet = useStore((state) => state.showBottomSheet);
 
   return (
     <>
@@ -19,7 +21,7 @@ const PlaceOverview = () => {
       >
         <SearchBar />
       </Container>
-      <BottomSheet placeId={placeId} />
+      ({showSheet} && <BottomSheet placeId={placeId} />)
       <AIButton />
       <LocationButton />
     </>

@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import useAuthStore from '../store/auth';
-import SearchBar from '../components/Map/SearchBar';
+import useStore from '../store/store';
 import BottomSheet from '../components/BottomSheet';
 import HomeButton from '../components/Map/HomeButton';
 import LocationButton from '../components/Map/LocationButton';
@@ -9,6 +9,7 @@ import { Container, Button, Row, Col } from 'react-bootstrap';
 const AIPlaceOverview = () => {
   const { placeId } = useParams();
   const userName = useAuthStore((state) => state.userInfo.userName);
+  const showSheet = useStore((state) => state.showBottomSheet);
 
   return (
     <>
@@ -69,8 +70,7 @@ const AIPlaceOverview = () => {
           </Col>
         </Row>
       </Container>
-      <BottomSheet placeId={placeId} />
-      <HomeButton />
+      ({showSheet} && <BottomSheet placeId={placeId} />) <HomeButton />
       <LocationButton />
     </>
   );

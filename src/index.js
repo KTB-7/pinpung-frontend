@@ -24,12 +24,12 @@ const queryClient = new QueryClient({
 });
 
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <GlobalStyle />
-      <App />
-    </QueryClientProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <GlobalStyle />
+    <App />
+  </QueryClientProvider>,
+  // </React.StrictMode>,
 );
 
 //serviceWorkerRegistration.register();

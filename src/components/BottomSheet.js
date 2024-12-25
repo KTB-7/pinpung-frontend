@@ -65,7 +65,12 @@ const BottomSheet = ({ placeId }) => {
               style={{ borderTop: '1px solid whitesmoke', marginBottom: '10px' }}
             >
               <br />
-              <h6 style={{ fontWeight: 'bold' }}>{review.userName}</h6>
+              <h6
+                style={{ fontWeight: 'bold' }}
+                onClick={() => navigate(`/user-page/${review.userId}`)}
+              >
+                {review.userName}
+              </h6>
               <small>{new Date(review.createdAt).toLocaleDateString()}</small>
               <br />
               <p>{review.text}</p>

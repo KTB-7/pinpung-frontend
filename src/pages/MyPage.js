@@ -47,8 +47,8 @@ const MyPage = () => {
 
   const handleLogout = () => {
     try {
+      localStorage.removeItem('auth-storage');
       window.location.href = `${API_URL}/logout`;
-      // localStorage.removeItem('auth-storage');
       // clearAuth();
     } catch (error) {
       console.error('로그아웃 처리 중 에러 발생:', error);
@@ -65,7 +65,7 @@ const MyPage = () => {
         zIndex: 2,
       }}
     >
-      {/* 프로필 섹션 */}
+      {/* 프로필 */}
       <div className="p-3 border-bottom">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h2 className="fs-4 fw-bold" style={{ fontSize: '1.5rem' }}>
@@ -112,7 +112,7 @@ const MyPage = () => {
         </div>
       </div>
 
-      {/* 탭 섹션 */}
+      {/* 탭 */}
       <div className="d-flex justify-content-center bg-light py-2 border-bottom">
         <button
           className={`btn fw-bold ${
@@ -134,7 +134,7 @@ const MyPage = () => {
         </button>
       </div>
 
-      {/* 콘텐츠 섹션 */}
+      {/* 콘텐츠 */}
       <div
         className="flex-grow-1 overflow-auto p-3"
         style={

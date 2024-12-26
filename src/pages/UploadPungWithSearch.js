@@ -47,7 +47,7 @@ const UploadPungWithSearch = () => {
       await addPung(placeId, finalImage, finalImage, text);
 
       setLoading(false);
-      navigate(`/places/${placeId}`, { state: { pungAdded: true } });
+      navigate(`/places/${placeId}`);
     } catch (error) {
       setLoading(false);
       console.log('펑 업로드 중 오류 발생:', error);

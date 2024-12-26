@@ -16,7 +16,7 @@ const Navbar = () => {
           </IconLink>
         </li>
         <li>
-          <IconLink to="/upload-pung-with-search/:placeId?">
+          <IconLink to="/upload-pung-with-search">
             <img
               src={AddIcon}
               alt="Add"

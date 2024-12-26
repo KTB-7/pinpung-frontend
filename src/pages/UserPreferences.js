@@ -52,7 +52,7 @@ const UserPreferences = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4" style={{ height: '90vh' }}>
       <h5
         className="mb-3"
         style={{
@@ -66,9 +66,14 @@ const UserPreferences = () => {
       <br />
 
       {/* 나이 선택*/}
-      <div className="mb-5" style={{ margin: '10px' }}>
+      <div className="mb-5" style={{ margin: '0.5rem' }}>
         <div
-          style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', fontSize: '18px' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '0.5rem',
+            fontSize: '1.2rem',
+          }}
         >
           연령대
         </div>
@@ -83,7 +88,7 @@ const UserPreferences = () => {
                 style={{
                   border: `1px solid ${selected ? '#FF8800' : '#D0D0D0'}`,
                   borderRadius: '20px',
-                  fontSize: '15px',
+                  fontSize: '1rem',
                   color: selected ? '#FF8800' : 'gray',
                   backgroundColor: 'white',
                 }}
@@ -97,10 +102,10 @@ const UserPreferences = () => {
       </div>
 
       {/* 메뉴 선택 */}
-      <div className="mb-5" style={{ margin: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <span style={{ fontSize: '18px' }}>좋아하는 메뉴를 선택해주세요</span>
-          <span style={{ fontSize: '12px', color: 'gray', marginLeft: '10px' }}>
+      <div className="mb-5" style={{ margin: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+          <span style={{ fontSize: '1.2rem' }}>좋아하는 메뉴를 선택해주세요</span>
+          <span style={{ fontSize: '0.8rem', color: 'gray', marginLeft: '10px' }}>
             (복수 선택 가능)
           </span>
         </div>
@@ -115,7 +120,7 @@ const UserPreferences = () => {
                 style={{
                   border: `1px solid ${selected ? '#FF8800' : '#D0D0D0'}`,
                   borderRadius: '20px',
-                  fontSize: '15px',
+                  fontSize: '1rem',
                   color: selected ? '#FF8800' : 'gray',
                   backgroundColor: 'white',
                 }}
@@ -129,10 +134,10 @@ const UserPreferences = () => {
       </div>
 
       {/* activities 선택*/}
-      <div className="mb-5" style={{ margin: '10px' }}>
+      <div className="mb-5" style={{ margin: '0.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <span style={{ fontSize: '18px' }}>주로 가는 목적을 알려주세요</span>
-          <span style={{ fontSize: '12px', color: 'gray', marginLeft: '10px' }}>
+          <span style={{ fontSize: '1.2rem' }}>주로 가는 목적을 알려주세요</span>
+          <span style={{ fontSize: '0.8rem', color: 'gray', marginLeft: '10px' }}>
             (복수 선택 가능)
           </span>
         </div>
@@ -147,7 +152,7 @@ const UserPreferences = () => {
                 style={{
                   border: `1px solid ${selected ? '#FF8800' : '#D0D0D0'}`,
                   borderRadius: '20px',
-                  fontSize: '15px',
+                  fontSize: '1rem',
                   color: selected ? '#FF8800' : 'gray',
                   backgroundColor: 'white',
                 }}
@@ -169,7 +174,7 @@ const UserPreferences = () => {
             borderRadius: '5px',
             backgroundColor: isFormValid ? '#FF9C0E' : '#D0D0D0',
             color: 'white',
-            padding: '10px 125px',
+            padding: '0.7rem 7.5rem',
           }}
           type="button"
           disabled={!isFormValid}

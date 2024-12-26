@@ -39,7 +39,6 @@ const UploadReview = () => {
 
       setLoading(false);
       navigate(`/places/${placeId}`);
-      navigate(-1);
     } catch (error) {
       setLoading(false);
       console.log('리뷰 업로드 중 오류 발생:', error);

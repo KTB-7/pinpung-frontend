@@ -19,7 +19,7 @@ const useAIRecommendCafes = (swLng, swLat, neLng, neLat, x, y) => {
     // 필터링된 데이터 반환
     select: (data) => ({
       ...data,
-      places: data.places.filter((_, index) => index % 5 === 0),
+      places: data.places.filter((_, index) => index % 2 === 0),
     }),
   });
 };
